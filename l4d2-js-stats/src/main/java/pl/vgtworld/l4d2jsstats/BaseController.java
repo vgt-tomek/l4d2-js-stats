@@ -18,7 +18,7 @@ public abstract class BaseController {
 		request.setAttribute("pageTitle", title);
 	}
 	
-	public String render(String view) {
+	protected String render(String view) {
 		WebContext context = new WebContext(request, response, request.getServletContext(), request.getLocale());
 		return AppTemplateEngine.getTemplateEngine().process(view, context);
 	}
