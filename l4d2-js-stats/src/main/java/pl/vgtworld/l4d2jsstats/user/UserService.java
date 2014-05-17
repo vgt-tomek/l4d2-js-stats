@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
+
 @Stateless
 public class UserService {
 	
@@ -31,6 +33,36 @@ public class UserService {
 	
 	public boolean isLoginAvailable(String login) {
 		return dao.findByLogin(login) == null;
+	}
+	
+	public boolean isCorrectLoginCredentials(String login, String password)
+		throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		User user = dao.findByLogin(login);
+		if (user == null) {
+			return false;
+		}
+		String hash = UserUtils.generatePasswordHash(password, user.getSalt());
+		if (!hash.equals(user.getPassword())) {
+			return false;
+		}
+		return true;
+	}
+	
+	public UserDto findByLogin(String login) {
+		User user = dao.findByLogin(login);
+		if (user == null) {
+			return null;
+		}
+		return mapToUserLoginDto(user);
+	}
+	
+	private UserDto mapToUserLoginDto(User user) {
+		UserDto dto = new UserDto();
+		dto.setId(user.getId());
+		dto.setLogin(user.getLogin());
+		dto.setActive(user.isActive());
+		dto.setCreatedAt(user.getCreatedAt());
+		return dto;
 	}
 	
 }

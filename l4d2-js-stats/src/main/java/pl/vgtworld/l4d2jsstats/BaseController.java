@@ -23,4 +23,12 @@ public abstract class BaseController {
 		return AppTemplateEngine.getTemplateEngine().process(view, context);
 	}
 	
+	protected String getRemoteAddr() {
+		String xForwardedFor = request.getHeader("X-Forwarded-For");
+		if (xForwardedFor != null) {
+			return xForwardedFor;
+		}
+		return request.getRemoteAddr();
+	}
+	
 }
