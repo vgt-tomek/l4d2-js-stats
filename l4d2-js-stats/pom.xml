@@ -54,8 +54,15 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.7</version>
 		</dependency>
+		
+		<!-- view -->
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf</artifactId>
+			<version>2.1.2.RELEASE</version>
+		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<finalName>l4d2-js-stats</finalName>
 	</build>
