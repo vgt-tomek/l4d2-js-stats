@@ -3,6 +3,7 @@ CREATE TABLE `users` (
 `login` VARCHAR(100) NOT NULL,
 `password` CHAR(32) NOT NULL,
 `salt` CHAR(32) NOT NULL,
+`active` BOOLEAN NOT NULL,
 `created_at` DATETIME NOT NULL,
 UNIQUE(`login`)
 )engine=innodb;

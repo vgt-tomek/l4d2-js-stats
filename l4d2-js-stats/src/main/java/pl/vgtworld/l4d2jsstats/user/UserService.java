@@ -21,6 +21,7 @@ public class UserService {
 			user.setLogin(login);
 			user.setPassword(passwordHash);
 			user.setSalt(salt);
+			user.setActive(false);
 			user.setCreatedAt(new Date());
 			dao.add(user);
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {

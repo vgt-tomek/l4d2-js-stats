@@ -14,8 +14,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 @NamedQueries({
-	@NamedQuery(name=User.QUERY_FIND_BY_LOGIN,
-		query="SELECT u FROM User u WHERE u.login = :login")
+		@NamedQuery(name = User.QUERY_FIND_BY_LOGIN,
+			query = "SELECT u FROM User u WHERE u.login = :login")
 })
 class User {
 	
@@ -30,6 +30,8 @@ class User {
 	private String password;
 	
 	private String salt;
+	
+	private boolean active;
 	
 	@Column(name = "created_at")
 	private Date createdAt;
@@ -64,6 +66,14 @@ class User {
 	
 	public void setSalt(String salt) {
 		this.salt = salt;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	public Date getCreatedAt() {
