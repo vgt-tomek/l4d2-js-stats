@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 class RegisterValidator {
 	
 	private static final int LOGIN_MIN_LENGTH = 3;
@@ -41,9 +39,9 @@ class RegisterValidator {
 		return errors.toArray(new String[errors.size()]);
 	}
 	
-	public boolean validate(MultivaluedMap<String, String> form) {
-		validateLogin(form.getFirst("login"));
-		validatePassword(form.getFirst("password"), form.getFirst("password-repeat"));
+	public boolean validate(RegisterFormDto form) {
+		validateLogin(form.getLogin());
+		validatePassword(form.getPassword(), form.getRepeatPassword());
 		return errors.size() == 0;
 	}
 	

@@ -2,9 +2,6 @@ package pl.vgtworld.l4d2jsstats.register;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +9,8 @@ import pl.vgtworld.l4d2jsstats.register.RegisterValidator.ErrorMessages;
 
 public class RegisterValidatorTest {
 	
+	private static final String EMPTY_STRING = "";
+
 	private static final String LOGIN = "somelogin";
 	
 	private static final String PASSWORD = "somepassword";
@@ -25,7 +24,7 @@ public class RegisterValidatorTest {
 	
 	private RegisterValidator validator;
 	
-	private MultivaluedMap<String, String> form;
+	private RegisterFormDto form;
 	
 	@Before
 	public void initTest() {
@@ -44,7 +43,7 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptNullLogin() {
-		form.putSingle("login", null);
+		form.setLogin(null);
 		
 		boolean result = validator.validate(form);
 		String[] errors = validator.getErrors();
@@ -56,7 +55,7 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptEmptyLogin() {
-		form.putSingle("login", "");
+		form.setLogin(EMPTY_STRING);
 		
 		boolean result = validator.validate(form);
 		String[] errors = validator.getErrors();
@@ -68,7 +67,7 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptTooShortLogin() {
-		form.putSingle("login", SHORT_LOGIN);
+		form.setLogin(SHORT_LOGIN);
 		
 		boolean result = validator.validate(form);
 		String[] errors = validator.getErrors();
@@ -80,7 +79,7 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptTooLongLogin() {
-		form.putSingle("login", LONG_LOGIN);
+		form.setLogin(LONG_LOGIN);
 		
 		boolean result = validator.validate(form);
 		String[] errors = validator.getErrors();
@@ -92,7 +91,7 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptLoginWithWrongCharacters() {
-		form.putSingle("login", LOGIN_WITH_WRONG_CHARACTERS);
+		form.setLogin(LOGIN_WITH_WRONG_CHARACTERS);
 		
 		boolean result = validator.validate(form);
 		String[] errors = validator.getErrors();
@@ -104,7 +103,7 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptNullPassword() {
-		form.putSingle("password", null);
+		form.setPassword(null);
 		
 		boolean result = validator.validate(form);
 		String[] errors = validator.getErrors();
@@ -116,7 +115,7 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptEmptyPassword() {
-		form.putSingle("password", "");
+		form.setPassword(EMPTY_STRING);
 		
 		boolean result = validator.validate(form);
 		String[] errors = validator.getErrors();
@@ -128,7 +127,7 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptDifferentPasswords() {
-		form.putSingle("password-repeat", "differentPassword");
+		form.setRepeatPassword("differentPassword");
 		
 		boolean result = validator.validate(form);
 		String[] errors = validator.getErrors();
@@ -138,11 +137,11 @@ public class RegisterValidatorTest {
 		assertThat(errors[0]).isEqualTo(ErrorMessages.PASSWORD_MISMATCH.getMessage());
 	}
 	
-	private MultivaluedMap<String, String> createValidForm() {
-		MultivaluedMap<String, String> map = new MultivaluedHashMap<>();
-		map.putSingle("login", LOGIN);
-		map.putSingle("password", PASSWORD);
-		map.putSingle("password-repeat", PASSWORD);
-		return map;
+	private RegisterFormDto createValidForm() {
+		RegisterFormDto dto = new RegisterFormDto();
+		dto.setLogin(LOGIN);
+		dto.setPassword(PASSWORD);
+		dto.setRepeatPassword(PASSWORD);
+		return dto;
 	}
 }

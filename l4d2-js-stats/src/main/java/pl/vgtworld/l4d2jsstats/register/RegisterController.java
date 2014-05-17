@@ -1,12 +1,12 @@
 package pl.vgtworld.l4d2jsstats.register;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class RegisterController extends BaseController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 	
 	private static final String PAGE_TITLE = "Register";
-
+	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String getRegisterForm() {
@@ -30,13 +30,15 @@ public class RegisterController extends BaseController {
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
-	public String submitRegisterForm(MultivaluedMap<String, String> form) {
+	public String submitRegisterForm(@FormParam("login") String login, @FormParam("password") String password,
+		@FormParam("password-repeat") String repeatPassword) {
 		setPageTitle(PAGE_TITLE);
+		RegisterFormDto form = new RegisterFormDto(login, password, repeatPassword);
 		RegisterValidator validator = new RegisterValidator();
 		boolean formValid = validator.validate(form);
 		if (formValid) {
-			LOGGER.info("New account created (login: {}).", form.getFirst("login"));
-			//TODO Persist registered user in database.
+			LOGGER.info("New account created (login: {}).", form.getLogin());
+			// TODO Persist registered user in database.
 			return render("register-success");
 		}
 		request.setAttribute("form", form);
