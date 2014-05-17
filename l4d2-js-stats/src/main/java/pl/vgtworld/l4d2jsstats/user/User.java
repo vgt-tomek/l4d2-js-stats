@@ -17,7 +17,7 @@ import javax.persistence.Table;
 		@NamedQuery(name = User.QUERY_FIND_BY_LOGIN,
 			query = "SELECT u FROM User u WHERE u.login = :login")
 })
-class User {
+public class User {
 	
 	public static final String QUERY_FIND_BY_LOGIN = "User.findByLogin";
 	

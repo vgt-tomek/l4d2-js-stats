@@ -7,3 +7,14 @@ CREATE TABLE `users` (
 `created_at` DATETIME NOT NULL,
 UNIQUE(`login`)
 )engine=innodb;
+
+CREATE TABLE `user_tokens` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`user_id` INT UNSIGNED NOT NULL,
+`token` CHAR(32) NOT NULL,
+`ip` VARCHAR(100) NOT NULL,
+`created_at` DATETIME NOT NULL,
+CONSTRAINT `user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+ON DELETE CASCADE ON UPDATE CASCADE
+) engine=innodb;
+

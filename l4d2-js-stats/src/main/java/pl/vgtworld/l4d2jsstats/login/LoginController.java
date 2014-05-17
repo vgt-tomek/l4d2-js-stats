@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import pl.vgtworld.l4d2jsstats.BaseController;
 import pl.vgtworld.l4d2jsstats.user.UserService;
+import pl.vgtworld.l4d2jsstats.user.UserServiceException;
 
 @Path("/login")
 public class LoginController extends BaseController {
@@ -39,8 +40,14 @@ public class LoginController extends BaseController {
 		LoginFormValidator validator = new LoginFormValidator();
 		boolean formValid = validator.validate(form, userService);
 		if (formValid) {
-			//TODO Create cookies.
-			return render("login-success");
+			try {
+				userService.login(login, getRemoteAddr(), response);
+				return render("login-success");
+			} catch (UserServiceException e) {
+				LOGGER.warn("Exception while trying to login ({}).", e.getMessage());
+				// TODO Display proper error page.
+				return null;
+			}
 		}
 		LOGGER.info("Failed login attempt for user {} from ip {}.", login, getRemoteAddr());
 		request.setAttribute("form", form);
