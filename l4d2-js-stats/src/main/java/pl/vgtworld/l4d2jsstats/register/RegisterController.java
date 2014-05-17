@@ -1,5 +1,6 @@
 package pl.vgtworld.l4d2jsstats.register;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -12,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pl.vgtworld.l4d2jsstats.BaseController;
+import pl.vgtworld.l4d2jsstats.user.UserService;
+import pl.vgtworld.l4d2jsstats.user.UserServiceException;
 
 @Path("/register")
 public class RegisterController extends BaseController {
@@ -19,6 +22,9 @@ public class RegisterController extends BaseController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 	
 	private static final String PAGE_TITLE = "Register";
+	
+	@Inject
+	private UserService userService;
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
@@ -37,9 +43,15 @@ public class RegisterController extends BaseController {
 		RegisterValidator validator = new RegisterValidator();
 		boolean formValid = validator.validate(form);
 		if (formValid) {
-			LOGGER.info("New account created (login: {}).", form.getLogin());
-			// TODO Persist registered user in database.
-			return render("register-success");
+			try {
+				LOGGER.info("New account created (login: {}).", form.getLogin());
+				userService.createNewUser(login, password);
+				return render("register-success");
+			} catch (UserServiceException e) {
+				LOGGER.warn("Exception while trying to create user ({}).", e.getMessage());
+				// TODO Display proper error page.
+				return null;
+			}
 		}
 		request.setAttribute("form", form);
 		request.setAttribute("errors", validator.getErrors());
