@@ -17,7 +17,7 @@ public class UserService {
 		try {
 			String salt = UserUtils.generateSalt();
 			String passwordHash = UserUtils.generatePasswordHash(password, salt);
-			UserEntity user = new UserEntity();
+			User user = new User();
 			user.setLogin(login);
 			user.setPassword(passwordHash);
 			user.setSalt(salt);
@@ -26,6 +26,10 @@ public class UserService {
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			throw new UserServiceException("Enexpected error while trying to create user.", e);
 		}
+	}
+	
+	public boolean isLoginAvailable(String login) {
+		return dao.findByLogin(login) == null;
 	}
 	
 }

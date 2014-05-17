@@ -1,12 +1,19 @@
 package pl.vgtworld.l4d2jsstats.register;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.vgtworld.l4d2jsstats.register.RegisterValidator.ErrorMessages;
+import pl.vgtworld.l4d2jsstats.user.UserService;
 
+@RunWith(MockitoJUnitRunner.class)
 public class RegisterValidatorTest {
 	
 	private static final String EMPTY_STRING = "";
@@ -26,6 +33,9 @@ public class RegisterValidatorTest {
 	
 	private RegisterFormDto form;
 	
+	@Mock
+	private UserService userService;
+	
 	@Before
 	public void initTest() {
 		validator = new RegisterValidator();
@@ -34,7 +44,9 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldAcceptValidForm() {
-		boolean result = validator.validate(form);
+		when(userService.isLoginAvailable(anyString())).thenReturn(true);
+		
+		boolean result = validator.validate(form, userService);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isTrue();
@@ -43,9 +55,10 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptNullLogin() {
+		when(userService.isLoginAvailable(anyString())).thenReturn(true);
 		form.setLogin(null);
 		
-		boolean result = validator.validate(form);
+		boolean result = validator.validate(form, userService);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isFalse();
@@ -55,9 +68,10 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptEmptyLogin() {
+		when(userService.isLoginAvailable(anyString())).thenReturn(true);
 		form.setLogin(EMPTY_STRING);
 		
-		boolean result = validator.validate(form);
+		boolean result = validator.validate(form, userService);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isFalse();
@@ -67,9 +81,10 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptTooShortLogin() {
+		when(userService.isLoginAvailable(anyString())).thenReturn(true);
 		form.setLogin(SHORT_LOGIN);
 		
-		boolean result = validator.validate(form);
+		boolean result = validator.validate(form, userService);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isFalse();
@@ -79,9 +94,10 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptTooLongLogin() {
+		when(userService.isLoginAvailable(anyString())).thenReturn(true);
 		form.setLogin(LONG_LOGIN);
 		
-		boolean result = validator.validate(form);
+		boolean result = validator.validate(form, userService);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isFalse();
@@ -91,9 +107,10 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptLoginWithWrongCharacters() {
+		when(userService.isLoginAvailable(anyString())).thenReturn(true);
 		form.setLogin(LOGIN_WITH_WRONG_CHARACTERS);
 		
-		boolean result = validator.validate(form);
+		boolean result = validator.validate(form, userService);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isFalse();
@@ -102,10 +119,23 @@ public class RegisterValidatorTest {
 	}
 	
 	@Test
+	public void shouldNotAcceptAlreadyTakenLogin() {
+		when(userService.isLoginAvailable(anyString())).thenReturn(false);
+		
+		boolean result = validator.validate(form, userService);
+		String[] errors = validator.getErrors();
+		
+		assertThat(result).isFalse();
+		assertThat(errors).hasSize(1);
+		assertThat(errors[0]).isEqualTo(ErrorMessages.LOGIN_TAKEN.getMessage());
+	}
+	
+	@Test
 	public void shouldNotAcceptNullPassword() {
+		when(userService.isLoginAvailable(anyString())).thenReturn(true);
 		form.setPassword(null);
 		
-		boolean result = validator.validate(form);
+		boolean result = validator.validate(form, userService);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isFalse();
@@ -115,9 +145,10 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptEmptyPassword() {
+		when(userService.isLoginAvailable(anyString())).thenReturn(true);
 		form.setPassword(EMPTY_STRING);
 		
-		boolean result = validator.validate(form);
+		boolean result = validator.validate(form, userService);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isFalse();
@@ -127,9 +158,10 @@ public class RegisterValidatorTest {
 	
 	@Test
 	public void shouldNotAcceptDifferentPasswords() {
+		when(userService.isLoginAvailable(anyString())).thenReturn(true);
 		form.setRepeatPassword("differentPassword");
 		
-		boolean result = validator.validate(form);
+		boolean result = validator.validate(form, userService);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isFalse();

@@ -41,7 +41,7 @@ public class RegisterController extends BaseController {
 		setPageTitle(PAGE_TITLE);
 		RegisterFormDto form = new RegisterFormDto(login, password, repeatPassword);
 		RegisterValidator validator = new RegisterValidator();
-		boolean formValid = validator.validate(form);
+		boolean formValid = validator.validate(form, userService);
 		if (formValid) {
 			try {
 				LOGGER.info("New account created (login: {}).", form.getLogin());
