@@ -5,10 +5,13 @@
 	<div id="content">
 		<h1>Register</h1>
 		
-		<form method="post" action="@{/register}">
+		<form method="post" action="/register">
+			<div class="errors" th:if="${errors != null}">
+				<p class="error" th:each="error : ${errors}" th:text="${error}"></p>
+			</div>
 			<div>
 				<label for="register-login">Login:</label>
-				<input id="register-login" type="text" name="login" value="" />
+				<input id="register-login" type="text" name="login" th:value="${form} ? ${form.login[0]}" />
 			</div>
 			<div>
 				<label for="register-password">Password:</label>
