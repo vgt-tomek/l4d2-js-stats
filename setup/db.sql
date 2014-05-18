@@ -18,3 +18,27 @@ CONSTRAINT `user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ON DELETE CASCADE ON UPDATE CASCADE
 ) engine=innodb;
 
+CREATE TABLE `maps` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`name` VARCHAR(100) NOT NULL,
+`image` VARCHAR(100) NOT NULL,
+`display_order` INT UNSIGNED NOT NULL,
+INDEX(`display_order`)
+);
+INSERT INTO `maps`
+(`name`,`image`,`display_order`)
+VALUES
+("Dead Center", "dead-center.jpg", 1),
+("The Passing", "the-passing.jpg", 2),
+("Dark Carnival", "dark-carnival.jpg", 3),
+("Swamp Fever", "swamp-fever.jpg", 4),
+("Hard Rain", "hard-rain.jpg", 5),
+("The Parish", "the-parish.jpg", 6),
+("The Sacrifice", "the-sacrifice.jpg", 7),
+("No Mercy", "no-mercy.jpg", 8),
+("Crash Course", "crash-course.jpg", 9),
+("Death Toll", "death-toll.jpg", 10),
+("Dead Air", "dead-air.jpg", 11),
+("Blood Harvest", "blood-harvest.jpg", 12),
+("Cold Stream", "cold-stream.jpg", 13);
+
