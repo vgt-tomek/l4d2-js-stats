@@ -14,7 +14,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import pl.vgtworld.l4d2jsstats.user.UserService;
-import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
 @WebFilter(urlPatterns = { "/*" })
 public class LoginFilter implements Filter {
@@ -38,8 +37,7 @@ public class LoginFilter implements Filter {
 		Cookie loginCookie = findCookie("user", cookies);
 		Cookie tokenCookie = findCookie("token", cookies);
 		if (loginCookie != null && tokenCookie != null) {
-			UserDto validatedUser = userService.validateLoginCookies(loginCookie, tokenCookie);
-			request.setAttribute("user", validatedUser);
+			userService.validateLoginCookies(loginCookie, tokenCookie, httpRequest);
 		}
 		chain.doFilter(request, response);
 	}

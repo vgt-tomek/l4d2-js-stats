@@ -41,7 +41,7 @@ public class LoginController extends BaseController {
 		boolean formValid = validator.validate(form, userService);
 		if (formValid) {
 			try {
-				userService.login(login, getRemoteAddr(), response);
+				userService.login(login, getRemoteAddr(), request, response);
 				return render("login-success");
 			} catch (UserServiceException e) {
 				LOGGER.warn("Exception while trying to login ({}).", e.getMessage());

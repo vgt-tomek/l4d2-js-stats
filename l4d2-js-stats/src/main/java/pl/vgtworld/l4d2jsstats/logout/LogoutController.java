@@ -19,7 +19,7 @@ public class LogoutController extends BaseController {
 	@Produces(MediaType.TEXT_HTML)
 	public String getLogoutPage() {
 		setPageTitle("Logout");
-		userService.logout(response);
+		userService.logout(request, response);
 		return render("logout");
 	}
 }
