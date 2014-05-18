@@ -28,4 +28,10 @@ public class UserDao {
 		return results.get(0);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public User[] findActive() {
+		Query query = em.createNamedQuery(User.QUERY_FIND_ACTIVE);
+		List<User> results = query.getResultList();
+		return results.toArray(new User[results.size()]);
+	}
 }

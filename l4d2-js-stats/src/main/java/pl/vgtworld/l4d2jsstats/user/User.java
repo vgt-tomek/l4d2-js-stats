@@ -15,11 +15,15 @@ import javax.persistence.Table;
 @Table(name = "users")
 @NamedQueries({
 		@NamedQuery(name = User.QUERY_FIND_BY_LOGIN,
-			query = "SELECT u FROM User u WHERE u.login = :login")
+			query = "SELECT u FROM User u WHERE u.login = :login"),
+		@NamedQuery(name = User.QUERY_FIND_ACTIVE,
+			query = "SELECT u FROM User u WHERE u.active = TRUE ORDER BY u.login")
 })
 public class User {
 	
 	public static final String QUERY_FIND_BY_LOGIN = "User.findByLogin";
+	
+	public static final String QUERY_FIND_ACTIVE = "User.findActive";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

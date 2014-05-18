@@ -107,6 +107,15 @@ public class UserService {
 		}
 	}
 	
+	public UserDto[] findActiveUsers() {
+		User[] activeUsers = dao.findActive();
+		UserDto[] dtoList = new UserDto[activeUsers.length];
+		for (int i = 0; i < activeUsers.length; ++i) {
+			dtoList[i] = mapToUserLoginDto(activeUsers[i]);
+		}
+		return dtoList;
+	}
+	
 	private UserDto mapToUserLoginDto(User user) {
 		UserDto dto = new UserDto();
 		dto.setId(user.getId());
