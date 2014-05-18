@@ -4,8 +4,8 @@
 	<div id="header" th:fragment="default">
 		<ul class="#main-menu">
 			<li><a href="/">Home</a></li>
-			<li><a href="/login">Login</a></li>
-			<li><a href="/register">Register</a></li>
+			<li th:if="${user == null}"><a href="/login">Login</a></li>
+			<li th:if="${user == null}"><a href="/register">Register</a></li>
 		</ul>
 	</div>
 </body>
