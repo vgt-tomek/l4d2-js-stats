@@ -8,11 +8,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_tokens")
+@NamedQueries({
+		@NamedQuery(name = UserToken.QUERY_USER_LAST_TOKEN,
+			query = "SELECT t FROM UserToken t WHERE t.user.id = :userId ORDER BY t.id DESC")
+})
 class UserToken {
+	
+	public static final String QUERY_USER_LAST_TOKEN = "UserToken.userLastToken";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
