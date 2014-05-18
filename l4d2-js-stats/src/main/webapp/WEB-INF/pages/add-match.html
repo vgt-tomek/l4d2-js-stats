@@ -8,6 +8,12 @@
 		<form method="POST" action="/match/add">
 			<table>
 				<tr>
+					<th>Map</th>
+					<td colspan="4">
+						<select th:replace="templates/form :: map-picker (name='players[]',maps=${maps})"></select>
+					</td>
+				</tr>
+				<tr>
 					<th>Player</th>
 					<td>
 						<select th:replace="templates/form :: player-picker (name='players[]',players=${activeUsers})"></select>

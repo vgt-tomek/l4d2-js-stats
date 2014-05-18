@@ -2,8 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <body>
 	<select th:name="${name}" th:fragment="player-picker (name, players)">
-		<option value="">-</option>
+		<option value="0">-</option>
 		<option th:each="player : ${players}" th:value="${player.id}" th:text="${player.login}"></option>
+	</select>
+	
+	<select th:name="${name}" th:fragment="map-picker (name, maps)">
+		<option value="0">choose map...</option>
+		<option th:each="map : ${maps}" th:value="${map.id}" th:text="${map.name}"></option>
 	</select>
 </body>
 </html>
