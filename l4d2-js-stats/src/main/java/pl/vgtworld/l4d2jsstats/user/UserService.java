@@ -74,6 +74,23 @@ public class UserService {
 		}
 	}
 	
+	public UserDto validateLoginCookies(Cookie userName, Cookie userToken) {
+		String name = userName.getValue();
+		String token = userToken.getValue();
+		User user = dao.findByLogin(name);
+		if (user == null) {
+			return null;
+		}
+		String storedToken = userTokenService.findTokenForUser(user);
+		if (storedToken == null) {
+			return null;
+		}
+		if (storedToken.equals(token)) {
+			return mapToUserLoginDto(user);
+		}
+		return null;
+	}
+	
 	private UserDto mapToUserLoginDto(User user) {
 		UserDto dto = new UserDto();
 		dto.setId(user.getId());

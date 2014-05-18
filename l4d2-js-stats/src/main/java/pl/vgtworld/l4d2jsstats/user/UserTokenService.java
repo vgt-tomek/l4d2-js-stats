@@ -28,4 +28,8 @@ public class UserTokenService {
 		}
 	}
 	
+	public String findTokenForUser(User user) {
+		return dao.findLastToken(user.getId());
+	}
+	
 }
