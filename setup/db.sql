@@ -42,3 +42,17 @@ VALUES
 ("Blood Harvest", "blood-harvest.jpg", 12),
 ("Cold Stream", "cold-stream.jpg", 13);
 
+CREATE TABLE `difficulty_levels` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`name` VARCHAR(100) NOT NULL,
+`display_order` INT UNSIGNED NOT NULL,
+INDEX(`display_order`)
+);
+INSERT INTO `difficulty_levels`
+(`name`, `display_order`)
+VALUES
+("Easy", 1),
+("Normal", 2),
+("Advanced", 3),
+("Expert", 4);
+
