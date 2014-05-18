@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/head :: default"></head>
+<body>
+	<div th:replace="templates/header :: default"></div>
+	<div id="content">
+		<h1>Add new match statistics</h1>
+		
+		<form method="POST" action="/match/add">
+			<table>
+				<tr>
+					<th>Player</th>
+					<td>
+						<select th:replace="templates/form :: player-picker (name='players[]',players=${activeUsers})"></select>
+					</td>
+					<td>
+						<select th:replace="templates/form :: player-picker (name='players[]',players=${activeUsers})"></select>
+					</td>
+					<td>
+						<select th:replace="templates/form :: player-picker (name='players[]',players=${activeUsers})"></select>
+					</td>
+					<td>
+						<select th:replace="templates/form :: player-picker (name='players[]',players=${activeUsers})"></select>
+					</td>
+				</tr>
+				<tr>
+					<th>Survived</th>
+					<td><input type="checkbox" name="survived[]" /></td>
+					<td><input type="checkbox" name="survived[]" /></td>
+					<td><input type="checkbox" name="survived[]" /></td>
+					<td><input type="checkbox" name="survived[]" /></td>
+				</tr>
+				<tr>
+					<th>Deaths</th>
+					<td><input type="text" name="deaths[]" value="" /></td>
+					<td><input type="text" name="deaths[]" value="" /></td>
+					<td><input type="text" name="deaths[]" value="" /></td>
+					<td><input type="text" name="deaths[]" value="" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div th:replace="templates/footer :: copyright" ></div>
+</body>
+</html>

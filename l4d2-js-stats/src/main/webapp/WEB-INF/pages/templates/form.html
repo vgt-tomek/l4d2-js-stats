@@ -1,0 +1,9 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+	<select th:name="${name}" th:fragment="player-picker (name, players)">
+		<option value="">-</option>
+		<option th:each="player : ${players}" th:value="${player.id}" th:text="${player.login}"></option>
+	</select>
+</body>
+</html>
