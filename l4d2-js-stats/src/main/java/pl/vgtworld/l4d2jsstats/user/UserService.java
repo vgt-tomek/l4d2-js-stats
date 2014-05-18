@@ -14,6 +14,10 @@ import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 @Stateless
 public class UserService {
 	
+	private static final String USER_COOKIE_NAME = "user";
+	
+	private static final String TOKEN_COOKIE_NAME = "token";
+	
 	@Inject
 	private UserDao dao;
 	
@@ -65,13 +69,20 @@ public class UserService {
 		try {
 			User user = dao.findByLogin(login);
 			String token = userTokenService.createNewToken(user, remoteAddress);
-			Cookie userCookie = new Cookie("user", login);
-			Cookie tokenCookie = new Cookie("token", token);
+			Cookie userCookie = new Cookie(USER_COOKIE_NAME, login);
+			Cookie tokenCookie = new Cookie(TOKEN_COOKIE_NAME, token);
 			response.addCookie(userCookie);
 			response.addCookie(tokenCookie);
 		} catch (UserTokenServiceException e) {
 			throw new UserServiceException("Error while creating login token.", e);
 		}
+	}
+	
+	public void logout(HttpServletResponse response) {
+		Cookie userCookie = new Cookie(USER_COOKIE_NAME, null);
+		Cookie tokenCookie = new Cookie(TOKEN_COOKIE_NAME, null);
+		response.addCookie(userCookie);
+		response.addCookie(tokenCookie);
 	}
 	
 	public UserDto validateLoginCookies(Cookie userName, Cookie userToken) {

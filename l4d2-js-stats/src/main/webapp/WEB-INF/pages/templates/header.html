@@ -2,6 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <body>
 	<div id="header" th:fragment="default">
+		<p th:if="${user != null}">
+			Logged as <span class="login" th:text="${user.login}"></span>
+			(<a href="/logout">Logout</a>)
+		</p>
 		<ul class="#main-menu">
 			<li><a href="/">Home</a></li>
 			<li th:if="${user == null}"><a href="/login">Login</a></li>
