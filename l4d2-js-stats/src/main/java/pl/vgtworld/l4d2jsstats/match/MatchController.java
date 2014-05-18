@@ -7,6 +7,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import pl.vgtworld.l4d2jsstats.BaseController;
+import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevelService;
+import pl.vgtworld.l4d2jsstats.difficulty.dto.DifficultyLevelDto;
 import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.user.UserService;
@@ -20,6 +22,9 @@ public class MatchController extends BaseController {
 	
 	@Inject
 	private GameMapService mapService;
+	
+	@Inject
+	private DifficultyLevelService difficultyService;
 
 	@GET
 	@Path("/add")
@@ -29,6 +34,8 @@ public class MatchController extends BaseController {
 		request.setAttribute("activeUsers", activeUsers);
 		GameMapDto[] maps = mapService.findAll();
 		request.setAttribute("maps", maps);
+		DifficultyLevelDto[] difficultyLevels = difficultyService.findAll();
+		request.setAttribute("difficultyLevels", difficultyLevels);
 		return render("add-match");
 	}
 }

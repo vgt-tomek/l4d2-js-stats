@@ -14,6 +14,12 @@
 					</td>
 				</tr>
 				<tr>
+					<th>Difficulty</th>
+					<td colspan="4">
+						<select th:replace="templates/form :: difficulty-picker (name='players[]',levels=${difficultyLevels})"></select>
+					</td>
+				</tr>
+				<tr>
 					<th>Player</th>
 					<td>
 						<select th:replace="templates/form :: player-picker (name='players[]',players=${activeUsers})"></select>
