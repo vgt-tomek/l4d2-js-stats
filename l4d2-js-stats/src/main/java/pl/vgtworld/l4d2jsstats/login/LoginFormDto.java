@@ -1,18 +1,14 @@
 package pl.vgtworld.l4d2jsstats.login;
 
-class LoginFormDto {
+import javax.ws.rs.FormParam;
+
+public class LoginFormDto {
 	
+	@FormParam("login")
 	private String login;
 	
+	@FormParam("password")
 	private String password;
-	
-	public LoginFormDto() {
-	}
-	
-	public LoginFormDto(String login, String password) {
-		this.login = login;
-		this.password = password;
-	}
 	
 	public String getLogin() {
 		return login;

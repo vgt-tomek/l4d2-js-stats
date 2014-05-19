@@ -1,21 +1,17 @@
 package pl.vgtworld.l4d2jsstats.register;
 
-class RegisterFormDto {
+import javax.ws.rs.FormParam;
+
+public class RegisterFormDto {
 	
+	@FormParam("login")
 	private String login;
 	
+	@FormParam("password")
 	private String password;
 	
+	@FormParam("password-repeat")
 	private String repeatPassword;
-	
-	public RegisterFormDto() {
-	}
-	
-	public RegisterFormDto(String login, String password, String repeatPassword) {
-		this.login = login;
-		this.password = password;
-		this.repeatPassword = repeatPassword;
-	}
 	
 	public String getLogin() {
 		return login;

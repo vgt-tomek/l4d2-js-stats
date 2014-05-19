@@ -19,6 +19,12 @@
 			<version>7.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>3.0.8.Final</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -54,7 +60,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.7</version>
 		</dependency>
-		
+
 		<!-- view -->
 		<dependency>
 			<groupId>org.thymeleaf</groupId>

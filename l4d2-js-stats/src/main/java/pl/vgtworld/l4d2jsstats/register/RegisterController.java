@@ -2,13 +2,13 @@ package pl.vgtworld.l4d2jsstats.register;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.jboss.resteasy.annotations.Form;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,16 +36,14 @@ public class RegisterController extends BaseController {
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
-	public String submitRegisterForm(@FormParam("login") String login, @FormParam("password") String password,
-		@FormParam("password-repeat") String repeatPassword) {
+	public String submitRegisterForm(@Form RegisterFormDto form) {
 		setPageTitle(PAGE_TITLE);
-		RegisterFormDto form = new RegisterFormDto(login, password, repeatPassword);
 		RegisterValidator validator = new RegisterValidator();
 		boolean formValid = validator.validate(form, userService);
 		if (formValid) {
 			try {
 				LOGGER.info("New account created (login: {}).", form.getLogin());
-				userService.createNewUser(login, password);
+				userService.createNewUser(form.getLogin(), form.getPassword());
 				return render("register-success");
 			} catch (UserServiceException e) {
 				LOGGER.warn("Exception while trying to create user ({}).", e.getMessage());
