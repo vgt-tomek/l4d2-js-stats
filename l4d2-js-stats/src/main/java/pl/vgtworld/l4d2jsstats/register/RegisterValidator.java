@@ -49,7 +49,7 @@ class RegisterValidator {
 	}
 	
 	private void validateLogin(String login, UserService userService) {
-		if (login == null || login == "") {
+		if (login == null || login.equals("")) {
 			errors.add(ErrorMessages.LOGIN_REQUIRED.getMessage());
 			return;
 		}
