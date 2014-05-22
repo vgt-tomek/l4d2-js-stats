@@ -1,22 +1,24 @@
 package pl.vgtworld.l4d2jsstats;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Produces;
+import javax.inject.Singleton;
+
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-public abstract class AppTemplateEngine {
+@Singleton
+public class AppTemplateEngine {
 	
-	private static TemplateEngine templateEngine = null;
+	private TemplateEngine templateEngine = null;
 	
-	static {
-		initializeTemplateEngine();
-	}
-	
-	public static TemplateEngine getTemplateEngine() {
+	@Produces
+	public TemplateEngine getTemplateEngine() {
 		return templateEngine;
 	}
 	
-	private static void initializeTemplateEngine() {
-		
+	@PostConstruct
+	private void initializeTemplateEngine() {
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
 		templateResolver.setTemplateMode("XHTML");
 		templateResolver.setPrefix("/WEB-INF/pages/");
@@ -25,6 +27,5 @@ public abstract class AppTemplateEngine {
 		
 		templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
-		
 	}
 }
