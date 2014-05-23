@@ -5,12 +5,15 @@
 	<div id="content">
 		<h1>Add new campaign match statistics</h1>
 		
-		<form method="POST" action="/match/add">
+		<form method="POST" action="/match/add-campaign">
+			<div class="errors" th:if="${errors != null}">
+				<p class="error" th:each="error : ${errors}" th:text="${error}"></p>
+			</div>
 			<table>
 				<tr>
 					<th>Map</th>
 					<td colspan="4">
-						<select th:replace="templates/form :: map-picker (name='players[]',maps=${maps})"></select>
+						<select th:replace="templates/form :: map-picker (name='map',maps=${maps})"></select>
 					</td>
 				</tr>
 				<tr>
@@ -20,7 +23,7 @@
 				<tr>
 					<th>Difficulty</th>
 					<td colspan="4">
-						<select th:replace="templates/form :: difficulty-picker (name='players[]',levels=${difficultyLevels})"></select>
+						<select th:replace="templates/form :: difficulty-picker (name='difficulty',levels=${difficultyLevels})"></select>
 					</td>
 				</tr>
 				<tr>
