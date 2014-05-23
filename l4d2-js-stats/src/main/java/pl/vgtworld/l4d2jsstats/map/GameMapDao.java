@@ -19,4 +19,9 @@ public class GameMapDao {
 		List<GameMap> results = query.getResultList();
 		return results.toArray(new GameMap[results.size()]);
 	}
+	
+	public GameMap findById(int mapId) {
+		return em.find(GameMap.class, mapId);
+	}
+	
 }

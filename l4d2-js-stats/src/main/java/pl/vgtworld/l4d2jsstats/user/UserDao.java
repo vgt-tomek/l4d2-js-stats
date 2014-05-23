@@ -17,6 +17,10 @@ public class UserDao {
 		em.persist(user);
 	}
 	
+	public User findById(int userId) {
+		return em.find(User.class, userId);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public User findByLogin(String login) {
 		Query query = em.createNamedQuery(User.QUERY_FIND_BY_LOGIN);
@@ -34,4 +38,5 @@ public class UserDao {
 		List<User> results = query.getResultList();
 		return results.toArray(new User[results.size()]);
 	}
+	
 }

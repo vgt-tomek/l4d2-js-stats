@@ -56,3 +56,13 @@ VALUES
 ("Advanced", 3),
 ("Expert", 4);
 
+CREATE TABLE `matches` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`owner_id` INT UNSIGNED NOT NULL,
+`map_id` INT UNSIGNED NOT NULL,
+`played_at` DATETIME NOT NULL,
+CONSTRAINT `owner_id_fkey` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`)
+ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT `map_id_fkey` FOREIGN KEY (`map_id`) REFERENCES `maps` (`id`)
+ON DELETE CASCADE ON UPDATE CASCADE
+)engine=innodb;
