@@ -1,4 +1,4 @@
-package pl.vgtworld.l4d2jsstats.match;
+package pl.vgtworld.l4d2jsstats.addmatch;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

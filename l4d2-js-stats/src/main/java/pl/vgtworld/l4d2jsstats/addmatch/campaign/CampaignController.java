@@ -1,4 +1,4 @@
-package pl.vgtworld.l4d2jsstats.match.campaign;
+package pl.vgtworld.l4d2jsstats.addmatch.campaign;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
