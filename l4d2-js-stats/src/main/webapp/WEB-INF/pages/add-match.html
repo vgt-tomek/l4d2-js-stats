@@ -18,6 +18,10 @@
 				<select id="add-match-map" name="map" th:include="templates/form :: map-picker (name='map',maps=${maps})"></select>
 			</div>
 			<div>
+				<Label for="add-match-date">Date (YYYY-MM-DD):</Label>
+				<input id="add-match-date" type="text" name="date" th:value="${form.date}" />
+			</div>
+			<div>
 				<input type="submit" name="add-match-submit" value="Add match" />
 			</div>
 		</form>

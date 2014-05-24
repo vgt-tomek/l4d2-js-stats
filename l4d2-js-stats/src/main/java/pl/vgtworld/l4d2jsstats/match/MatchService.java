@@ -25,7 +25,7 @@ public class MatchService {
 	@Inject
 	private MatchTypeDao matchTypeDao;
 	
-	public void createMatch(int ownerId, int mapId, int matchTypeId) throws MatchServiceException {
+	public void createMatch(int ownerId, int mapId, int matchTypeId, Date matchDate) throws MatchServiceException {
 		Match match = new Match();
 		User user = userDao.findById(ownerId);
 		GameMap map = mapDao.findById(mapId);
@@ -40,8 +40,7 @@ public class MatchService {
 		match.setOwner(user);
 		match.setMap(map);
 		match.setActive(false);
-		//TODO Use time from the form.
-		match.setPlayedAt(new Date());
+		match.setPlayedAt(matchDate);
 		dao.add(match);
 	}
 }

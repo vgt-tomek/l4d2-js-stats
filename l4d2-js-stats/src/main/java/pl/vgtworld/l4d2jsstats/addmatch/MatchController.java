@@ -1,5 +1,8 @@
 package pl.vgtworld.l4d2jsstats.addmatch;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -12,6 +15,7 @@ import org.jboss.resteasy.annotations.Form;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pl.vgtworld.l4d2jsstats.App;
 import pl.vgtworld.l4d2jsstats.BaseController;
 import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
@@ -48,6 +52,11 @@ public class MatchController extends BaseController {
 		request.setAttribute(MATCH_TYPES_REQUEST_PARAM_KEY, matchTypes);
 		GameMapDto[] maps = mapService.findAll();
 		request.setAttribute(MAPS_REQUEST_PARAM_KEY, maps);
+		
+		AddMatchFormDto form = new AddMatchFormDto();
+		form.setDate(new SimpleDateFormat(App.DATE_FORMAT).format(new Date()));
+		request.setAttribute("form", form);
+		
 		return render("add-match");
 	}
 	
@@ -70,7 +79,7 @@ public class MatchController extends BaseController {
 		}
 		
 		try {
-			matchService.createMatch(user.getId(), form.getMapId(), form.getMatchTypeId());
+			matchService.createMatch(user.getId(), form.getMapId(), form.getMatchTypeId(), form.getDateParsed());
 			//TODO Redirect to step 2.
 			return Response.ok(render("errors/not-implemented")).build();
 		} catch (MatchServiceException e) {

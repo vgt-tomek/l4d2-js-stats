@@ -5,4 +5,7 @@ import javax.ws.rs.core.Application;
 
 @ApplicationPath("/")
 public class App extends Application {
+	
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
+	
 }
