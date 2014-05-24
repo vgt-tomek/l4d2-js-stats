@@ -6,6 +6,9 @@
 		<h1>Add match</h1>
 		
 		<form method="POST" action="/match/add">
+			<div class="errors" th:if="${errors != null}">
+				<p class="error" th:each="error : ${errors}" th:text="${error}"></p>
+			</div>
 			<div>
 				<label for="add-match-type">Match type:</label>
 				<select id="add-match-type" name="match-type" th:include="templates/form :: match-type-picker (types=${matchTypes})"></select>
