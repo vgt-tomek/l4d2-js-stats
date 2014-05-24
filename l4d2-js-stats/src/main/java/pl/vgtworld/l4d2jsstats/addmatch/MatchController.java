@@ -2,9 +2,11 @@ package pl.vgtworld.l4d2jsstats.addmatch;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import pl.vgtworld.l4d2jsstats.BaseController;
 import pl.vgtworld.l4d2jsstats.map.GameMapService;
@@ -24,12 +26,19 @@ public class MatchController extends BaseController {
 	@GET
 	@Path("/add")
 	@Produces(MediaType.TEXT_HTML)
-	public String getMatchPicker() {
+	public String getMatchForm() {
 		setPageTitle("Add match");
 		MatchTypeDto[] matchTypes = matchTypeService.findAll();
 		request.setAttribute("matchTypes", matchTypes);
 		GameMapDto[] maps = mapService.findAll();
 		request.setAttribute("maps", maps);
 		return render("add-match");
+	}
+	
+	@POST
+	@Path("/add")
+	@Produces(MediaType.TEXT_HTML)
+	public Response submitMatch() {
+		return Response.ok(render("errors/not-implemented")).build();
 	}
 }
