@@ -33,31 +33,31 @@
 				<tr>
 					<th>Player</th>
 					<td>
-						<select th:replace="templates/form :: player-picker (name='players[]',players=${activeUsers})"></select>
+						<select th:replace="templates/form :: player-picker (name='players',players=${activeUsers})"></select>
 					</td>
 					<td>
-						<select th:replace="templates/form :: player-picker (name='players[]',players=${activeUsers})"></select>
+						<select th:replace="templates/form :: player-picker (name='players',players=${activeUsers})"></select>
 					</td>
 					<td>
-						<select th:replace="templates/form :: player-picker (name='players[]',players=${activeUsers})"></select>
+						<select th:replace="templates/form :: player-picker (name='players',players=${activeUsers})"></select>
 					</td>
 					<td>
-						<select th:replace="templates/form :: player-picker (name='players[]',players=${activeUsers})"></select>
+						<select th:replace="templates/form :: player-picker (name='players',players=${activeUsers})"></select>
 					</td>
 				</tr>
 				<tr>
 					<th>Survived</th>
-					<td><input type="checkbox" name="survived[]" /></td>
-					<td><input type="checkbox" name="survived[]" /></td>
-					<td><input type="checkbox" name="survived[]" /></td>
-					<td><input type="checkbox" name="survived[]" /></td>
+					<td><select th:replace="templates/form :: survived-picker (name='survived')"></select></td>
+					<td><select th:replace="templates/form :: survived-picker (name='survived')"></select></td>
+					<td><select th:replace="templates/form :: survived-picker (name='survived')"></select></td>
+					<td><select th:replace="templates/form :: survived-picker (name='survived')"></select></td>
 				</tr>
 				<tr>
 					<th>Deaths</th>
-					<td><input type="text" name="deaths[]" value="" /></td>
-					<td><input type="text" name="deaths[]" value="" /></td>
-					<td><input type="text" name="deaths[]" value="" /></td>
-					<td><input type="text" name="deaths[]" value="" /></td>
+					<td><input type="text" name="deaths" value="" /></td>
+					<td><input type="text" name="deaths" value="" /></td>
+					<td><input type="text" name="deaths" value="" /></td>
+					<td><input type="text" name="deaths" value="" /></td>
 				</tr>
 				<tr>
 					<td colspan="5">

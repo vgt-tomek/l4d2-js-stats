@@ -7,15 +7,21 @@ import java.util.regex.Pattern;
 
 import pl.vgtworld.l4d2jsstats.difficulty.dto.DifficultyLevelDto;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
+import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
 class CampaignFormValidator {
 	
 	public enum ErrorMessages {
 		
+		INVALID_FORM_DATA("Form is missing data."),
 		MAP_REQUIRED("Map is required."),
 		TOTAL_TIME_REQUIRED("Total time is required."),
 		TOTAL_TIME_WRONG_FORMAT("Wrong value in total time field. Expected format is h:mm."),
-		DIFFICULTY_REQUIRED("Difficulty level is required.");
+		DIFFICULTY_REQUIRED("Difficulty level is required."),
+		RESTARTS_REQUIRED("Numbers of time restarted is required."),
+		RESTARTS_WRONG_VALUE("Numbers of time restarted should be number greater or equal to 0."),
+		PLAYER_REQUIRED("At least one player is required."),
+		PLAYER_DUPLICATE("You can't choose the same player twice.");
 		
 		private String message;
 		
@@ -28,16 +34,21 @@ class CampaignFormValidator {
 		}
 	}
 	
+	private static final int FORM_MAX_PLAYER_COUNT = 4;
+	
 	private List<String> errors = new ArrayList<>();
 	
 	public String[] getErrors() {
 		return errors.toArray(new String[errors.size()]);
 	}
 	
-	public boolean validate(CampaignFormDto form, GameMapDto[] maps, DifficultyLevelDto[] difficultyLevels) {
+	public boolean validate(CampaignFormDto form, GameMapDto[] maps, DifficultyLevelDto[] difficultyLevels,
+		UserDto[] users) {
 		validateMap(form, maps);
 		validateTotalTime(form);
 		validateDifficulty(form, difficultyLevels);
+		validateRestarts(form);
+		validatePlayerDataStructure(form);
 		return errors.size() == 0;
 	}
 	
@@ -74,4 +85,31 @@ class CampaignFormValidator {
 		}
 		errors.add(ErrorMessages.DIFFICULTY_REQUIRED.getMessage());
 	}
+	
+	private void validateRestarts(CampaignFormDto form) {
+		if (form.getRestarts() == null || form.getRestarts().equals("")) {
+			errors.add(ErrorMessages.RESTARTS_REQUIRED.getMessage());
+			return;
+		}
+		try {
+			int restarts = form.getRestartsParsed();
+			if (restarts < 0) {
+				errors.add(ErrorMessages.RESTARTS_WRONG_VALUE.getMessage());
+				return;
+			}
+		} catch (NumberFormatException e) {
+			errors.add(ErrorMessages.RESTARTS_WRONG_VALUE.getMessage());
+			return;
+		}
+	}
+	
+	private boolean validatePlayerDataStructure(CampaignFormDto form) {
+		if (form.getPlayers().length != FORM_MAX_PLAYER_COUNT || form.getSurvived().length != FORM_MAX_PLAYER_COUNT
+			|| form.getDeaths().length != FORM_MAX_PLAYER_COUNT) {
+			errors.add(ErrorMessages.INVALID_FORM_DATA.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
 }

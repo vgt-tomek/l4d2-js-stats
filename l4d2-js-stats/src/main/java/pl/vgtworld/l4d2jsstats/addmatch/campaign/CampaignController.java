@@ -58,7 +58,7 @@ public class CampaignController extends BaseController {
 		UserDto[] activeUsers = userService.findActiveUsers();
 		DifficultyLevelDto[] difficultyLevels = difficultyService.findAll();
 		CampaignFormValidator validator = new CampaignFormValidator();
-		boolean validationResult = validator.validate(form, maps, difficultyLevels);
+		boolean validationResult = validator.validate(form, maps, difficultyLevels, activeUsers);
 		if (!validationResult) {
 			request.setAttribute(ACTIVE_USERS_REQUEST_ATTRIBUTE, activeUsers);
 			request.setAttribute(MAPS_REQUEST_ATTRIBUTE, maps);

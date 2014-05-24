@@ -15,5 +15,10 @@
 		<option value="0">choose difficulty...</option>
 		<option th:each="level : ${levels}" th:value="${level.id}" th:text="${level.name}"></option>
 	</select>
+	
+	<select th:name="${name}" th:fragment="survived-picker (name)">
+		<option value="no">no</option>
+		<option value="yes">yes</option>
+	</select>
 </body>
 </html>

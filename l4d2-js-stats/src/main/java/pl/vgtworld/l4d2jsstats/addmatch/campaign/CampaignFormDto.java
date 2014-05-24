@@ -13,6 +13,18 @@ public class CampaignFormDto {
 	@FormParam("difficulty")
 	private int difficultyId;
 	
+	@FormParam("restarts")
+	private String restarts;
+	
+	@FormParam("players")
+	private int[] players;
+	
+	@FormParam("survived")
+	private String[] survived;
+	
+	@FormParam("deaths")
+	private String[] deaths;
+	
 	public int getMapId() {
 		return mapId;
 	}
@@ -35,6 +47,42 @@ public class CampaignFormDto {
 	
 	public void setDifficultyId(int difficultyId) {
 		this.difficultyId = difficultyId;
+	}
+	
+	public String getRestarts() {
+		return restarts;
+	}
+	
+	public int getRestartsParsed() throws NumberFormatException {
+		return Integer.parseInt(restarts);
+	}
+	
+	public void setRestarts(String restarts) {
+		this.restarts = restarts;
+	}
+	
+	public int[] getPlayers() {
+		return players;
+	}
+	
+	public void setPlayers(int[] players) {
+		this.players = players;
+	}
+	
+	public String[] getSurvived() {
+		return survived;
+	}
+	
+	public void setSurvived(String[] survived) {
+		this.survived = survived;
+	}
+	
+	public String[] getDeaths() {
+		return deaths;
+	}
+	
+	public void setDeaths(String[] deaths) {
+		this.deaths = deaths;
 	}
 	
 }
