@@ -36,7 +36,7 @@ public class AddMatchValidator {
 	}
 	
 	private void validateMatchType(AddMatchFormDto form, MatchTypeDto[] matchTypes) {
-		int matchType = form.getMatchType();
+		int matchType = form.getMatchTypeId();
 		for (MatchTypeDto type : matchTypes) {
 			if (type.getId() == matchType) {
 				return;

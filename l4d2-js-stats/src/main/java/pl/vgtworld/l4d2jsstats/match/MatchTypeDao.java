@@ -13,6 +13,10 @@ public class MatchTypeDao {
 	@PersistenceContext
 	private EntityManager em;
 	
+	public MatchType findById(int matchTypeId) {
+		return em.find(MatchType.class, matchTypeId);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public MatchType[] findAll() {
 		Query query = em.createNamedQuery(MatchType.QUERY_FIND_ALL);

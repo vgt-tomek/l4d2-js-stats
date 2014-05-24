@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -20,6 +21,10 @@ public class Match {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@ManyToOne
+	@JoinColumn(name = "match_type_id")
+	private MatchType matchType;
 	
 	@ManyToOne
 	private User owner;
@@ -36,6 +41,14 @@ public class Match {
 	
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public MatchType getMatchType() {
+		return matchType;
+	}
+	
+	public void setMatchType(MatchType matchType) {
+		this.matchType = matchType;
 	}
 	
 	public User getOwner() {

@@ -5,17 +5,17 @@ import javax.ws.rs.FormParam;
 public class AddMatchFormDto {
 	
 	@FormParam("match-type")
-	private int matchType;
+	private int matchTypeId;
 	
 	@FormParam("map")
 	private int mapId;
 	
-	public int getMatchType() {
-		return matchType;
+	public int getMatchTypeId() {
+		return matchTypeId;
 	}
 	
-	public void setMatchType(int matchType) {
-		this.matchType = matchType;
+	public void setMatchTypeId(int matchTypeId) {
+		this.matchTypeId = matchTypeId;
 	}
 	
 	public int getMapId() {

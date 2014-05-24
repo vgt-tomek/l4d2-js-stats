@@ -22,16 +22,21 @@ public class MatchService {
 	@Inject
 	private GameMapDao mapDao;
 	
-	public void createMatch(int ownerId, int mapId) throws MatchServiceException {
+	@Inject
+	private MatchTypeDao matchTypeDao;
+	
+	public void createMatch(int ownerId, int mapId, int matchTypeId) throws MatchServiceException {
 		Match match = new Match();
 		User user = userDao.findById(ownerId);
 		GameMap map = mapDao.findById(mapId);
+		MatchType matchType = matchTypeDao.findById(matchTypeId);
 		if (user == null) {
 			throw new MatchServiceException("Unknown user.");
 		}
 		if (map == null) {
 			throw new MatchServiceException("Unknown map.");
 		}
+		match.setMatchType(matchType);
 		match.setOwner(user);
 		match.setMap(map);
 		//TODO Use time from the form.
