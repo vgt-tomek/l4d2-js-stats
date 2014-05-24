@@ -56,6 +56,18 @@ VALUES
 ("Advanced", 3),
 ("Expert", 4);
 
+CREATE TABLE `match_types`(
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`identifier` VARCHAR(100) NOT NULL,
+`name` VARCHAR(100) NOT NULL,
+`display_order` INT UNSIGNED NOT NULL,
+UNIQUE(`identifier`)
+)engine=innodb;
+INSERT INTO `match_types`
+(`id`, `identifier`, `name`, `display_order`)
+VALUES
+(1, "campaign", "Campaign", 1);
+
 CREATE TABLE `matches` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `owner_id` INT UNSIGNED NOT NULL,
