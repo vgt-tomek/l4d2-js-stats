@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/head :: default"></head>
+<body>
+	<div th:replace="templates/header :: default"></div>
+	<div id="content">
+		<h1>Add match</h1>
+		
+		<form method="POST" action="/match/add">
+			<div>
+				<label for="add-match-type">Match type:</label>
+				<select id="add-match-type" name="match-type" th:include="templates/form :: match-type-picker (types=${matchTypes})"></select>
+			</div>
+			<div>
+				<label for="add-match-map">Map:</label>
+				<select id="add-match-map" name="map" th:include="templates/form :: map-picker (name='map',maps=${maps})"></select>
+			</div>
+			<div>
+				<input type="submit" name="add-match-submit" value="Add match" />
+			</div>
+		</form>
+		
+	</div>
+	<div th:replace="templates/footer :: copyright" ></div>
+</body>
+</html>

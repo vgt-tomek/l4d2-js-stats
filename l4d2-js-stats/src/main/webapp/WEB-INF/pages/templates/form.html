@@ -6,7 +6,7 @@
 		<option th:each="player : ${players}" th:value="${player.id}" th:text="${player.login}"></option>
 	</select>
 	
-	<select th:name="${name}" th:fragment="map-picker (name, maps)">
+	<select th:fragment="map-picker (maps)">
 		<option value="0">choose map...</option>
 		<option th:each="map : ${maps}" th:value="${map.id}" th:text="${map.name}"></option>
 	</select>
@@ -16,9 +16,10 @@
 		<option th:each="level : ${levels}" th:value="${level.id}" th:text="${level.name}"></option>
 	</select>
 	
-	<select th:name="${name}" th:fragment="survived-picker (name)">
-		<option value="no">no</option>
-		<option value="yes">yes</option>
+	<select th:fragment="match-type-picker (types)">
+		<option value="0">choose match type...</option>
+		<option th:each="type : ${types}" th:value="${type.id}" th:text="${type.name}"></option>
 	</select>
+	
 </body>
 </html>
