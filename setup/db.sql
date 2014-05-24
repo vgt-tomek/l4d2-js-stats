@@ -68,12 +68,14 @@ INSERT INTO `match_types`
 VALUES
 (1, "campaign", "Campaign", 1);
 
+DROP TABLE IF EXISTS `matches`;
 CREATE TABLE `matches` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `match_type_id` INT UNSIGNED NOT NULL,
 `owner_id` INT UNSIGNED NOT NULL,
 `map_id` INT UNSIGNED NOT NULL,
 `played_at` DATETIME NOT NULL,
+`active` BOOLEAN NOT NULL,
 CONSTRAINT `match_type_id_fkey` FOREIGN KEY (`match_type_id`) REFERENCES `match_types` (`id`)
 ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT `owner_id_fkey` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`)

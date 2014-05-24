@@ -35,6 +35,8 @@ public class Match {
 	@Column(name = "played_at")
 	private Date playedAt;
 	
+	private boolean active;
+	
 	public int getId() {
 		return id;
 	}
@@ -73,6 +75,14 @@ public class Match {
 	
 	public void setPlayedAt(Date playedAt) {
 		this.playedAt = playedAt;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 }

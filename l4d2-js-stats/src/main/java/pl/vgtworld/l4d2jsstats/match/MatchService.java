@@ -39,6 +39,7 @@ public class MatchService {
 		match.setMatchType(matchType);
 		match.setOwner(user);
 		match.setMap(map);
+		match.setActive(false);
 		//TODO Use time from the form.
 		match.setPlayedAt(new Date());
 		dao.add(match);
