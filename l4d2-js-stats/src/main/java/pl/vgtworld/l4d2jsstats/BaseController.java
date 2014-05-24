@@ -8,6 +8,8 @@ import javax.ws.rs.core.Context;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
+import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
+
 public abstract class BaseController {
 	
 	@Context
@@ -18,6 +20,10 @@ public abstract class BaseController {
 	
 	@Inject
 	private TemplateEngine engine;
+	
+	protected UserDto getLoggedUser() {
+		return (UserDto)(request.getAttribute("user"));
+	}
 	
 	protected void setPageTitle(String title) {
 		request.setAttribute("pageTitle", title);

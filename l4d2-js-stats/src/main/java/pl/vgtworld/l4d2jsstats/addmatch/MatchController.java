@@ -9,15 +9,22 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.annotations.Form;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import pl.vgtworld.l4d2jsstats.BaseController;
 import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
+import pl.vgtworld.l4d2jsstats.match.MatchService;
+import pl.vgtworld.l4d2jsstats.match.MatchServiceException;
 import pl.vgtworld.l4d2jsstats.match.MatchTypeService;
 import pl.vgtworld.l4d2jsstats.match.dto.MatchTypeDto;
+import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
 @Path("/match")
 public class MatchController extends BaseController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MatchController.class);
 	
 	private static final String MAPS_REQUEST_PARAM_KEY = "maps";
 
@@ -28,6 +35,9 @@ public class MatchController extends BaseController {
 	
 	@Inject
 	private GameMapService mapService;
+	
+	@Inject
+	private MatchService matchService;
 	
 	@GET
 	@Path("/add")
@@ -47,6 +57,7 @@ public class MatchController extends BaseController {
 	public Response submitMatch(@Form AddMatchFormDto form) {
 		MatchTypeDto[] matchTypes = matchTypeService.findAll();
 		GameMapDto[] maps = mapService.findAll();
+		UserDto user = getLoggedUser();
 		
 		AddMatchValidator validator = new AddMatchValidator();
 		boolean validationResult = validator.validate(form, matchTypes, maps);
@@ -58,7 +69,16 @@ public class MatchController extends BaseController {
 			return Response.ok(render("add-match")).build();
 		}
 		
-		return Response.ok(render("errors/not-implemented")).build();
+		try {
+			matchService.createMatch(user.getId(), form.getMapId());
+			//TODO Redirect to step 2.
+			return Response.ok(render("errors/not-implemented")).build();
+		} catch (MatchServiceException e) {
+			LOGGER.warn("Exception while trying to create match ({}).", e.getMessage());
+			// TODO Display proper error page.
+			return null;
+		}
+		
 	}
 	
 }
