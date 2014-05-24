@@ -34,6 +34,8 @@ public class MatchController extends BaseController {
 
 	private static final String MATCH_TYPES_REQUEST_PARAM_KEY = "matchTypes";
 
+	private static final String FORM_REQUEST_PARAM_KEY = "form";
+
 	@Inject
 	private MatchTypeService matchTypeService;
 	
@@ -55,7 +57,7 @@ public class MatchController extends BaseController {
 		
 		AddMatchFormDto form = new AddMatchFormDto();
 		form.setDate(new SimpleDateFormat(App.DATE_FORMAT).format(new Date()));
-		request.setAttribute("form", form);
+		request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 		
 		return render("add-match");
 	}
@@ -75,6 +77,7 @@ public class MatchController extends BaseController {
 			request.setAttribute(MATCH_TYPES_REQUEST_PARAM_KEY, matchTypes);
 			request.setAttribute(MAPS_REQUEST_PARAM_KEY, maps);
 			request.setAttribute("errors", validator.getErrors());
+			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 			return Response.ok(render("add-match")).build();
 		}
 		
