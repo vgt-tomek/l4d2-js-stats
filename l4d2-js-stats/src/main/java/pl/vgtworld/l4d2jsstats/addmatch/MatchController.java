@@ -46,6 +46,14 @@ public class MatchController extends BaseController {
 	private MatchService matchService;
 	
 	@GET
+	@Path("/add/picker")
+	@Produces(MediaType.TEXT_HTML)
+	public String displayMatchTypePicker() {
+		setPageTitle("Pick match type");
+		return render("add-match-picker");
+	}
+	
+	@GET
 	@Path("/add")
 	@Produces(MediaType.TEXT_HTML)
 	public String getMatchForm() {
