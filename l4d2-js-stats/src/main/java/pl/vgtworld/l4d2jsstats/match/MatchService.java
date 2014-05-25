@@ -53,9 +53,9 @@ public class MatchService {
 		
 		MatchCampaign campaign = new MatchCampaign();
 		campaign.setMatch(match);
-		//TODO Load time and restarts from form.
+		//TODO Load time from form.
 		campaign.setTime(21);
-		campaign.setRestarts(8);
+		campaign.setRestarts(form.getRestarts());
 		campaign.setDifficulty(difficulty);
 		matchCampaignDao.add(campaign);
 	}

@@ -18,7 +18,8 @@ public class AddMatchValidator {
 		MAP_REQUIRED("Map is required."),
 		DATE_REQURED("Date is required."),
 		DATE_FORMAT("Invalid date format."),
-		DATE_INVALID("Invalid date.");
+		DATE_INVALID("Invalid date."),
+		RESTARTS_INVALID("Restarts should be equal or greater than 0.");
 		
 		private String message;
 		
@@ -40,6 +41,7 @@ public class AddMatchValidator {
 	public boolean validate(AddMatchFormDto form, GameMapDto[] maps) {
 		validateMap(form, maps);
 		validateDate(form);
+		validateRestarts(form);
 		return errors.size() == 0;
 	}
 	
@@ -70,6 +72,14 @@ public class AddMatchValidator {
 			form.setDateParsed(parsedDate);
 		} catch (ParseException e) {
 			errors.add(ErrorMessages.DATE_INVALID.getMessage());
+			return;
+		}
+	}
+	
+	private void validateRestarts(AddMatchFormDto form) {
+		int restarts = form.getRestarts();
+		if (restarts < 0) {
+			errors.add(ErrorMessages.RESTARTS_INVALID.getMessage());
 			return;
 		}
 	}

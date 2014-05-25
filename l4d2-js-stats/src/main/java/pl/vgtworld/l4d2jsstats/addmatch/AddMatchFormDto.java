@@ -17,6 +17,9 @@ public class AddMatchFormDto {
 	@FormParam("difficulty")
 	private int difficultyId;
 	
+	@FormParam("restarts")
+	private int restarts;
+	
 	public int getMapId() {
 		return mapId;
 	}
@@ -47,6 +50,14 @@ public class AddMatchFormDto {
 	
 	public void setDifficultyId(int difficultyId) {
 		this.difficultyId = difficultyId;
+	}
+
+	public int getRestarts() {
+		return restarts;
+	}
+
+	public void setRestarts(int restarts) {
+		this.restarts = restarts;
 	}
 	
 }

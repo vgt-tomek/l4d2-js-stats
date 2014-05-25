@@ -18,8 +18,13 @@
 				<input id="add-match-date" type="text" name="date" th:value="${form.date}" />
 			</div>
 			<div>
-				<label for="add-match-dificulty">Difficulty level:</label>
-				<select name="difficulty" th:include="templates/form :: difficulty-picker (levels=${difficultyLevels})"></select>			</div>
+				<label for="add-match-difficulty">Difficulty level:</label>
+				<select id="add-match-difficulty" name="difficulty" th:include="templates/form :: difficulty-picker (levels=${difficultyLevels})"></select>
+			</div>
+			<div>
+				<label for="add-match-restarts">Numbers of time restarted:</label>
+				<input id="add-match-restarts" name="restarts" th:value="${form.restarts}" /> 
+			</div>
 			<div>
 				<input type="submit" name="add-match-submit" value="Add match" />
 			</div>
