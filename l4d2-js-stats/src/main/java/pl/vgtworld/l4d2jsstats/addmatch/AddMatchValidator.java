@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 import pl.vgtworld.l4d2jsstats.App;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
-import pl.vgtworld.l4d2jsstats.match.dto.MatchTypeDto;
 
 public class AddMatchValidator {
 	
@@ -38,21 +37,10 @@ public class AddMatchValidator {
 		return errors.toArray(new String[errors.size()]);
 	}
 	
-	public boolean validate(AddMatchFormDto form, MatchTypeDto[] matchTypes, GameMapDto[] maps) {
-		validateMatchType(form, matchTypes);
+	public boolean validate(AddMatchFormDto form, GameMapDto[] maps) {
 		validateMap(form, maps);
 		validateDate(form);
 		return errors.size() == 0;
-	}
-	
-	private void validateMatchType(AddMatchFormDto form, MatchTypeDto[] matchTypes) {
-		int matchType = form.getMatchTypeId();
-		for (MatchTypeDto type : matchTypes) {
-			if (type.getId() == matchType) {
-				return;
-			}
-		}
-		errors.add(ErrorMessages.MATCH_TYPE_REQUIRED.getMessage());
 	}
 	
 	private void validateMap(AddMatchFormDto form, GameMapDto[] maps) {

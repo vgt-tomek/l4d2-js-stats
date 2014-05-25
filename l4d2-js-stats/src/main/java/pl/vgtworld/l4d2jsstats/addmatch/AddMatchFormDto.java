@@ -6,9 +6,6 @@ import javax.ws.rs.FormParam;
 
 public class AddMatchFormDto {
 	
-	@FormParam("match-type")
-	private int matchTypeId;
-	
 	@FormParam("map")
 	private int mapId;
 	
@@ -16,14 +13,6 @@ public class AddMatchFormDto {
 	private String date;
 	
 	private Date dateParsed;
-	
-	public int getMatchTypeId() {
-		return matchTypeId;
-	}
-	
-	public void setMatchTypeId(int matchTypeId) {
-		this.matchTypeId = matchTypeId;
-	}
 	
 	public int getMapId() {
 		return mapId;

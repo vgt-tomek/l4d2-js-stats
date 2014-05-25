@@ -36,6 +36,8 @@ public class MatchController extends BaseController {
 
 	private static final String FORM_REQUEST_PARAM_KEY = "form";
 
+	private static final int CAMPAIGN_MATCH_TYPE_ID = 1;
+
 	@Inject
 	private MatchTypeService matchTypeService;
 	
@@ -54,7 +56,7 @@ public class MatchController extends BaseController {
 	}
 	
 	@GET
-	@Path("/add")
+	@Path("/add/campaign")
 	@Produces(MediaType.TEXT_HTML)
 	public String getMatchForm() {
 		setPageTitle("Add match");
@@ -67,30 +69,28 @@ public class MatchController extends BaseController {
 		form.setDate(new SimpleDateFormat(App.DATE_FORMAT).format(new Date()));
 		request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 		
-		return render("add-match");
+		return render("add-match-campaign");
 	}
 	
 	@POST
-	@Path("/add")
+	@Path("/add/campaign")
 	@Produces(MediaType.TEXT_HTML)
 	public Response submitMatch(@Form AddMatchFormDto form) {
-		MatchTypeDto[] matchTypes = matchTypeService.findAll();
 		GameMapDto[] maps = mapService.findAll();
 		UserDto user = getLoggedUser();
 		
 		AddMatchValidator validator = new AddMatchValidator();
-		boolean validationResult = validator.validate(form, matchTypes, maps);
+		boolean validationResult = validator.validate(form, maps);
 		
 		if (!validationResult) {
-			request.setAttribute(MATCH_TYPES_REQUEST_PARAM_KEY, matchTypes);
 			request.setAttribute(MAPS_REQUEST_PARAM_KEY, maps);
 			request.setAttribute("errors", validator.getErrors());
 			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
-			return Response.ok(render("add-match")).build();
+			return Response.ok(render("add-match-campaign")).build();
 		}
 		
 		try {
-			matchService.createMatch(user.getId(), form.getMapId(), form.getMatchTypeId(), form.getDateParsed());
+			matchService.createMatch(user.getId(), form.getMapId(), CAMPAIGN_MATCH_TYPE_ID, form.getDateParsed());
 			//TODO Redirect to step 2.
 			return Response.ok(render("errors/not-implemented")).build();
 		} catch (MatchServiceException e) {
