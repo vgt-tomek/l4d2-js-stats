@@ -1,10 +1,11 @@
 package pl.vgtworld.l4d2jsstats.match;
 
-import java.util.Date;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import pl.vgtworld.l4d2jsstats.addmatch.AddMatchFormDto;
+import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevel;
+import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevelDao;
 import pl.vgtworld.l4d2jsstats.map.GameMap;
 import pl.vgtworld.l4d2jsstats.map.GameMapDao;
 import pl.vgtworld.l4d2jsstats.user.User;
@@ -14,7 +15,10 @@ import pl.vgtworld.l4d2jsstats.user.UserDao;
 public class MatchService {
 	
 	@Inject
-	private MatchDao dao;
+	private MatchDao matchDao;
+	
+	@Inject
+	private MatchCampaignDao matchCampaignDao;
 	
 	@Inject
 	private UserDao userDao;
@@ -25,10 +29,15 @@ public class MatchService {
 	@Inject
 	private MatchTypeDao matchTypeDao;
 	
-	public void createMatch(int ownerId, int mapId, int matchTypeId, Date matchDate) throws MatchServiceException {
+	@Inject
+	private DifficultyLevelDao difficultyDao;
+	
+	public void createMatch(int ownerId, int matchTypeId, AddMatchFormDto form) throws MatchServiceException {
 		Match match = new Match();
 		User user = userDao.findById(ownerId);
-		GameMap map = mapDao.findById(mapId);
+		GameMap map = mapDao.findById(form.getMapId());
+		//TODO Load difficulty id from form.
+		DifficultyLevel difficulty = difficultyDao.findById(1);
 		MatchType matchType = matchTypeDao.findById(matchTypeId);
 		if (user == null) {
 			throw new MatchServiceException("Unknown user.");
@@ -40,7 +49,16 @@ public class MatchService {
 		match.setOwner(user);
 		match.setMap(map);
 		match.setActive(false);
-		match.setPlayedAt(matchDate);
-		dao.add(match);
+		match.setPlayedAt(form.getDateParsed());
+		matchDao.add(match);
+		
+		MatchCampaign campaign = new MatchCampaign();
+		campaign.setMatch(match);
+		//TODO Load time and restarts from form.
+		campaign.setTime(21);
+		campaign.setRestarts(8);
+		campaign.setDifficulty(difficulty);
+		matchCampaignDao.add(campaign);
 	}
+
 }

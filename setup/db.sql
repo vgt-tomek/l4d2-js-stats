@@ -83,3 +83,14 @@ ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT `map_id_fkey` FOREIGN KEY (`map_id`) REFERENCES `maps` (`id`)
 ON DELETE CASCADE ON UPDATE CASCADE
 )engine=innodb;
+
+CREATE TABLE `matches_campaign` (
+`match_id` INT UNSIGNED NOT NULL PRIMARY KEY,
+`time` INT UNSIGNED NOT NULL,
+`difficulty_id` INT UNSIGNED NOT NULL,
+`restarts` INT UNSIGNED NOT NULL,
+CONSTRAINT `match_id_fkey` FOREIGN KEY (`match_id`) REFERENCES `matches` (`id`)
+ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT `difficulty_id_fkey` FOREIGN KEY (`difficulty_id`) REFERENCES `difficulty_levels` (`id`)
+ON DELETE CASCADE ON UPDATE CASCADE
+)engine=innodb;

@@ -20,4 +20,8 @@ public class DifficultyLevelDao {
 		return results.toArray(new DifficultyLevel[results.size()]);
 	}
 	
+	public DifficultyLevel findById(int id) {
+		return em.find(DifficultyLevel.class, id);
+	}
+	
 }

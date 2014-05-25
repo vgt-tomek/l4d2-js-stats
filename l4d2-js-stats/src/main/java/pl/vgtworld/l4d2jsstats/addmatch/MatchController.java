@@ -90,7 +90,7 @@ public class MatchController extends BaseController {
 		}
 		
 		try {
-			matchService.createMatch(user.getId(), form.getMapId(), CAMPAIGN_MATCH_TYPE_ID, form.getDateParsed());
+			matchService.createMatch(user.getId(), CAMPAIGN_MATCH_TYPE_ID, form);
 			//TODO Redirect to step 2.
 			return Response.ok(render("errors/not-implemented")).build();
 		} catch (MatchServiceException e) {
