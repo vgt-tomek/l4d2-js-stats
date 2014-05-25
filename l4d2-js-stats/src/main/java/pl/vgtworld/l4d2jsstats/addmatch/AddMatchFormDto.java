@@ -14,6 +14,9 @@ public class AddMatchFormDto {
 	
 	private Date dateParsed;
 	
+	@FormParam("difficulty")
+	private int difficultyId;
+	
 	public int getMapId() {
 		return mapId;
 	}
@@ -29,13 +32,21 @@ public class AddMatchFormDto {
 	public void setDate(String date) {
 		this.date = date;
 	}
-
+	
 	public Date getDateParsed() {
 		return dateParsed;
 	}
-
+	
 	public void setDateParsed(Date dateParsed) {
 		this.dateParsed = dateParsed;
+	}
+	
+	public int getDifficultyId() {
+		return difficultyId;
+	}
+	
+	public void setDifficultyId(int difficultyId) {
+		this.difficultyId = difficultyId;
 	}
 	
 }

@@ -11,7 +11,7 @@
 		<option th:each="map : ${maps}" th:value="${map.id}" th:text="${map.name}"></option>
 	</select>
 	
-	<select th:name="${name}" th:fragment="difficulty-picker (name, levels)">
+	<select th:fragment="difficulty-picker (levels)">
 		<option value="0">choose difficulty...</option>
 		<option th:each="level : ${levels}" th:value="${level.id}" th:text="${level.name}"></option>
 	</select>

@@ -36,8 +36,7 @@ public class MatchService {
 		Match match = new Match();
 		User user = userDao.findById(ownerId);
 		GameMap map = mapDao.findById(form.getMapId());
-		//TODO Load difficulty id from form.
-		DifficultyLevel difficulty = difficultyDao.findById(1);
+		DifficultyLevel difficulty = difficultyDao.findById(form.getDifficultyId());
 		MatchType matchType = matchTypeDao.findById(matchTypeId);
 		if (user == null) {
 			throw new MatchServiceException("Unknown user.");

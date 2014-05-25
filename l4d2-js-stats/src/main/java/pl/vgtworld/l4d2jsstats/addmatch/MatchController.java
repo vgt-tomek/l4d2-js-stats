@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import pl.vgtworld.l4d2jsstats.App;
 import pl.vgtworld.l4d2jsstats.BaseController;
+import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevelService;
+import pl.vgtworld.l4d2jsstats.difficulty.dto.DifficultyLevelDto;
 import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
@@ -36,6 +38,8 @@ public class MatchController extends BaseController {
 
 	private static final String FORM_REQUEST_PARAM_KEY = "form";
 
+	private static final String DIFFICULTY_LEVELS_REQUEST_PARAM_KEY = "difficultyLevels";
+
 	private static final int CAMPAIGN_MATCH_TYPE_ID = 1;
 
 	@Inject
@@ -46,6 +50,9 @@ public class MatchController extends BaseController {
 	
 	@Inject
 	private MatchService matchService;
+	
+	@Inject
+	private DifficultyLevelService difficultyService;
 	
 	@GET
 	@Path("/add/picker")
@@ -64,6 +71,8 @@ public class MatchController extends BaseController {
 		request.setAttribute(MATCH_TYPES_REQUEST_PARAM_KEY, matchTypes);
 		GameMapDto[] maps = mapService.findAll();
 		request.setAttribute(MAPS_REQUEST_PARAM_KEY, maps);
+		DifficultyLevelDto[] difficultyLevels = difficultyService.findAll();
+		request.setAttribute(DIFFICULTY_LEVELS_REQUEST_PARAM_KEY, difficultyLevels);
 		
 		AddMatchFormDto form = new AddMatchFormDto();
 		form.setDate(new SimpleDateFormat(App.DATE_FORMAT).format(new Date()));
@@ -78,6 +87,7 @@ public class MatchController extends BaseController {
 	public Response submitMatch(@Form AddMatchFormDto form) {
 		GameMapDto[] maps = mapService.findAll();
 		UserDto user = getLoggedUser();
+		DifficultyLevelDto[] difficultyLevels = difficultyService.findAll();
 		
 		AddMatchValidator validator = new AddMatchValidator();
 		boolean validationResult = validator.validate(form, maps);
@@ -86,6 +96,7 @@ public class MatchController extends BaseController {
 			request.setAttribute(MAPS_REQUEST_PARAM_KEY, maps);
 			request.setAttribute("errors", validator.getErrors());
 			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
+			request.setAttribute(DIFFICULTY_LEVELS_REQUEST_PARAM_KEY, difficultyLevels);
 			return Response.ok(render("add-match-campaign")).build();
 		}
 		

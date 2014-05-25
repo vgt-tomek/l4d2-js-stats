@@ -18,6 +18,9 @@
 				<input id="add-match-date" type="text" name="date" th:value="${form.date}" />
 			</div>
 			<div>
+				<label for="add-match-dificulty">Difficulty level:</label>
+				<select name="difficulty" th:include="templates/form :: difficulty-picker (levels=${difficultyLevels})"></select>			</div>
+			<div>
 				<input type="submit" name="add-match-submit" value="Add match" />
 			</div>
 		</form>
