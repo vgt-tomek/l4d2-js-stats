@@ -17,6 +17,11 @@ public class AddMatchFormDto {
 	@FormParam("difficulty")
 	private int difficultyId;
 	
+	@FormParam("total-time")
+	private String totalTime;
+	
+	private int totalTimeParsed;
+	
 	@FormParam("restarts")
 	private int restarts;
 	
@@ -51,11 +56,27 @@ public class AddMatchFormDto {
 	public void setDifficultyId(int difficultyId) {
 		this.difficultyId = difficultyId;
 	}
-
+	
+	public String getTotalTime() {
+		return totalTime;
+	}
+	
+	public void setTotalTime(String totalTime) {
+		this.totalTime = totalTime;
+	}
+	
+	public int getTotalTimeParsed() {
+		return totalTimeParsed;
+	}
+	
+	public void setTotalTimeParsed(int totalTimeParsed) {
+		this.totalTimeParsed = totalTimeParsed;
+	}
+	
 	public int getRestarts() {
 		return restarts;
 	}
-
+	
 	public void setRestarts(int restarts) {
 		this.restarts = restarts;
 	}

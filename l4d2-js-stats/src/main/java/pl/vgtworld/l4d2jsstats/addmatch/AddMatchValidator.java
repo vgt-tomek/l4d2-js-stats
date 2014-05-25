@@ -21,6 +21,9 @@ public class AddMatchValidator {
 		DATE_FORMAT("Invalid date format."),
 		DATE_INVALID("Invalid date."),
 		DIFFICULTY_REQUIRED("Difficulty level is required."),
+		TOTAL_TIME_REQUIRED("Total time is required."),
+		TOTAL_TIME_INVALID("Invalid format in total time."),
+		TOTAL_TIME_PARSE_ERROR("Unexpeted error while trying to parse total time."),
 		RESTARTS_INVALID("Restarts should be equal or greater than 0.");
 		
 		private String message;
@@ -44,6 +47,7 @@ public class AddMatchValidator {
 		validateMap(form, maps);
 		validateDate(form);
 		validateDifficulty(form, difficultyLevels);
+		validateTotalTime(form);
 		validateRestarts(form);
 		return errors.size() == 0;
 	}
@@ -87,6 +91,29 @@ public class AddMatchValidator {
 			}
 		}
 		errors.add(ErrorMessages.DIFFICULTY_REQUIRED.getMessage());
+	}
+	
+	private void validateTotalTime(AddMatchFormDto form) {
+		String totalTime = form.getTotalTime();
+		if (totalTime == null || totalTime.equals("")) {
+			errors.add(ErrorMessages.TOTAL_TIME_REQUIRED.getMessage());
+			return;
+		}
+		Pattern pattern = Pattern.compile("^([0-9]+):([0-9]{2})$");
+		Matcher matcher = pattern.matcher(totalTime);
+		if (!matcher.find()) {
+			errors.add(ErrorMessages.TOTAL_TIME_INVALID.getMessage());
+			return;
+		}
+		try {
+			String hours = matcher.group(1);
+			String minutes = matcher.group(2);
+			int calculatedValue = Integer.parseInt(hours) * 60 + Integer.parseInt(minutes);
+			form.setTotalTimeParsed(calculatedValue);
+		} catch (NumberFormatException e) {
+			errors.add(ErrorMessages.TOTAL_TIME_PARSE_ERROR.getMessage());
+			return;
+		}
 	}
 	
 	private void validateRestarts(AddMatchFormDto form) {

@@ -22,6 +22,10 @@
 				<select id="add-match-difficulty" name="difficulty" th:include="templates/form :: difficulty-picker (levels=${difficultyLevels})"></select>
 			</div>
 			<div>
+				<label for="add-match-total-time">Total campaign time (H:MM):</label>
+				<input id="add-match-total-time" name="total-time" th:value="${form.totalTime}" />
+			</div>
+			<div>
 				<label for="add-match-restarts">Numbers of time restarted:</label>
 				<input id="add-match-restarts" name="restarts" th:value="${form.restarts}" /> 
 			</div>
