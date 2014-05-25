@@ -9,7 +9,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.annotations.Form;
 import org.slf4j.Logger;
@@ -84,7 +83,7 @@ public class MatchController extends BaseController {
 	@POST
 	@Path("/add/campaign")
 	@Produces(MediaType.TEXT_HTML)
-	public Response submitMatch(@Form AddMatchFormDto form) {
+	public String submitMatch(@Form AddMatchFormDto form) {
 		GameMapDto[] maps = mapService.findAll();
 		UserDto user = getLoggedUser();
 		DifficultyLevelDto[] difficultyLevels = difficultyService.findAll();
@@ -97,17 +96,17 @@ public class MatchController extends BaseController {
 			request.setAttribute("errors", validator.getErrors());
 			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 			request.setAttribute(DIFFICULTY_LEVELS_REQUEST_PARAM_KEY, difficultyLevels);
-			return Response.ok(render("add-match-campaign")).build();
+			return render("add-match-campaign");
 		}
 		
 		try {
 			matchService.createMatch(user.getId(), CAMPAIGN_MATCH_TYPE_ID, form);
 			//TODO Redirect to step 2.
-			return Response.ok(render("errors/not-implemented")).build();
+			return render("errors/not-implemented");
 		} catch (MatchServiceException e) {
 			LOGGER.warn("Exception while trying to create match ({}).", e.getMessage());
-			// TODO Display proper error page.
-			return null;
+			request.setAttribute("message", e.getMessage());
+			return render("errors/unexpected-exception");
 		}
 		
 	}

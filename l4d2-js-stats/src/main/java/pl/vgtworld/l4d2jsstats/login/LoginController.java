@@ -44,8 +44,8 @@ public class LoginController extends BaseController {
 				return render("login-success");
 			} catch (UserServiceException e) {
 				LOGGER.warn("Exception while trying to login ({}).", e.getMessage());
-				// TODO Display proper error page.
-				return null;
+				request.setAttribute("message", e.getMessage());
+				return render("errors/unexpected-exception");
 			}
 		}
 		LOGGER.info("Failed login attempt for user {} from ip {}.", form.getLogin(), getRemoteAddr());

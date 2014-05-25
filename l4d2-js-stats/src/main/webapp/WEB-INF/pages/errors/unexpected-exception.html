@@ -1,0 +1,12 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/head :: default"></head>
+<body>
+	<div th:replace="templates/header :: default"></div>
+	<div id="content">
+		<h1>Unexpected error.</h1>
+		
+		<p class="error-message" th:if="${message != null}" th:text="${message}"></p>
+	</div>
+	<div th:replace="templates/footer :: copyright" ></div>
+</body>
+</html>

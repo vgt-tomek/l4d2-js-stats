@@ -47,8 +47,8 @@ public class RegisterController extends BaseController {
 				return render("register-success");
 			} catch (UserServiceException e) {
 				LOGGER.warn("Exception while trying to create user ({}).", e.getMessage());
-				// TODO Display proper error page.
-				return null;
+				request.setAttribute("message", e.getMessage());
+				return render("errors/unexpected-exception");
 			}
 		}
 		request.setAttribute("form", form);
