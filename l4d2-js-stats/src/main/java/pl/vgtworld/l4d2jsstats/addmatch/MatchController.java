@@ -90,7 +90,7 @@ public class MatchController extends BaseController {
 		DifficultyLevelDto[] difficultyLevels = difficultyService.findAll();
 		
 		AddMatchValidator validator = new AddMatchValidator();
-		boolean validationResult = validator.validate(form, maps);
+		boolean validationResult = validator.validate(form, maps, difficultyLevels);
 		
 		if (!validationResult) {
 			request.setAttribute(MAPS_REQUEST_PARAM_KEY, maps);

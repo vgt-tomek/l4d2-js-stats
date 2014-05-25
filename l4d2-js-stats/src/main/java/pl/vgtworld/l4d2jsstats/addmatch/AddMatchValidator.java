@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pl.vgtworld.l4d2jsstats.App;
+import pl.vgtworld.l4d2jsstats.difficulty.dto.DifficultyLevelDto;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 
 public class AddMatchValidator {
@@ -19,6 +20,7 @@ public class AddMatchValidator {
 		DATE_REQURED("Date is required."),
 		DATE_FORMAT("Invalid date format."),
 		DATE_INVALID("Invalid date."),
+		DIFFICULTY_REQUIRED("Difficulty level is required."),
 		RESTARTS_INVALID("Restarts should be equal or greater than 0.");
 		
 		private String message;
@@ -38,9 +40,10 @@ public class AddMatchValidator {
 		return errors.toArray(new String[errors.size()]);
 	}
 	
-	public boolean validate(AddMatchFormDto form, GameMapDto[] maps) {
+	public boolean validate(AddMatchFormDto form, GameMapDto[] maps, DifficultyLevelDto[] difficultyLevels) {
 		validateMap(form, maps);
 		validateDate(form);
+		validateDifficulty(form, difficultyLevels);
 		validateRestarts(form);
 		return errors.size() == 0;
 	}
@@ -74,6 +77,16 @@ public class AddMatchValidator {
 			errors.add(ErrorMessages.DATE_INVALID.getMessage());
 			return;
 		}
+	}
+	
+	private void validateDifficulty(AddMatchFormDto form, DifficultyLevelDto[] difficultyLevels) {
+		int difficultyId = form.getDifficultyId();
+		for (DifficultyLevelDto difficultyLevel : difficultyLevels) {
+			if (difficultyLevel.getId() == difficultyId) {
+				return;
+			}
+		}
+		errors.add(ErrorMessages.DIFFICULTY_REQUIRED.getMessage());
 	}
 	
 	private void validateRestarts(AddMatchFormDto form) {
