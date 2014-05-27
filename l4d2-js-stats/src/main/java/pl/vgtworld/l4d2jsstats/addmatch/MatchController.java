@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -32,15 +33,15 @@ public class MatchController extends BaseController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MatchController.class);
 	
 	private static final String MAPS_REQUEST_PARAM_KEY = "maps";
-
+	
 	private static final String MATCH_TYPES_REQUEST_PARAM_KEY = "matchTypes";
-
+	
 	private static final String FORM_REQUEST_PARAM_KEY = "form";
-
+	
 	private static final String DIFFICULTY_LEVELS_REQUEST_PARAM_KEY = "difficultyLevels";
-
+	
 	private static final int CAMPAIGN_MATCH_TYPE_ID = 1;
-
+	
 	@Inject
 	private MatchTypeService matchTypeService;
 	
@@ -96,13 +97,12 @@ public class MatchController extends BaseController {
 			request.setAttribute("errors", validator.getErrors());
 			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 			request.setAttribute(DIFFICULTY_LEVELS_REQUEST_PARAM_KEY, difficultyLevels);
-			return render("add-match-campaign");
+			render("add-match-campaign");
 		}
 		
 		try {
-			matchService.createMatch(user.getId(), CAMPAIGN_MATCH_TYPE_ID, form);
-			//TODO Redirect to step 2.
-			return render("errors/not-implemented");
+			int matchId = matchService.createMatch(user.getId(), CAMPAIGN_MATCH_TYPE_ID, form);
+			return getPlayerForm(matchId);
 		} catch (MatchServiceException e) {
 			LOGGER.warn("Exception while trying to create match ({}).", e.getMessage());
 			request.setAttribute("message", e.getMessage());
@@ -111,4 +111,11 @@ public class MatchController extends BaseController {
 		
 	}
 	
+	@GET
+	@Path("/campaign/{matchId}/player/add")
+	@Produces(MediaType.TEXT_HTML)
+	public String getPlayerForm(@PathParam("matchId") int matchId) {
+		setPageTitle("Manage players");
+		return render("add-player-campaign");
+	}
 }

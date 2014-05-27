@@ -32,7 +32,7 @@ public class MatchService {
 	@Inject
 	private DifficultyLevelDao difficultyDao;
 	
-	public void createMatch(int ownerId, int matchTypeId, AddMatchFormDto form) throws MatchServiceException {
+	public int createMatch(int ownerId, int matchTypeId, AddMatchFormDto form) throws MatchServiceException {
 		Match match = new Match();
 		User user = userDao.findById(ownerId);
 		GameMap map = mapDao.findById(form.getMapId());
@@ -57,6 +57,8 @@ public class MatchService {
 		campaign.setRestarts(form.getRestarts());
 		campaign.setDifficulty(difficulty);
 		matchCampaignDao.add(campaign);
+		
+		return match.getId();
 	}
 
 }
