@@ -8,6 +8,7 @@ import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevel;
 import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevelDao;
 import pl.vgtworld.l4d2jsstats.map.GameMap;
 import pl.vgtworld.l4d2jsstats.map.GameMapDao;
+import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.user.User;
 import pl.vgtworld.l4d2jsstats.user.UserDao;
 
@@ -31,6 +32,14 @@ public class MatchService {
 	
 	@Inject
 	private DifficultyLevelDao difficultyDao;
+	
+	public CampaignMatchDto findCampaignById(int matchId) {
+		MatchCampaign match = matchCampaignDao.findById(matchId);
+		if (match == null) {
+			return null;
+		}
+		return mapFrom(match);
+	}
 	
 	public int createMatch(int ownerId, int matchTypeId, AddMatchFormDto form) throws MatchServiceException {
 		Match match = new Match();
@@ -59,6 +68,19 @@ public class MatchService {
 		matchCampaignDao.add(campaign);
 		
 		return match.getId();
+	}
+
+	private CampaignMatchDto mapFrom(MatchCampaign match) {
+		CampaignMatchDto dto = new CampaignMatchDto();
+		dto.setId(match.getMatch().getId());
+		dto.setOwnerId(match.getMatch().getOwner().getId());
+		dto.setMapId(match.getMatch().getMap().getId());
+		dto.setMapName(match.getMatch().getMap().getName());
+		dto.setPlayedAt(match.getMatch().getPlayedAt());
+		dto.setTotalTime(match.getTime());
+		dto.setDifficultyName(match.getDifficulty().getName());
+		dto.setRestarts(match.getRestarts());
+		return dto;
 	}
 
 }

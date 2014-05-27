@@ -3,8 +3,30 @@
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<h1>Manage players</h1>
+		<h2>Match summary</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Map</th>
+					<th>Played at</th>
+					<th>Total time</th>
+					<th>Difficulty</th>
+					<th>Restarts</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td th:text="${match.mapName}"></td>
+					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
+					<td th:text="${match.totalTimeHumanReadable}"></td>
+					<td th:text="${match.difficultyName}"></td>
+					<td th:text="${match.restarts}"></td>
+				</tr>
+			</tbody>
+		</table>
 		
+		<form method="POST" action="">
+		</form>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>

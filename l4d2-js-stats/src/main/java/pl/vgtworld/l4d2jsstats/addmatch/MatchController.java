@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -25,6 +26,7 @@ import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.MatchServiceException;
 import pl.vgtworld.l4d2jsstats.match.MatchTypeService;
+import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MatchTypeDto;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
@@ -116,9 +118,14 @@ public class MatchController extends BaseController {
 	@GET
 	@Path("/campaign/{matchId}/player/add")
 	@Produces(MediaType.TEXT_HTML)
-	public String getPlayerForm(@PathParam("matchId") int matchId) {
+	public Response getPlayerForm(@PathParam("matchId") int matchId) {
 		setPageTitle("Manage players");
-		return render("add-player-campaign");
+		CampaignMatchDto match = matchService.findCampaignById(matchId);
+		if (match == null) {
+			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
+		}
+		request.setAttribute("match", match);
+		return Response.ok(render("add-player-campaign")).build();
 	}
 	
 }

@@ -14,4 +14,8 @@ public class MatchCampaignDao {
 		em.persist(match);
 	}
 	
+	public MatchCampaign findById(int matchId) {
+		return em.find(MatchCampaign.class, matchId);
+	}
+	
 }
