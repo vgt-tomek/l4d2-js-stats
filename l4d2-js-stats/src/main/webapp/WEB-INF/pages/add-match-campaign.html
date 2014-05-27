@@ -11,7 +11,7 @@
 			</div>
 			<div>
 				<label for="add-match-map">Map:</label>
-				<select id="add-match-map" name="map" th:include="templates/form :: map-picker (name='map',maps=${maps})"></select>
+				<select id="add-match-map" name="map" th:include="templates/form :: map-picker (maps=${maps}, value=${form.mapId})"></select>
 			</div>
 			<div>
 				<Label for="add-match-date">Date (YYYY-MM-DD):</Label>
@@ -19,7 +19,7 @@
 			</div>
 			<div>
 				<label for="add-match-difficulty">Difficulty level:</label>
-				<select id="add-match-difficulty" name="difficulty" th:include="templates/form :: difficulty-picker (levels=${difficultyLevels})"></select>
+				<select id="add-match-difficulty" name="difficulty" th:include="templates/form :: difficulty-picker (levels=${difficultyLevels}, value=${form.difficultyId})"></select>
 			</div>
 			<div>
 				<label for="add-match-total-time">Total campaign time (H:MM):</label>
