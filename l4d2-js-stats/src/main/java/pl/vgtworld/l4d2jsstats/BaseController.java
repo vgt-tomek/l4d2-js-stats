@@ -1,9 +1,13 @@
 package pl.vgtworld.l4d2jsstats;
 
+import java.net.URI;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -18,11 +22,14 @@ public abstract class BaseController {
 	@Context
 	protected HttpServletResponse response;
 	
+	@Context
+	private UriInfo uriInfo;
+	
 	@Inject
 	private TemplateEngine engine;
 	
 	protected UserDto getLoggedUser() {
-		return (UserDto)(request.getAttribute("user"));
+		return (UserDto) (request.getAttribute("user"));
 	}
 	
 	protected void setPageTitle(String title) {
@@ -40,6 +47,11 @@ public abstract class BaseController {
 			return xForwardedFor;
 		}
 		return request.getRemoteAddr();
+	}
+	
+	protected Response seeOther(String location) {
+		URI uri = uriInfo.getBaseUriBuilder().replacePath(location).build();
+		return Response.seeOther(uri).build();
 	}
 	
 }
