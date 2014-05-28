@@ -94,3 +94,20 @@ ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT `difficulty_id_fkey` FOREIGN KEY (`difficulty_id`) REFERENCES `difficulty_levels` (`id`)
 ON DELETE CASCADE ON UPDATE CASCADE
 )engine=innodb;
+
+CREATE TABLE `players` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`match_id` INT UNSIGNED NOT NULL,
+`user_id` INT UNSIGNED NOT NULL,
+UNIQUE (`match_id`, `user_id`),
+CONSTRAINT `players_match_id_fkey` FOREIGN KEY (`match_id`) REFERENCES `matches` (`id`)
+ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT `players_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+ON DELETE CASCADE ON UPDATE CASCADE
+)engine=innodb;
+
+CREATE TABLE `players_campaign` (
+`id` INT UNSIGNED NOT NULL PRIMARY KEY,
+`survived` BOOLEAN NOT NULL,
+`deaths` INT NOT NULL
+)engine=innodb;
