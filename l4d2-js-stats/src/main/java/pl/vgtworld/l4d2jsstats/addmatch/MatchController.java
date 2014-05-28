@@ -28,6 +28,7 @@ import pl.vgtworld.l4d2jsstats.match.MatchServiceException;
 import pl.vgtworld.l4d2jsstats.match.MatchTypeService;
 import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MatchTypeDto;
+import pl.vgtworld.l4d2jsstats.user.UserService;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
 @Path("/match")
@@ -56,6 +57,9 @@ public class MatchController extends BaseController {
 	
 	@Inject
 	private DifficultyLevelService difficultyService;
+	
+	@Inject
+	private UserService userService;
 	
 	@GET
 	@Path("/add/picker")
@@ -125,6 +129,12 @@ public class MatchController extends BaseController {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
 		request.setAttribute("match", match);
+		UserDto[] activePlayers = userService.findActiveUsers();
+		request.setAttribute("activePlayers", activePlayers);
+		
+		AddPlayerFormDto form = new AddPlayerFormDto();
+		request.setAttribute("form", form);
+		
 		return Response.ok(render("add-player-campaign")).build();
 	}
 	

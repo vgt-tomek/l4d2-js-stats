@@ -25,7 +25,26 @@
 			</tbody>
 		</table>
 		
+		<h2>Add player</h2>
 		<form method="POST" action="">
+			<div class="errors" th:if="${errors != null}">
+				<p class="error" th:each="error : ${errors}" th:text="${error}"></p>
+			</div>
+			<div>
+				<label for="add-player-user">User:</label>
+				<select id="add-player-user" name="user" th:include="templates/form :: player-picker (players=${activePlayers}, value=${form.user})"></select>
+			</div>
+			<div>
+				<label for="add-player-survived">Survived:</label>
+				<input id="add-player-survived" type="checkbox" name="survived" th:checked="${form.survived == true}" />
+			</div>
+			<div>
+				<label for="add-player-deaths">Deaths:</label>
+				<input id="add-player-deaths" type="text" name="deaths" th:value="${form.deaths}" />
+			</div>
+			<div>
+				<input type="submit" name="add-player-submit" value="Add player" />
+			</div>
 		</form>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
