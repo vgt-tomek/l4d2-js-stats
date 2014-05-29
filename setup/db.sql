@@ -107,7 +107,7 @@ ON DELETE CASCADE ON UPDATE CASCADE
 )engine=innodb;
 
 CREATE TABLE `players_campaign` (
-`id` INT UNSIGNED NOT NULL PRIMARY KEY,
+`player_id` INT UNSIGNED NOT NULL PRIMARY KEY,
 `survived` BOOLEAN NOT NULL,
 `deaths` INT NOT NULL
 )engine=innodb;
