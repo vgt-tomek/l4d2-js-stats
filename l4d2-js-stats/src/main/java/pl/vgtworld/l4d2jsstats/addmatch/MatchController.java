@@ -28,6 +28,8 @@ import pl.vgtworld.l4d2jsstats.match.MatchServiceException;
 import pl.vgtworld.l4d2jsstats.match.MatchTypeService;
 import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MatchTypeDto;
+import pl.vgtworld.l4d2jsstats.player.PlayerService;
+import pl.vgtworld.l4d2jsstats.player.PlayerServiceException;
 import pl.vgtworld.l4d2jsstats.user.UserService;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
@@ -64,6 +66,9 @@ public class MatchController extends BaseController {
 	
 	@Inject
 	private UserService userService;
+	
+	@Inject
+	private PlayerService playerService;
 	
 	@GET
 	@Path("/add/picker")
@@ -156,16 +161,22 @@ public class MatchController extends BaseController {
 		AddPlayerValidator validator = new AddPlayerValidator();
 		boolean validationResult = validator.validate(form, activePlayers);
 		
-		if (validationResult) {
-			// TODO Insert player into db.
-			request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddPlayerFormDto());
-		} else {
-			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
-			request.setAttribute("errors", validator.getErrors());
+		try {
+			if (validationResult) {
+				playerService.addUserToCampaignMatch(match.getId(), form.getUser(), form.isSurvived(), form.getDeaths());
+				request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddPlayerFormDto());
+			} else {
+				request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
+				request.setAttribute("errors", validator.getErrors());
+			}
+			request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
+			request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
+			
+			return Response.ok(render("add-player-campaign")).build();
+		} catch (PlayerServiceException e) {
+			LOGGER.warn("Exception while trying to add player to match ({}).", e.getMessage());
+			request.setAttribute("message", e.getMessage());
+			return Response.ok(render("errors/unexpected-exception")).build();
 		}
-		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
-		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
-		
-		return Response.ok(render("add-player-campaign")).build();
 	}
 }
