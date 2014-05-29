@@ -44,6 +44,10 @@ public class MatchController extends BaseController {
 	
 	private static final String DIFFICULTY_LEVELS_REQUEST_PARAM_KEY = "difficultyLevels";
 	
+	private static final String MATCH_REQUEST_PARAM_KEY = "match";
+	
+	private static final String ACTIVE_PLAYERS_REQUEST_PARAM_KEY = "activePlayers";
+	
 	private static final int CAMPAIGN_MATCH_TYPE_ID = 1;
 	
 	@Inject
@@ -128,14 +132,40 @@ public class MatchController extends BaseController {
 		if (match == null) {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
-		request.setAttribute("match", match);
+		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
 		UserDto[] activePlayers = userService.findActiveUsers();
-		request.setAttribute("activePlayers", activePlayers);
+		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
 		
 		AddPlayerFormDto form = new AddPlayerFormDto();
-		request.setAttribute("form", form);
+		request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 		
 		return Response.ok(render("add-player-campaign")).build();
 	}
 	
+	@POST
+	@Path("/campaign/{matchId}/player/add")
+	@Produces(MediaType.TEXT_HTML)
+	public Response submitPlayer(@Form AddPlayerFormDto form, @PathParam("matchId") int matchId) {
+		setPageTitle("Manage players");
+		CampaignMatchDto match = matchService.findCampaignById(matchId);
+		if (match == null) {
+			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
+		}
+		UserDto[] activePlayers = userService.findActiveUsers();
+		
+		AddPlayerValidator validator = new AddPlayerValidator();
+		boolean validationResult = validator.validate(form, activePlayers);
+		
+		if (validationResult) {
+			// TODO Insert player into db.
+			request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddPlayerFormDto());
+		} else {
+			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
+			request.setAttribute("errors", validator.getErrors());
+		}
+		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
+		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
+		
+		return Response.ok(render("add-player-campaign")).build();
+	}
 }
