@@ -162,13 +162,15 @@ public class MatchController extends BaseController {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
 		UserDto[] activePlayers = userService.findActiveUsers();
+		PlayerCampaignDto[] addedPlayers = playerService.findPlayersFromMatch(match.getId());
 		
 		AddPlayerValidator validator = new AddPlayerValidator();
-		boolean validationResult = validator.validate(form, activePlayers);
+		boolean validationResult = validator.validate(form, activePlayers, addedPlayers);
 		
 		try {
 			if (validationResult) {
 				playerService.addUserToCampaignMatch(match.getId(), form.getUser(), form.isSurvived(), form.getDeaths());
+				addedPlayers = playerService.findPlayersFromMatch(match.getId());
 				request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddPlayerFormDto());
 			} else {
 				request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
@@ -176,7 +178,6 @@ public class MatchController extends BaseController {
 			}
 			request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
 			request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
-			PlayerCampaignDto[] addedPlayers = playerService.findPlayersFromMatch(match.getId());
 			request.setAttribute(ADDED_PLAYERS_REQUEST_PARAM_KEY, addedPlayers);
 			
 			return Response.ok(render("add-player-campaign")).build();

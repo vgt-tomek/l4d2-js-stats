@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import pl.vgtworld.l4d2jsstats.addmatch.AddPlayerValidator.ErrorMessages;
+import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
 public class AddPlayerValidatorTest {
@@ -19,9 +20,10 @@ public class AddPlayerValidatorTest {
 	public void shouldAcceptValidForm() {
 		AddPlayerValidator validator = new AddPlayerValidator();
 		UserDto[] users = createActiveUsersList();
+		PlayerCampaignDto[] addedPlayers = createEmptyAddedPlayersList();
 		AddPlayerFormDto form = createValidForm();
 		
-		boolean result = validator.validate(form, users);
+		boolean result = validator.validate(form, users, addedPlayers);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isTrue();
@@ -31,11 +33,12 @@ public class AddPlayerValidatorTest {
 	@Test
 	public void shouldAcceptZeroDeathCount() {
 		AddPlayerValidator validator = new AddPlayerValidator();
+		PlayerCampaignDto[] addedPlayers = createEmptyAddedPlayersList();
 		UserDto[] users = createActiveUsersList();
 		AddPlayerFormDto form = createValidForm();
 		form.setDeaths(0);
 		
-		boolean result = validator.validate(form, users);
+		boolean result = validator.validate(form, users, addedPlayers);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isTrue();
@@ -46,10 +49,11 @@ public class AddPlayerValidatorTest {
 	public void shouldNotAcceptWrongUser() {
 		AddPlayerValidator validator = new AddPlayerValidator();
 		UserDto[] users = createActiveUsersList();
+		PlayerCampaignDto[] addedPlayers = createEmptyAddedPlayersList();
 		AddPlayerFormDto form = createValidForm();
 		form.setUser(4);
 		
-		boolean result = validator.validate(form, users);
+		boolean result = validator.validate(form, users, addedPlayers);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isFalse();
@@ -61,15 +65,31 @@ public class AddPlayerValidatorTest {
 	public void shouldNotAcceptNegativeDeathCount() {
 		AddPlayerValidator validator = new AddPlayerValidator();
 		UserDto[] users = createActiveUsersList();
+		PlayerCampaignDto[] addedPlayers = createEmptyAddedPlayersList();
 		AddPlayerFormDto form = createValidForm();
 		form.setDeaths(-1);
 		
-		boolean result = validator.validate(form, users);
+		boolean result = validator.validate(form, users, addedPlayers);
 		String[] errors = validator.getErrors();
 		
 		assertThat(result).isFalse();
 		assertThat(errors).hasSize(1);
 		assertThat(errors[0]).isEqualTo(ErrorMessages.DEATH_WRONG_VALUE.getMessage());
+	}
+	
+	@Test
+	public void shouldNotAcceptWhenAddedlayersListIsAlreadyFull() {
+		AddPlayerValidator validator = new AddPlayerValidator();
+		UserDto[] users = createActiveUsersList();
+		PlayerCampaignDto[] addedPlayers = createFullAddedPlayersList();
+		AddPlayerFormDto form = createValidForm();
+		
+		boolean result = validator.validate(form, users, addedPlayers);
+		String[] errors = validator.getErrors();
+		
+		assertThat(result).isFalse();
+		assertThat(errors).hasSize(1);
+		assertThat(errors[0]).isEqualTo(ErrorMessages.MAX_PLAYERS.getMessage());
 	}
 	
 	private AddPlayerFormDto createValidForm() {
@@ -88,9 +108,28 @@ public class AddPlayerValidatorTest {
 		return users;
 	}
 	
+	private PlayerCampaignDto[] createEmptyAddedPlayersList() {
+		return new PlayerCampaignDto[0];
+	}
+	
+	private PlayerCampaignDto[] createFullAddedPlayersList() {
+		PlayerCampaignDto[] dtoList = new PlayerCampaignDto[4];
+		dtoList[0] = createAddedPlayer(1);
+		dtoList[1] = createAddedPlayer(2);
+		dtoList[2] = createAddedPlayer(3);
+		dtoList[3] = createAddedPlayer(4);
+		return dtoList;
+	}
+	
 	private UserDto createActiveUser(int userId) {
 		UserDto dto = new UserDto();
 		dto.setId(userId);
+		return dto;
+	}
+	
+	private PlayerCampaignDto createAddedPlayer(int userId) {
+		PlayerCampaignDto dto = new PlayerCampaignDto();
+		dto.setUserId(userId);
 		return dto;
 	}
 }

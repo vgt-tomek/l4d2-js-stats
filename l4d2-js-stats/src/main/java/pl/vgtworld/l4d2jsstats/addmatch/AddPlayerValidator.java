@@ -3,12 +3,14 @@ package pl.vgtworld.l4d2jsstats.addmatch;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
 public class AddPlayerValidator {
 	
 	public enum ErrorMessages {
 		
+		MAX_PLAYERS("Maximum number of players reached."),
 		USER_REUIQRED("User is required."),
 		DEATH_WRONG_VALUE("Death count should be greater or equal to 0.");
 		
@@ -22,6 +24,8 @@ public class AddPlayerValidator {
 			this.message = message;
 		}
 	}
+
+	private static final int MAX_PLAYERS_COUNT = 4;
 	
 	private List<String> errors = new ArrayList<>();
 	
@@ -29,7 +33,11 @@ public class AddPlayerValidator {
 		return errors.toArray(new String[errors.size()]);
 	}
 	
-	public boolean validate(AddPlayerFormDto form, UserDto[] activeUsers) {
+	public boolean validate(AddPlayerFormDto form, UserDto[] activeUsers, PlayerCampaignDto[] addedPlayers) {
+		if (addedPlayers.length == MAX_PLAYERS_COUNT) {
+			errors.add(ErrorMessages.MAX_PLAYERS.getMessage());
+			return false;
+		}
 		validateUser(form, activeUsers);
 		validateDeaths(form);
 		return errors.size() == 0;
