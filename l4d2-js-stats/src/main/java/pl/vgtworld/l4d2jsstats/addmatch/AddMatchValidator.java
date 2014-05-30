@@ -37,6 +37,8 @@ public class AddMatchValidator {
 		}
 	}
 	
+	private static final int MINUTES_IN_HOUR = 60;
+	
 	private List<String> errors = new ArrayList<>();
 	
 	public String[] getErrors() {
@@ -108,7 +110,7 @@ public class AddMatchValidator {
 		try {
 			String hours = matcher.group(1);
 			String minutes = matcher.group(2);
-			int calculatedValue = Integer.parseInt(hours) * 60 + Integer.parseInt(minutes);
+			int calculatedValue = Integer.parseInt(hours) * MINUTES_IN_HOUR + Integer.parseInt(minutes);
 			form.setTotalTimeParsed(calculatedValue);
 		} catch (NumberFormatException e) {
 			errors.add(ErrorMessages.TOTAL_TIME_PARSE_ERROR.getMessage());
