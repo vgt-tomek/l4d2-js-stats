@@ -92,6 +92,21 @@ public class AddPlayerValidatorTest {
 		assertThat(errors[0]).isEqualTo(ErrorMessages.MAX_PLAYERS.getMessage());
 	}
 	
+	@Test
+	public void shouldNotAcceptAlreadyAddedUser() {
+		AddPlayerValidator validator = new AddPlayerValidator();
+		UserDto[] users = createActiveUsersList();
+		PlayerCampaignDto[] addedPlayers = createAddedPlayersListWithOneUser();
+		AddPlayerFormDto form = createValidForm();
+		
+		boolean result = validator.validate(form, users, addedPlayers);
+		String[] errors = validator.getErrors();
+		
+		assertThat(result).isFalse();
+		assertThat(errors).hasSize(1);
+		assertThat(errors[0]).isEqualTo(ErrorMessages.USER_ALREADY_ADDED.getMessage());
+	}
+	
 	private AddPlayerFormDto createValidForm() {
 		AddPlayerFormDto form = new AddPlayerFormDto();
 		form.setUser(USER_ID);
@@ -118,6 +133,12 @@ public class AddPlayerValidatorTest {
 		dtoList[1] = createAddedPlayer(2);
 		dtoList[2] = createAddedPlayer(3);
 		dtoList[3] = createAddedPlayer(4);
+		return dtoList;
+	}
+	
+	private PlayerCampaignDto[] createAddedPlayersListWithOneUser() {
+		PlayerCampaignDto[] dtoList = new PlayerCampaignDto[1];
+		dtoList[0] = createAddedPlayer(USER_ID);
 		return dtoList;
 	}
 	
