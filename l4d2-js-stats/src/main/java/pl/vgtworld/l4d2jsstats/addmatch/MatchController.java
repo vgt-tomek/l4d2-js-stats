@@ -30,6 +30,7 @@ import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MatchTypeDto;
 import pl.vgtworld.l4d2jsstats.player.PlayerService;
 import pl.vgtworld.l4d2jsstats.player.PlayerServiceException;
+import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 import pl.vgtworld.l4d2jsstats.user.UserService;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
@@ -50,8 +51,10 @@ public class MatchController extends BaseController {
 	
 	private static final String ACTIVE_PLAYERS_REQUEST_PARAM_KEY = "activePlayers";
 	
-	private static final int CAMPAIGN_MATCH_TYPE_ID = 1;
+	private static final String ADDED_PLAYERS_REQUEST_PARAM_KEY = "addedPlayers";
 	
+	private static final int CAMPAIGN_MATCH_TYPE_ID = 1;
+
 	@Inject
 	private MatchTypeService matchTypeService;
 	
@@ -140,6 +143,8 @@ public class MatchController extends BaseController {
 		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
 		UserDto[] activePlayers = userService.findActiveUsers();
 		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
+		PlayerCampaignDto[] addedPlayers = playerService.findPlayersFromMatch(match.getId());
+		request.setAttribute(ADDED_PLAYERS_REQUEST_PARAM_KEY, addedPlayers);
 		
 		AddPlayerFormDto form = new AddPlayerFormDto();
 		request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
@@ -171,6 +176,8 @@ public class MatchController extends BaseController {
 			}
 			request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
 			request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
+			PlayerCampaignDto[] addedPlayers = playerService.findPlayersFromMatch(match.getId());
+			request.setAttribute(ADDED_PLAYERS_REQUEST_PARAM_KEY, addedPlayers);
 			
 			return Response.ok(render("add-player-campaign")).build();
 		} catch (PlayerServiceException e) {

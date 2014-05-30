@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import pl.vgtworld.l4d2jsstats.match.Match;
 import pl.vgtworld.l4d2jsstats.match.MatchDao;
+import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 import pl.vgtworld.l4d2jsstats.user.User;
 import pl.vgtworld.l4d2jsstats.user.UserDao;
 
@@ -44,5 +45,23 @@ public class PlayerService {
 		campaignPlayer.setSurvived(survived);
 		campaignPlayer.setDeaths(deathCount);
 		playerCampaignDao.add(campaignPlayer);
+	}
+	
+	public PlayerCampaignDto[] findPlayersFromMatch(int matchId) {
+		PlayerCampaign[] players = playerCampaignDao.findByMatch(matchId);
+		PlayerCampaignDto[] dtoList = new PlayerCampaignDto[players.length];
+		for (int i = 0; i < players.length; ++i) {
+			dtoList[i] = mapFrom(players[i]);
+		}
+		return dtoList;
+	}
+	
+	private PlayerCampaignDto mapFrom(PlayerCampaign player) {
+		PlayerCampaignDto dto = new PlayerCampaignDto();
+		dto.setUserId(player.getPlayer().getUser().getId());
+		dto.setName(player.getPlayer().getUser().getLogin());
+		dto.setSurvived(player.isSurvived());
+		dto.setDeaths(player.getDeaths());
+		return dto;
 	}
 }
