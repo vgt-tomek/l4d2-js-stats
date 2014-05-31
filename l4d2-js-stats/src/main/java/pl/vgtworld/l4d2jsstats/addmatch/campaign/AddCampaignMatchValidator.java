@@ -1,25 +1,17 @@
 package pl.vgtworld.l4d2jsstats.addmatch.campaign;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pl.vgtworld.l4d2jsstats.App;
+import pl.vgtworld.l4d2jsstats.addmatch.AddMatchValidator;
 import pl.vgtworld.l4d2jsstats.difficulty.dto.DifficultyLevelDto;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 
-public class AddCampaignMatchValidator {
+public class AddCampaignMatchValidator extends AddMatchValidator {
 	
 	public enum ErrorMessages {
 		MATCH_TYPE_REQUIRED("Match type is required."),
-		MAP_REQUIRED("Map is required."),
-		DATE_REQURED("Date is required."),
-		DATE_FORMAT("Invalid date format."),
-		DATE_INVALID("Invalid date."),
 		DIFFICULTY_REQUIRED("Difficulty level is required."),
 		TOTAL_TIME_REQUIRED("Total time is required."),
 		TOTAL_TIME_INVALID("Invalid format in total time."),
@@ -39,50 +31,24 @@ public class AddCampaignMatchValidator {
 	
 	private static final int MINUTES_IN_HOUR = 60;
 	
-	private List<String> errors = new ArrayList<>();
-	
-	public String[] getErrors() {
-		return errors.toArray(new String[errors.size()]);
-	}
-	
 	public boolean validate(AddCampaignMatchFormDto form, GameMapDto[] maps, DifficultyLevelDto[] difficultyLevels) {
 		validateMap(form, maps);
 		validateDate(form);
 		validateDifficulty(form, difficultyLevels);
 		validateTotalTime(form);
 		validateRestarts(form);
-		return errors.size() == 0;
+		return getErrors().length == 0;
 	}
 	
 	private void validateMap(AddCampaignMatchFormDto form, GameMapDto[] maps) {
 		int mapId = form.getMapId();
-		for (GameMapDto map : maps) {
-			if (map.getId() == mapId) {
-				return;
-			}
-		}
-		errors.add(ErrorMessages.MAP_REQUIRED.getMessage());
+		validateMap(mapId, maps);
 	}
 	
 	private void validateDate(AddCampaignMatchFormDto form) {
 		String date = form.getDate();
-		if (date == null || date.equals("")) {
-			errors.add(ErrorMessages.DATE_REQURED.getMessage());
-			return;
-		}
-		Pattern pattern = Pattern.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
-		Matcher matcher = pattern.matcher(date);
-		if (!matcher.find()) {
-			errors.add(ErrorMessages.DATE_FORMAT.getMessage());
-			return;
-		}
-		try {
-			Date parsedDate = new SimpleDateFormat(App.DATE_FORMAT).parse(date);
-			form.setDateParsed(parsedDate);
-		} catch (ParseException e) {
-			errors.add(ErrorMessages.DATE_INVALID.getMessage());
-			return;
-		}
+		Date parsedDate = validateDate(date);
+		form.setDateParsed(parsedDate);
 	}
 	
 	private void validateDifficulty(AddCampaignMatchFormDto form, DifficultyLevelDto[] difficultyLevels) {
@@ -92,19 +58,19 @@ public class AddCampaignMatchValidator {
 				return;
 			}
 		}
-		errors.add(ErrorMessages.DIFFICULTY_REQUIRED.getMessage());
+		addError(ErrorMessages.DIFFICULTY_REQUIRED.getMessage());
 	}
 	
 	private void validateTotalTime(AddCampaignMatchFormDto form) {
 		String totalTime = form.getTotalTime();
 		if (totalTime == null || totalTime.equals("")) {
-			errors.add(ErrorMessages.TOTAL_TIME_REQUIRED.getMessage());
+			addError(ErrorMessages.TOTAL_TIME_REQUIRED.getMessage());
 			return;
 		}
 		Pattern pattern = Pattern.compile("^([0-9]+):([0-9]{2})$");
 		Matcher matcher = pattern.matcher(totalTime);
 		if (!matcher.find()) {
-			errors.add(ErrorMessages.TOTAL_TIME_INVALID.getMessage());
+			addError(ErrorMessages.TOTAL_TIME_INVALID.getMessage());
 			return;
 		}
 		try {
@@ -113,7 +79,7 @@ public class AddCampaignMatchValidator {
 			int calculatedValue = Integer.parseInt(hours) * MINUTES_IN_HOUR + Integer.parseInt(minutes);
 			form.setTotalTimeParsed(calculatedValue);
 		} catch (NumberFormatException e) {
-			errors.add(ErrorMessages.TOTAL_TIME_PARSE_ERROR.getMessage());
+			addError(ErrorMessages.TOTAL_TIME_PARSE_ERROR.getMessage());
 			return;
 		}
 	}
@@ -121,7 +87,7 @@ public class AddCampaignMatchValidator {
 	private void validateRestarts(AddCampaignMatchFormDto form) {
 		int restarts = form.getRestarts();
 		if (restarts < 0) {
-			errors.add(ErrorMessages.RESTARTS_INVALID.getMessage());
+			addError(ErrorMessages.RESTARTS_INVALID.getMessage());
 			return;
 		}
 	}

@@ -8,6 +8,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import pl.vgtworld.l4d2jsstats.addmatch.AddMatchValidator.BaseErrorMessages;
 import pl.vgtworld.l4d2jsstats.addmatch.campaign.AddCampaignMatchValidator.ErrorMessages;
 import pl.vgtworld.l4d2jsstats.difficulty.dto.DifficultyLevelDto;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
@@ -83,7 +84,7 @@ public class AddCampaignMatchValidatorTest {
 		
 		assertThat(result).isFalse();
 		assertThat(errors).hasSize(1);
-		assertThat(errors[0]).isEqualTo(ErrorMessages.MAP_REQUIRED.getMessage());
+		assertThat(errors[0]).isEqualTo(BaseErrorMessages.MAP_REQUIRED.getMessage());
 	}
 	
 	@Test
@@ -95,7 +96,7 @@ public class AddCampaignMatchValidatorTest {
 		
 		assertThat(result).isFalse();
 		assertThat(errors).hasSize(1);
-		assertThat(errors[0]).isEqualTo(ErrorMessages.MAP_REQUIRED.getMessage());
+		assertThat(errors[0]).isEqualTo(BaseErrorMessages.MAP_REQUIRED.getMessage());
 	}
 	
 	@Test
@@ -107,7 +108,7 @@ public class AddCampaignMatchValidatorTest {
 		
 		assertThat(result).isFalse();
 		assertThat(errors).hasSize(1);
-		assertThat(errors[0]).isEqualTo(ErrorMessages.DATE_REQURED.getMessage());
+		assertThat(errors[0]).isEqualTo(BaseErrorMessages.DATE_REQURED.getMessage());
 	}
 
 	@Test
@@ -119,7 +120,7 @@ public class AddCampaignMatchValidatorTest {
 		
 		assertThat(result).isFalse();
 		assertThat(errors).hasSize(1);
-		assertThat(errors[0]).isEqualTo(ErrorMessages.DATE_REQURED.getMessage());
+		assertThat(errors[0]).isEqualTo(BaseErrorMessages.DATE_REQURED.getMessage());
 	}
 	
 	@Test
@@ -131,7 +132,7 @@ public class AddCampaignMatchValidatorTest {
 		
 		assertThat(result).isFalse();
 		assertThat(errors).hasSize(1);
-		assertThat(errors[0]).isEqualTo(ErrorMessages.DATE_FORMAT.getMessage());
+		assertThat(errors[0]).isEqualTo(BaseErrorMessages.DATE_FORMAT.getMessage());
 	}
 	
 	@Test
