@@ -110,7 +110,7 @@ public class CampaignMatchController extends BaseController {
 			request.setAttribute("errors", validator.getErrors());
 			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 			request.setAttribute(DIFFICULTY_LEVELS_REQUEST_PARAM_KEY, difficultyLevels);
-			render("add-match-campaign");
+			return Response.ok(render("add-match-campaign")).build();
 		}
 		
 		try {
