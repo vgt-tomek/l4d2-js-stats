@@ -41,6 +41,14 @@ public class MatchService {
 		return mapFrom(match);
 	}
 	
+	public void activateMatch(int matchId) throws MatchServiceException {
+		Match match = matchDao.findById(matchId);
+		if (match == null) {
+			throw new MatchServiceException("Match doesn't exist.");
+		}
+		match.setActive(true);
+	}
+	
 	public int createMatch(int ownerId, int matchTypeId, AddMatchFormDto form) throws MatchServiceException {
 		Match match = new Match();
 		User user = userDao.findById(ownerId);

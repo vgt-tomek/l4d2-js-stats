@@ -74,6 +74,12 @@
 				<input type="submit" name="add-player-submit" value="Add player" />
 			</div>
 		</form>
+		
+		<form method="POST" th:action="${'/match/' + match.id + '/activate'}">
+			<div>
+				<input type="submit" name="match-activate" value="Publish match" />
+			</div>
+		</form>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>

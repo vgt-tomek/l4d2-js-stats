@@ -204,6 +204,19 @@ public class MatchController extends BaseController {
 		return seeOther(String.format("/match/%s/%d/player/add", matchType, matchId));
 	}
 	
+	@POST
+	@Path("/{matchId}/activate")
+	@Produces(MediaType.TEXT_HTML)
+	public String activateMatch(@PathParam("matchId") int matchId) {
+		try {
+			matchService.activateMatch(matchId);
+			return render("match-activated");
+		} catch (MatchServiceException e) {
+			request.setAttribute("message", e.getMessage());
+			return render("errors/unexpected-exception");
+		}
+	}
+	
 	private UserDto[] filterNotAddedPlayers(UserDto[] userList, PlayerCampaignDto[] addedPlayers) {
 		List<UserDto> filteredList = new ArrayList<>();
 		List<Integer> addedPlayersId = new ArrayList<>();
