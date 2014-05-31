@@ -187,4 +187,14 @@ public class MatchController extends BaseController {
 			return Response.ok(render("errors/unexpected-exception")).build();
 		}
 	}
+	
+	@POST
+	@Path("/{matchType}/{matchId}/player/delete")
+	@Produces(MediaType.TEXT_HTML)
+	public Response deletePlayerFromMatch(
+		@Form DeletePlayerFormDto form, @PathParam("matchType") String matchType, @PathParam("matchId") int matchId) {
+		int userId = form.getUserId();
+		playerService.deleteUserFromMatch(userId, matchId);
+		return seeOther(String.format("/match/%s/%d/player/add", matchType, matchId));
+	}
 }

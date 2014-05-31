@@ -47,6 +47,10 @@ public class PlayerService {
 		playerCampaignDao.add(campaignPlayer);
 	}
 	
+	public void deleteUserFromMatch(int userId, int matchId) {
+		playerDao.delete(userId, matchId);
+	}
+	
 	public PlayerCampaignDto[] findPlayersFromMatch(int matchId) {
 		PlayerCampaign[] players = playerCampaignDao.findByMatch(matchId);
 		PlayerCampaignDto[] dtoList = new PlayerCampaignDto[players.length];

@@ -32,13 +32,22 @@
 					<th>Player</th>
 					<th>Survived</th>
 					<th>Deaths</th>
+					<th>Options</th>
 				</tr>
 			</thead>
-			<tr th:each="player : ${addedPlayers}">
-				<td th:text="${player.name}"></td>
-				<td th:text="${player.survived ? 'yes' : 'no'}"></td>
-				<td th:text="${player.deaths}"></td>
-			</tr>
+			<tbody>
+				<tr th:each="player : ${addedPlayers}">
+					<td th:text="${player.name}"></td>
+					<td th:text="${player.survived ? 'yes' : 'no'}"></td>
+					<td th:text="${player.deaths}"></td>
+					<td>
+						<form method="POST" th:action="${'/match/campaign/' + match.id + '/player/delete'}">
+							<input type="hidden" name="user" th:value="${player.userId}" />
+							<input type="submit" name="player-delete" value="Delete" />
+						</form>
+					</td>
+				</tr>
+			</tbody>
 		</table>
 		<p th:if="${addedPlayers.length == 0}">
 			No participants added yet.
