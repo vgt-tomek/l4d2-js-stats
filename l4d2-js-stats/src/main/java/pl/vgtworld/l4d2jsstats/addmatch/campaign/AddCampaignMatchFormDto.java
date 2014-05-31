@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.ws.rs.FormParam;
 
-public class AddMatchFormDto {
+public class AddCampaignMatchFormDto {
 	
 	@FormParam("map")
 	private int mapId;

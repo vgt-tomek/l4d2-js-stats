@@ -1,4 +1,4 @@
-package pl.vgtworld.l4d2jsstats.addmatch.campaign;
+package pl.vgtworld.l4d2jsstats.addmatch;
 
 import javax.ws.rs.FormParam;
 

@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response;
 import org.jboss.resteasy.annotations.Form;
 
 import pl.vgtworld.l4d2jsstats.BaseController;
-import pl.vgtworld.l4d2jsstats.addmatch.campaign.DeletePlayerFormDto;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.MatchServiceException;
 import pl.vgtworld.l4d2jsstats.player.PlayerService;

@@ -87,7 +87,7 @@ public class CampaignMatchController extends BaseController {
 		DifficultyLevelDto[] difficultyLevels = difficultyService.findAll();
 		request.setAttribute(DIFFICULTY_LEVELS_REQUEST_PARAM_KEY, difficultyLevels);
 		
-		AddMatchFormDto form = new AddMatchFormDto();
+		AddCampaignMatchFormDto form = new AddCampaignMatchFormDto();
 		form.setDate(new SimpleDateFormat(App.DATE_FORMAT).format(new Date()));
 		request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 		
@@ -97,12 +97,12 @@ public class CampaignMatchController extends BaseController {
 	@POST
 	@Path("/add/campaign")
 	@Produces(MediaType.TEXT_HTML)
-	public Response submitMatch(@Form AddMatchFormDto form) {
+	public Response submitMatch(@Form AddCampaignMatchFormDto form) {
 		GameMapDto[] maps = mapService.findAll();
 		UserDto user = getLoggedUser();
 		DifficultyLevelDto[] difficultyLevels = difficultyService.findAll();
 		
-		AddMatchValidator validator = new AddMatchValidator();
+		AddCampaignMatchValidator validator = new AddCampaignMatchValidator();
 		boolean validationResult = validator.validate(form, maps, difficultyLevels);
 		
 		if (!validationResult) {
@@ -137,7 +137,7 @@ public class CampaignMatchController extends BaseController {
 		UserDto[] activePlayers = userService.findActiveUsers();
 		PlayerCampaignDto[] addedPlayers = playerService.findPlayersFromMatch(match.getId());
 		activePlayers = filterNotAddedPlayers(activePlayers, addedPlayers);
-		AddPlayerFormDto form = new AddPlayerFormDto();
+		AddCampaignPlayerFormDto form = new AddCampaignPlayerFormDto();
 		
 		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
 		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
@@ -150,7 +150,7 @@ public class CampaignMatchController extends BaseController {
 	@POST
 	@Path("/campaign/{matchId}/player/add")
 	@Produces(MediaType.TEXT_HTML)
-	public Response submitPlayer(@Form AddPlayerFormDto form, @PathParam("matchId") int matchId) {
+	public Response submitPlayer(@Form AddCampaignPlayerFormDto form, @PathParam("matchId") int matchId) {
 		setPageTitle("Manage players");
 		CampaignMatchDto match = matchService.findCampaignById(matchId);
 		if (match == null) {
@@ -159,7 +159,7 @@ public class CampaignMatchController extends BaseController {
 		UserDto[] activePlayers = userService.findActiveUsers();
 		PlayerCampaignDto[] addedPlayers = playerService.findPlayersFromMatch(match.getId());
 		
-		AddPlayerValidator validator = new AddPlayerValidator();
+		AddCampaignPlayerValidator validator = new AddCampaignPlayerValidator();
 		boolean validationResult = validator.validate(form, activePlayers, addedPlayers);
 		
 		try {
@@ -168,7 +168,7 @@ public class CampaignMatchController extends BaseController {
 					match.getId(), form.getUser(), form.isSurvived(), form.getDeaths()
 					);
 				addedPlayers = playerService.findPlayersFromMatch(match.getId());
-				request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddPlayerFormDto());
+				request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddCampaignPlayerFormDto());
 			} else {
 				request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 				request.setAttribute("errors", validator.getErrors());

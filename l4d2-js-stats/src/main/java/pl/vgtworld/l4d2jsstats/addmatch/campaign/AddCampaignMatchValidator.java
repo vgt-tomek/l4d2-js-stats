@@ -12,7 +12,7 @@ import pl.vgtworld.l4d2jsstats.App;
 import pl.vgtworld.l4d2jsstats.difficulty.dto.DifficultyLevelDto;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 
-public class AddMatchValidator {
+public class AddCampaignMatchValidator {
 	
 	public enum ErrorMessages {
 		MATCH_TYPE_REQUIRED("Match type is required."),
@@ -45,7 +45,7 @@ public class AddMatchValidator {
 		return errors.toArray(new String[errors.size()]);
 	}
 	
-	public boolean validate(AddMatchFormDto form, GameMapDto[] maps, DifficultyLevelDto[] difficultyLevels) {
+	public boolean validate(AddCampaignMatchFormDto form, GameMapDto[] maps, DifficultyLevelDto[] difficultyLevels) {
 		validateMap(form, maps);
 		validateDate(form);
 		validateDifficulty(form, difficultyLevels);
@@ -54,7 +54,7 @@ public class AddMatchValidator {
 		return errors.size() == 0;
 	}
 	
-	private void validateMap(AddMatchFormDto form, GameMapDto[] maps) {
+	private void validateMap(AddCampaignMatchFormDto form, GameMapDto[] maps) {
 		int mapId = form.getMapId();
 		for (GameMapDto map : maps) {
 			if (map.getId() == mapId) {
@@ -64,7 +64,7 @@ public class AddMatchValidator {
 		errors.add(ErrorMessages.MAP_REQUIRED.getMessage());
 	}
 	
-	private void validateDate(AddMatchFormDto form) {
+	private void validateDate(AddCampaignMatchFormDto form) {
 		String date = form.getDate();
 		if (date == null || date.equals("")) {
 			errors.add(ErrorMessages.DATE_REQURED.getMessage());
@@ -85,7 +85,7 @@ public class AddMatchValidator {
 		}
 	}
 	
-	private void validateDifficulty(AddMatchFormDto form, DifficultyLevelDto[] difficultyLevels) {
+	private void validateDifficulty(AddCampaignMatchFormDto form, DifficultyLevelDto[] difficultyLevels) {
 		int difficultyId = form.getDifficultyId();
 		for (DifficultyLevelDto difficultyLevel : difficultyLevels) {
 			if (difficultyLevel.getId() == difficultyId) {
@@ -95,7 +95,7 @@ public class AddMatchValidator {
 		errors.add(ErrorMessages.DIFFICULTY_REQUIRED.getMessage());
 	}
 	
-	private void validateTotalTime(AddMatchFormDto form) {
+	private void validateTotalTime(AddCampaignMatchFormDto form) {
 		String totalTime = form.getTotalTime();
 		if (totalTime == null || totalTime.equals("")) {
 			errors.add(ErrorMessages.TOTAL_TIME_REQUIRED.getMessage());
@@ -118,7 +118,7 @@ public class AddMatchValidator {
 		}
 	}
 	
-	private void validateRestarts(AddMatchFormDto form) {
+	private void validateRestarts(AddCampaignMatchFormDto form) {
 		int restarts = form.getRestarts();
 		if (restarts < 0) {
 			errors.add(ErrorMessages.RESTARTS_INVALID.getMessage());

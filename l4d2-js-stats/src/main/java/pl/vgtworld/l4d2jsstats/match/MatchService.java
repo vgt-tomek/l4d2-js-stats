@@ -3,7 +3,7 @@ package pl.vgtworld.l4d2jsstats.match;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import pl.vgtworld.l4d2jsstats.addmatch.campaign.AddMatchFormDto;
+import pl.vgtworld.l4d2jsstats.addmatch.campaign.AddCampaignMatchFormDto;
 import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevel;
 import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevelDao;
 import pl.vgtworld.l4d2jsstats.map.GameMap;
@@ -49,7 +49,7 @@ public class MatchService {
 		match.setActive(true);
 	}
 	
-	public int createMatch(int ownerId, int matchTypeId, AddMatchFormDto form) throws MatchServiceException {
+	public int createMatch(int ownerId, int matchTypeId, AddCampaignMatchFormDto form) throws MatchServiceException {
 		Match match = new Match();
 		User user = userDao.findById(ownerId);
 		GameMap map = mapDao.findById(form.getMapId());

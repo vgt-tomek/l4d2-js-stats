@@ -6,7 +6,7 @@ import java.util.List;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
-public class AddPlayerValidator {
+public class AddCampaignPlayerValidator {
 	
 	public enum ErrorMessages {
 		
@@ -34,7 +34,7 @@ public class AddPlayerValidator {
 		return errors.toArray(new String[errors.size()]);
 	}
 	
-	public boolean validate(AddPlayerFormDto form, UserDto[] activeUsers, PlayerCampaignDto[] addedPlayers) {
+	public boolean validate(AddCampaignPlayerFormDto form, UserDto[] activeUsers, PlayerCampaignDto[] addedPlayers) {
 		if (addedPlayers.length == MAX_PLAYERS_COUNT) {
 			errors.add(ErrorMessages.MAX_PLAYERS.getMessage());
 			return false;
@@ -45,7 +45,7 @@ public class AddPlayerValidator {
 		return errors.size() == 0;
 	}
 	
-	private void validateUser(AddPlayerFormDto form, UserDto[] activeUsers) {
+	private void validateUser(AddCampaignPlayerFormDto form, UserDto[] activeUsers) {
 		int userId = form.getUser();
 		for (UserDto user : activeUsers) {
 			if (user.getId() == userId) {
@@ -55,7 +55,7 @@ public class AddPlayerValidator {
 		errors.add(ErrorMessages.USER_REUIQRED.getMessage());
 	}
 	
-	private void validateUserDuplication(AddPlayerFormDto form, PlayerCampaignDto[] addedPlayers) {
+	private void validateUserDuplication(AddCampaignPlayerFormDto form, PlayerCampaignDto[] addedPlayers) {
 		int userId = form.getUser();
 		for (PlayerCampaignDto player : addedPlayers) {
 			if (player.getUserId() == userId) {
@@ -64,7 +64,7 @@ public class AddPlayerValidator {
 		}
 	}
 	
-	private void validateDeaths(AddPlayerFormDto form) {
+	private void validateDeaths(AddCampaignPlayerFormDto form) {
 		if (form.getDeaths() < 0) {
 			errors.add(ErrorMessages.DEATH_WRONG_VALUE.getMessage());
 		}

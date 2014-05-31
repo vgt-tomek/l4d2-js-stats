@@ -2,7 +2,7 @@ package pl.vgtworld.l4d2jsstats.addmatch.campaign;
 
 import javax.ws.rs.FormParam;
 
-public class AddPlayerFormDto {
+public class AddCampaignPlayerFormDto {
 	
 	@FormParam("user")
 	private int user;
