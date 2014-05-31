@@ -1,7 +1,9 @@
 package pl.vgtworld.l4d2jsstats.addmatch;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -54,7 +56,7 @@ public class MatchController extends BaseController {
 	private static final String ADDED_PLAYERS_REQUEST_PARAM_KEY = "addedPlayers";
 	
 	private static final int CAMPAIGN_MATCH_TYPE_ID = 1;
-
+	
 	@Inject
 	private MatchTypeService matchTypeService;
 	
@@ -140,13 +142,14 @@ public class MatchController extends BaseController {
 		if (match == null) {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
-		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
 		UserDto[] activePlayers = userService.findActiveUsers();
-		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
 		PlayerCampaignDto[] addedPlayers = playerService.findPlayersFromMatch(match.getId());
-		request.setAttribute(ADDED_PLAYERS_REQUEST_PARAM_KEY, addedPlayers);
-		
+		activePlayers = filterNotAddedPlayers(activePlayers, addedPlayers);
 		AddPlayerFormDto form = new AddPlayerFormDto();
+		
+		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
+		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
+		request.setAttribute(ADDED_PLAYERS_REQUEST_PARAM_KEY, addedPlayers);
 		request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 		
 		return Response.ok(render("add-player-campaign")).build();
@@ -169,7 +172,9 @@ public class MatchController extends BaseController {
 		
 		try {
 			if (validationResult) {
-				playerService.addUserToCampaignMatch(match.getId(), form.getUser(), form.isSurvived(), form.getDeaths());
+				playerService.addUserToCampaignMatch(
+					match.getId(), form.getUser(), form.isSurvived(), form.getDeaths()
+					);
 				addedPlayers = playerService.findPlayersFromMatch(match.getId());
 				request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddPlayerFormDto());
 			} else {
@@ -177,6 +182,7 @@ public class MatchController extends BaseController {
 				request.setAttribute("errors", validator.getErrors());
 			}
 			request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
+			activePlayers = filterNotAddedPlayers(activePlayers, addedPlayers);
 			request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
 			request.setAttribute(ADDED_PLAYERS_REQUEST_PARAM_KEY, addedPlayers);
 			
@@ -196,5 +202,19 @@ public class MatchController extends BaseController {
 		int userId = form.getUserId();
 		playerService.deleteUserFromMatch(userId, matchId);
 		return seeOther(String.format("/match/%s/%d/player/add", matchType, matchId));
+	}
+	
+	private UserDto[] filterNotAddedPlayers(UserDto[] userList, PlayerCampaignDto[] addedPlayers) {
+		List<UserDto> filteredList = new ArrayList<>();
+		List<Integer> addedPlayersId = new ArrayList<>();
+		for (PlayerCampaignDto player : addedPlayers) {
+			addedPlayersId.add(player.getUserId());
+		}
+		for (UserDto user : userList) {
+			if (!addedPlayersId.contains(user.getId())) {
+				filteredList.add(user);
+			}
+		}
+		return filteredList.toArray(new UserDto[filteredList.size()]);
 	}
 }
