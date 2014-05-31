@@ -37,9 +37,9 @@ import pl.vgtworld.l4d2jsstats.user.UserService;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
 @Path("/match")
-public class MatchController extends BaseController {
+public class CampaignMatchController extends BaseController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(MatchController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CampaignMatchController.class);
 	
 	private static final String MAPS_REQUEST_PARAM_KEY = "maps";
 	
@@ -74,14 +74,6 @@ public class MatchController extends BaseController {
 	
 	@Inject
 	private PlayerService playerService;
-	
-	@GET
-	@Path("/add/picker")
-	@Produces(MediaType.TEXT_HTML)
-	public String displayMatchTypePicker() {
-		setPageTitle("Pick match type");
-		return render("add-match-picker");
-	}
 	
 	@GET
 	@Path("/add/campaign")
@@ -191,29 +183,6 @@ public class MatchController extends BaseController {
 			LOGGER.warn("Exception while trying to add player to match ({}).", e.getMessage());
 			request.setAttribute("message", e.getMessage());
 			return Response.ok(render("errors/unexpected-exception")).build();
-		}
-	}
-	
-	@POST
-	@Path("/{matchType}/{matchId}/player/delete")
-	@Produces(MediaType.TEXT_HTML)
-	public Response deletePlayerFromMatch(
-		@Form DeletePlayerFormDto form, @PathParam("matchType") String matchType, @PathParam("matchId") int matchId) {
-		int userId = form.getUserId();
-		playerService.deleteUserFromMatch(userId, matchId);
-		return seeOther(String.format("/match/%s/%d/player/add", matchType, matchId));
-	}
-	
-	@POST
-	@Path("/{matchId}/activate")
-	@Produces(MediaType.TEXT_HTML)
-	public String activateMatch(@PathParam("matchId") int matchId) {
-		try {
-			matchService.activateMatch(matchId);
-			return render("match-activated");
-		} catch (MatchServiceException e) {
-			request.setAttribute("message", e.getMessage());
-			return render("errors/unexpected-exception");
 		}
 	}
 	
