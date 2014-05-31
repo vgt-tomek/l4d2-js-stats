@@ -1,10 +1,10 @@
-package pl.vgtworld.l4d2jsstats.addmatch;
+package pl.vgtworld.l4d2jsstats.addmatch.campaign;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import pl.vgtworld.l4d2jsstats.addmatch.AddPlayerValidator.ErrorMessages;
+import pl.vgtworld.l4d2jsstats.addmatch.campaign.AddPlayerValidator.ErrorMessages;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 

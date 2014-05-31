@@ -1,4 +1,4 @@
-package pl.vgtworld.l4d2jsstats.addmatch;
+package pl.vgtworld.l4d2jsstats.addmatch.campaign;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@ package pl.vgtworld.l4d2jsstats.match;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import pl.vgtworld.l4d2jsstats.addmatch.AddMatchFormDto;
+import pl.vgtworld.l4d2jsstats.addmatch.campaign.AddMatchFormDto;
 import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevel;
 import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevelDao;
 import pl.vgtworld.l4d2jsstats.map.GameMap;
