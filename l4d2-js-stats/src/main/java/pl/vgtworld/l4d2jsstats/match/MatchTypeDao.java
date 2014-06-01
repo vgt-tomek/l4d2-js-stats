@@ -10,6 +10,8 @@ import javax.persistence.Query;
 @Stateless
 public class MatchTypeDao {
 	
+	private static final int VERSUS_MATCH_TYPE_ID = 2;
+	
 	@PersistenceContext
 	private EntityManager em;
 	
@@ -23,4 +25,9 @@ public class MatchTypeDao {
 		List<MatchType> result = query.getResultList();
 		return result.toArray(new MatchType[result.size()]);
 	}
+	
+	public MatchType getVersusMatchType() {
+		return findById(VERSUS_MATCH_TYPE_ID);
+	}
+	
 }

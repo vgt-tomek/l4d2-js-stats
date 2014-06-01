@@ -66,7 +66,8 @@ UNIQUE(`identifier`)
 INSERT INTO `match_types`
 (`id`, `identifier`, `name`, `display_order`)
 VALUES
-(1, "campaign", "Campaign", 1);
+(1, "campaign", "Campaign", 1),
+(2, "versus", "Versus", 2);
 
 DROP TABLE IF EXISTS `matches`;
 CREATE TABLE `matches` (
@@ -110,4 +111,12 @@ CREATE TABLE `players_campaign` (
 `player_id` INT UNSIGNED NOT NULL PRIMARY KEY,
 `survived` BOOLEAN NOT NULL,
 `deaths` INT NOT NULL
+)engine=innodb;
+
+CREATE TABLE `matches_versus` (
+`match_id` INT UNSIGNED NOT NULL PRIMARY KEY,
+`winner_points` INT UNSIGNED NOT NULL,
+`loser_points` INT UNSIGNED NOT NULL,
+CONSTRAINT `matches_versus_match_id_fkey` FOREIGN KEY (`match_id`) REFERENCES `matches` (`id`)
+ON DELETE CASCADE ON UPDATE CASCADE
 )engine=innodb;

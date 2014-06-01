@@ -4,6 +4,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import pl.vgtworld.l4d2jsstats.addmatch.campaign.AddCampaignMatchFormDto;
+import pl.vgtworld.l4d2jsstats.addmatch.versus.AddVersusMatchFormDto;
 import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevel;
 import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevelDao;
 import pl.vgtworld.l4d2jsstats.map.GameMap;
@@ -20,6 +21,9 @@ public class MatchService {
 	
 	@Inject
 	private MatchCampaignDao matchCampaignDao;
+	
+	@Inject
+	private MatchVersusDao matchVersusDao;
 	
 	@Inject
 	private UserDao userDao;
@@ -49,7 +53,8 @@ public class MatchService {
 		match.setActive(true);
 	}
 	
-	public int createMatch(int ownerId, int matchTypeId, AddCampaignMatchFormDto form) throws MatchServiceException {
+	public int createCampaignMatch(int ownerId, int matchTypeId, AddCampaignMatchFormDto form)
+		throws MatchServiceException {
 		Match match = new Match();
 		User user = userDao.findById(ownerId);
 		GameMap map = mapDao.findById(form.getMapId());
@@ -77,7 +82,36 @@ public class MatchService {
 		
 		return match.getId();
 	}
-
+	
+	public int createVersusMatch(int ownerId, AddVersusMatchFormDto form) throws MatchServiceException {
+		Match match = new Match();
+		User user = userDao.findById(ownerId);
+		GameMap map = mapDao.findById(form.getMapId());
+		MatchType matchType = matchTypeDao.getVersusMatchType();
+		
+		if (user == null) {
+			throw new MatchServiceException("Unknown user.");
+		}
+		if (map == null) {
+			throw new MatchServiceException("Unknown map.");
+		}
+		
+		match.setMatchType(matchType);
+		match.setOwner(user);
+		match.setMap(map);
+		match.setActive(false);
+		match.setPlayedAt(form.getDateParsed());
+		matchDao.add(match);
+		
+		MatchVersus versus = new MatchVersus();
+		versus.setMatch(match);
+		versus.setWinnerPoints(form.getWinnerPoints());
+		versus.setLoserPoints(form.getLoserPoints());
+		matchVersusDao.add(versus);
+		
+		return match.getId();
+	}
+	
 	private CampaignMatchDto mapFrom(MatchCampaign match) {
 		CampaignMatchDto dto = new CampaignMatchDto();
 		dto.setId(match.getMatch().getId());
@@ -90,5 +124,5 @@ public class MatchService {
 		dto.setRestarts(match.getRestarts());
 		return dto;
 	}
-
+	
 }

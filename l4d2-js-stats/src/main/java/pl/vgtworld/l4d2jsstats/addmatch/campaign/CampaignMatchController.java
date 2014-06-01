@@ -114,7 +114,7 @@ public class CampaignMatchController extends BaseController {
 		}
 		
 		try {
-			int matchId = matchService.createMatch(user.getId(), CAMPAIGN_MATCH_TYPE_ID, form);
+			int matchId = matchService.createCampaignMatch(user.getId(), CAMPAIGN_MATCH_TYPE_ID, form);
 			String location = String.format("/match/campaign/%d/player/add", matchId);
 			return seeOther(location);
 		} catch (MatchServiceException e) {
