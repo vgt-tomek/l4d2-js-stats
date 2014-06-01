@@ -9,7 +9,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+
+import org.jboss.resteasy.annotations.Form;
 
 import pl.vgtworld.l4d2jsstats.App;
 import pl.vgtworld.l4d2jsstats.BaseController;
@@ -44,8 +45,21 @@ public class VersusMatchController extends BaseController {
 	@POST
 	@Path("/add/versus")
 	@Produces(MediaType.TEXT_HTML)
-	public Response submitMatch() {
+	public String submitMatch(@Form AddVersusMatchFormDto form) {
+		GameMapDto[] maps = mapService.findAll();
 		
+		AddVersusMatchValidator validator = new AddVersusMatchValidator();
+		boolean validationResult = validator.validate(form, maps);
+		
+		if (!validationResult) {
+			request.setAttribute(MAPS_REQUEST_PARAM_KEY, maps);
+			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
+			request.setAttribute("errors", validator.getErrors());
+			return render("add-match-versus");
+		}
+		
+		// TODO Save match in database.
+		// TODO Redirect to player management page.
 		return null;
 	}
 }
