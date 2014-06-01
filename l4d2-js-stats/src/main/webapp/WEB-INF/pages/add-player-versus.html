@@ -23,6 +23,25 @@
 			</tbody>
 		</table>
 		
+		<h2>Match participants</h2>
+		<table th:if="${addedPlayers.length > 0}">
+			<thead>
+				<tr>
+					<th>Player</th>
+					<th>Team</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="player : ${addedPlayers}">
+					<td th:text="${player.name}"></td>
+					<td th:text="${player.winner ? 'Winner' : 'Loser'}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<p th:if="${addedPlayers.length == 0}">
+			No participants added yet.
+		</p>
+		
 		<h2>Add player</h2>
 		<form method="POST" action="">
 			<div class="errors" th:if="${errors != null}">

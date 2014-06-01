@@ -42,6 +42,8 @@ public class VersusMatchController extends BaseController {
 	private static final String MATCH_REQUEST_PARAM_KEY = "match";
 	
 	private static final String ACTIVE_PLAYERS_REQUEST_PARAM_KEY = "activePlayers";
+
+	private static final String ADDED_PLAYERS_REQUEST_PARAM_KEY = "addedPlayers";
 	
 	@Inject
 	private GameMapService mapService;
@@ -108,10 +110,12 @@ public class VersusMatchController extends BaseController {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
 		UserDto[] activePlayers = userService.findActiveUsers();
+		PlayerVersusDto[] addedPlayers = playerService.findPlayersFromVersusMatch(matchId);
 		AddVersusPlayerFormDto form = new AddVersusPlayerFormDto();
 		
 		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
 		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
+		request.setAttribute(ADDED_PLAYERS_REQUEST_PARAM_KEY, addedPlayers);
 		request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 		
 		return Response.ok(render("add-player-versus")).build();
@@ -135,6 +139,7 @@ public class VersusMatchController extends BaseController {
 		try {
 			if (validationResult) {
 				playerService.addUserToVersusMatch(match.getId(), form.getUser(), form.isWinner());
+				addedPlayers = playerService.findPlayersFromVersusMatch(matchId);
 				request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddVersusPlayerFormDto());
 			} else {
 				request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
@@ -142,6 +147,7 @@ public class VersusMatchController extends BaseController {
 			}
 			request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
 			request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
+			request.setAttribute(ADDED_PLAYERS_REQUEST_PARAM_KEY, addedPlayers);
 			
 			return Response.ok(render("add-player-versus")).build();
 		} catch (PlayerServiceException e) {
