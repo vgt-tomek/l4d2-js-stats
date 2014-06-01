@@ -110,7 +110,9 @@ ON DELETE CASCADE ON UPDATE CASCADE
 CREATE TABLE `players_campaign` (
 `player_id` INT UNSIGNED NOT NULL PRIMARY KEY,
 `survived` BOOLEAN NOT NULL,
-`deaths` INT NOT NULL
+`deaths` INT NOT NULL,
+CONSTRAINT `players_campaign_player_id_fkey` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`)
+ON DELETE CASCADE ON UPDATE CASCADE
 )engine=innodb;
 
 CREATE TABLE `matches_versus` (
