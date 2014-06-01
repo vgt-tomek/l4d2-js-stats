@@ -10,6 +10,8 @@ import javax.persistence.Query;
 @Stateless
 public class MatchTypeDao {
 	
+	private static final int CAMPAIGN_MATCH_TYPE_ID = 1;
+	
 	private static final int VERSUS_MATCH_TYPE_ID = 2;
 	
 	@PersistenceContext
@@ -24,6 +26,10 @@ public class MatchTypeDao {
 		Query query = em.createNamedQuery(MatchType.QUERY_FIND_ALL);
 		List<MatchType> result = query.getResultList();
 		return result.toArray(new MatchType[result.size()]);
+	}
+	
+	public MatchType getCampaignMatchType() {
+		return findById(CAMPAIGN_MATCH_TYPE_ID);
 	}
 	
 	public MatchType getVersusMatchType() {

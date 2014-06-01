@@ -53,13 +53,13 @@ public class MatchService {
 		match.setActive(true);
 	}
 	
-	public int createCampaignMatch(int ownerId, int matchTypeId, AddCampaignMatchFormDto form)
+	public int createCampaignMatch(int ownerId, AddCampaignMatchFormDto form)
 		throws MatchServiceException {
 		Match match = new Match();
 		User user = userDao.findById(ownerId);
 		GameMap map = mapDao.findById(form.getMapId());
 		DifficultyLevel difficulty = difficultyDao.findById(form.getDifficultyId());
-		MatchType matchType = matchTypeDao.findById(matchTypeId);
+		MatchType matchType = matchTypeDao.getCampaignMatchType();
 		if (user == null) {
 			throw new MatchServiceException("Unknown user.");
 		}

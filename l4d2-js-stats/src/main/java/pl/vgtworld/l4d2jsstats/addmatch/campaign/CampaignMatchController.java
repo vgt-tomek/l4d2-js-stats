@@ -55,8 +55,6 @@ public class CampaignMatchController extends BaseController {
 	
 	private static final String ADDED_PLAYERS_REQUEST_PARAM_KEY = "addedPlayers";
 	
-	private static final int CAMPAIGN_MATCH_TYPE_ID = 1;
-	
 	@Inject
 	private MatchTypeService matchTypeService;
 	
@@ -114,7 +112,7 @@ public class CampaignMatchController extends BaseController {
 		}
 		
 		try {
-			int matchId = matchService.createCampaignMatch(user.getId(), CAMPAIGN_MATCH_TYPE_ID, form);
+			int matchId = matchService.createCampaignMatch(user.getId(), form);
 			String location = String.format("/match/campaign/%d/player/add", matchId);
 			return seeOther(location);
 		} catch (MatchServiceException e) {
