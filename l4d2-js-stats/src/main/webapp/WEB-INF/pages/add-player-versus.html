@@ -33,9 +33,9 @@
 				<select id="add-player-user" name="user" th:include="templates/form :: player-picker (players=${activePlayers}, value=${form.user})"></select>
 			</div>
 			<div>
-				<input id="add-player-team-winner" type="radio" name="win" value="true" />
+				<input id="add-player-team-winner" type="radio" name="win" value="true" th:checked="${form.winner == true}" />
 				<label for="add-player-team-winner">winner team</label>
-				<input id="add-player-team-loser" type="radio" name="win" value="false" />
+				<input id="add-player-team-loser" type="radio" name="win" value="false" th:checked="${form.winner == false}" />
 				<label for="add-player-team-loser">loser team</label>
 			</div>
 			<div>

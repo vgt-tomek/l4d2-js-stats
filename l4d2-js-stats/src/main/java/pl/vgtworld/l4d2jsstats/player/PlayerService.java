@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import pl.vgtworld.l4d2jsstats.match.Match;
 import pl.vgtworld.l4d2jsstats.match.MatchDao;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
+import pl.vgtworld.l4d2jsstats.player.dto.PlayerVersusDto;
 import pl.vgtworld.l4d2jsstats.user.User;
 import pl.vgtworld.l4d2jsstats.user.UserDao;
 
@@ -17,6 +18,9 @@ public class PlayerService {
 	
 	@Inject
 	private PlayerCampaignDao playerCampaignDao;
+	
+	@Inject
+	private PlayerVersusDao playerVersusDao;
 	
 	@Inject
 	private MatchDao matchDao;
@@ -51,9 +55,18 @@ public class PlayerService {
 		playerDao.delete(userId, matchId);
 	}
 	
-	public PlayerCampaignDto[] findPlayersFromMatch(int matchId) {
+	public PlayerCampaignDto[] findPlayersFromCampaignMatch(int matchId) {
 		PlayerCampaign[] players = playerCampaignDao.findByMatch(matchId);
 		PlayerCampaignDto[] dtoList = new PlayerCampaignDto[players.length];
+		for (int i = 0; i < players.length; ++i) {
+			dtoList[i] = mapFrom(players[i]);
+		}
+		return dtoList;
+	}
+	
+	public PlayerVersusDto[] findPlayersFromVersusMatch(int matchId) {
+		PlayerVersus[] players = playerVersusDao.findByMatch(matchId);
+		PlayerVersusDto[] dtoList = new PlayerVersusDto[players.length];
 		for (int i = 0; i < players.length; ++i) {
 			dtoList[i] = mapFrom(players[i]);
 		}
@@ -68,4 +81,13 @@ public class PlayerService {
 		dto.setDeaths(player.getDeaths());
 		return dto;
 	}
+	
+	private PlayerVersusDto mapFrom(PlayerVersus player) {
+		PlayerVersusDto dto = new PlayerVersusDto();
+		dto.setUserId(player.getPlayer().getUser().getId());
+		dto.setName(player.getPlayer().getUser().getLogin());
+		dto.setWinner(player.isWinner());
+		return dto;
+	}
+	
 }

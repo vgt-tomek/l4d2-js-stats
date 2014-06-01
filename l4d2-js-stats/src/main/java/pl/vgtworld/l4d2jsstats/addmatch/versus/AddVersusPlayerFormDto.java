@@ -1,4 +1,4 @@
-package pl.vgtworld.l4d2jsstats.addmatch.campaign;
+package pl.vgtworld.l4d2jsstats.addmatch.versus;
 
 import javax.ws.rs.FormParam;
 
@@ -8,7 +8,7 @@ public class AddVersusPlayerFormDto {
 	private int user;
 	
 	@FormParam("win")
-	private boolean winner;
+	private Boolean winner;
 	
 	public int getUser() {
 		return user;
@@ -18,11 +18,11 @@ public class AddVersusPlayerFormDto {
 		this.user = user;
 	}
 	
-	public boolean isWinner() {
+	public Boolean isWinner() {
 		return winner;
 	}
 	
-	public void setWinner(boolean winner) {
+	public void setWinner(Boolean winner) {
 		this.winner = winner;
 	}
 	

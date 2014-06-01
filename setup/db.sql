@@ -120,3 +120,10 @@ CREATE TABLE `matches_versus` (
 CONSTRAINT `matches_versus_match_id_fkey` FOREIGN KEY (`match_id`) REFERENCES `matches` (`id`)
 ON DELETE CASCADE ON UPDATE CASCADE
 )engine=innodb;
+
+CREATE TABLE `players_versus` (
+`player_id` INT UNSIGNED NOT NULL PRIMARY KEY,
+`winner` BOOLEAN NOT NULL,
+CONSTRAINT `players_versus_player_id_fkey` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`)
+ON DELETE CASCADE ON UPDATE CASCADE
+)engine=innodb;

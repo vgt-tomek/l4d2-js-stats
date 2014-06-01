@@ -19,12 +19,14 @@ import org.slf4j.LoggerFactory;
 
 import pl.vgtworld.l4d2jsstats.App;
 import pl.vgtworld.l4d2jsstats.BaseController;
-import pl.vgtworld.l4d2jsstats.addmatch.campaign.AddVersusPlayerFormDto;
 import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.MatchServiceException;
+import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
+import pl.vgtworld.l4d2jsstats.player.PlayerService;
+import pl.vgtworld.l4d2jsstats.player.dto.PlayerVersusDto;
 import pl.vgtworld.l4d2jsstats.user.UserService;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
@@ -46,6 +48,9 @@ public class VersusMatchController extends BaseController {
 	
 	@Inject
 	private MatchService matchService;
+	
+	@Inject
+	private PlayerService playerService;
 	
 	@Inject
 	private UserService userService;
@@ -112,4 +117,31 @@ public class VersusMatchController extends BaseController {
 		return Response.ok(render("add-player-versus")).build();
 	}
 	
+	@POST
+	@Path("/versus/{matchId}/player/add")
+	@Produces(MediaType.TEXT_HTML)
+	public Response submitPlayer(@Form AddVersusPlayerFormDto form, @PathParam("matchId") int matchId) {
+		setPageTitle("Manage players");
+		VersusMatchDto match = matchService.findVersusById(matchId);
+		if (match == null) {
+			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
+		}
+		UserDto[] activePlayers = userService.findActiveUsers();
+		PlayerVersusDto[] addedPlayers = playerService.findPlayersFromVersusMatch(matchId);
+		
+		AddVersusPlayerValidator validator = new AddVersusPlayerValidator();
+		boolean validationResult = validator.validate(form, activePlayers, addedPlayers);
+		
+		if (validationResult) {
+			//TODO Store player in database.
+			request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddVersusPlayerFormDto());
+		} else {
+			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
+			request.setAttribute("errors", validator.getErrors());
+		}
+		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
+		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
+		
+		return Response.ok(render("add-player-versus")).build();
+	}
 }
