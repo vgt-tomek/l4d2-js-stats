@@ -51,6 +51,27 @@ public class PlayerService {
 		playerCampaignDao.add(campaignPlayer);
 	}
 	
+	public void addUserToVersusMatch(int matchId, int userId, boolean winner) throws PlayerServiceException {
+		Match match = matchDao.findById(matchId);
+		User user = userDao.findById(userId);
+		if (match == null) {
+			throw new PlayerServiceException("Can't find match with specified ID.");
+		}
+		if (user == null) {
+			throw new PlayerServiceException("Can't find user with specified ID.");
+		}
+		
+		Player player = new Player();
+		player.setMatch(match);
+		player.setUser(user);
+		playerDao.add(player);
+		
+		PlayerVersus versusPlayer = new PlayerVersus();
+		versusPlayer.setPlayer(player);
+		versusPlayer.setWinner(winner);
+		playerVersusDao.add(versusPlayer);
+	}
+	
 	public void deleteUserFromMatch(int userId, int matchId) {
 		playerDao.delete(userId, matchId);
 	}

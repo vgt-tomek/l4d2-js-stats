@@ -23,9 +23,9 @@ import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.MatchServiceException;
-import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
 import pl.vgtworld.l4d2jsstats.player.PlayerService;
+import pl.vgtworld.l4d2jsstats.player.PlayerServiceException;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerVersusDto;
 import pl.vgtworld.l4d2jsstats.user.UserService;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
@@ -38,9 +38,9 @@ public class VersusMatchController extends BaseController {
 	private static final String MAPS_REQUEST_PARAM_KEY = "maps";
 	
 	private static final String FORM_REQUEST_PARAM_KEY = "form";
-
+	
 	private static final String MATCH_REQUEST_PARAM_KEY = "match";
-
+	
 	private static final String ACTIVE_PLAYERS_REQUEST_PARAM_KEY = "activePlayers";
 	
 	@Inject
@@ -132,16 +132,22 @@ public class VersusMatchController extends BaseController {
 		AddVersusPlayerValidator validator = new AddVersusPlayerValidator();
 		boolean validationResult = validator.validate(form, activePlayers, addedPlayers);
 		
-		if (validationResult) {
-			//TODO Store player in database.
-			request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddVersusPlayerFormDto());
-		} else {
-			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
-			request.setAttribute("errors", validator.getErrors());
+		try {
+			if (validationResult) {
+				playerService.addUserToVersusMatch(match.getId(), form.getUser(), form.isWinner());
+				request.setAttribute(FORM_REQUEST_PARAM_KEY, new AddVersusPlayerFormDto());
+			} else {
+				request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
+				request.setAttribute("errors", validator.getErrors());
+			}
+			request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
+			request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
+			
+			return Response.ok(render("add-player-versus")).build();
+		} catch (PlayerServiceException e) {
+			LOGGER.warn("Exception while trying to add player to match ({}).", e.getMessage());
+			request.setAttribute("message", e.getMessage());
+			return Response.ok(render("errors/unexpected-exception")).build();
 		}
-		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
-		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
-		
-		return Response.ok(render("add-player-versus")).build();
 	}
 }
