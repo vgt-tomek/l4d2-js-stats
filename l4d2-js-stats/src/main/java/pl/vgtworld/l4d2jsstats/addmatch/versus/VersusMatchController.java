@@ -4,9 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -21,6 +23,7 @@ import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.MatchServiceException;
+import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
 @Path("/match")
@@ -31,6 +34,8 @@ public class VersusMatchController extends BaseController {
 	private static final String MAPS_REQUEST_PARAM_KEY = "maps";
 	
 	private static final String FORM_REQUEST_PARAM_KEY = "form";
+
+	private static final String MATCH_REQUEST_PARAM_KEY = "match";
 	
 	@Inject
 	private GameMapService mapService;
@@ -56,7 +61,7 @@ public class VersusMatchController extends BaseController {
 	@POST
 	@Path("/add/versus")
 	@Produces(MediaType.TEXT_HTML)
-	public String submitMatch(@Form AddVersusMatchFormDto form) {
+	public Response submitMatch(@Form AddVersusMatchFormDto form) {
 		GameMapDto[] maps = mapService.findAll();
 		UserDto user = getLoggedUser();
 		
@@ -67,17 +72,33 @@ public class VersusMatchController extends BaseController {
 			request.setAttribute(MAPS_REQUEST_PARAM_KEY, maps);
 			request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 			request.setAttribute("errors", validator.getErrors());
-			return render("add-match-versus");
+			return Response.ok(render("add-match-versus")).build();
 		}
 		
 		try {
-			matchService.createVersusMatch(user.getId(), form);
-			// TODO Redirect to player management page.
-			return null;
+			int matchId = matchService.createVersusMatch(user.getId(), form);
+			String location = String.format("/match/versus/%d/player/add", matchId);
+			return seeOther(location);
 		} catch (MatchServiceException e) {
 			LOGGER.warn("Exception while trying to create match ({}).", e.getMessage());
 			request.setAttribute("message", e.getMessage());
-			return render("errors/unexpected-exception");
+			return Response.ok(render("errors/unexpected-exception")).build();
 		}
 	}
+	
+	@GET
+	@Path("/versus/{matchId}/player/add")
+	@Produces(MediaType.TEXT_HTML)
+	public Response getPlayerForm(@PathParam("matchId") int matchId) {
+		setPageTitle("Manage players");
+		VersusMatchDto match = matchService.findVersusById(matchId);
+		if (match == null) {
+			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
+		}
+		
+		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
+		
+		return Response.ok(render("add-player-versus")).build();
+	}
+	
 }

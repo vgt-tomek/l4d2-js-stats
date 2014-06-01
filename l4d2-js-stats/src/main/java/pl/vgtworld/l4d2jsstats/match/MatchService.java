@@ -10,6 +10,7 @@ import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevelDao;
 import pl.vgtworld.l4d2jsstats.map.GameMap;
 import pl.vgtworld.l4d2jsstats.map.GameMapDao;
 import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
+import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
 import pl.vgtworld.l4d2jsstats.user.User;
 import pl.vgtworld.l4d2jsstats.user.UserDao;
 
@@ -39,6 +40,14 @@ public class MatchService {
 	
 	public CampaignMatchDto findCampaignById(int matchId) {
 		MatchCampaign match = matchCampaignDao.findById(matchId);
+		if (match == null) {
+			return null;
+		}
+		return mapFrom(match);
+	}
+	
+	public VersusMatchDto findVersusById(int matchId) {
+		MatchVersus match = matchVersusDao.findById(matchId);
 		if (match == null) {
 			return null;
 		}
@@ -122,6 +131,18 @@ public class MatchService {
 		dto.setTotalTime(match.getTime());
 		dto.setDifficultyName(match.getDifficulty().getName());
 		dto.setRestarts(match.getRestarts());
+		return dto;
+	}
+	
+	private VersusMatchDto mapFrom(MatchVersus match) {
+		VersusMatchDto dto = new VersusMatchDto();
+		dto.setId(match.getMatch().getId());
+		dto.setOwnerId(match.getMatch().getOwner().getId());
+		dto.setMapId(match.getMatch().getMap().getId());
+		dto.setMapName(match.getMatch().getMap().getName());
+		dto.setPlayedAt(match.getMatch().getPlayedAt());
+		dto.setWinnerPoints(match.getWinnerPoints());
+		dto.setLoserPoints(match.getLoserPoints());
 		return dto;
 	}
 	

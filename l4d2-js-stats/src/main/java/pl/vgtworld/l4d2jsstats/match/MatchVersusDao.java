@@ -14,4 +14,8 @@ public class MatchVersusDao {
 		em.persist(match);
 	}
 	
+	public MatchVersus findById(int matchId) {
+		return em.find(MatchVersus.class, matchId);
+	}
+	
 }

@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/head :: default"></head>
+<body>
+	<div th:replace="templates/header :: default"></div>
+	<div id="content">
+		<h2>Match summary</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Map</th>
+					<th>Played at</th>
+					<th>Winner team points</th>
+					<th>Loser team points</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td th:text="${match.mapName}"></td>
+					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
+					<td th:text="${match.winnerPoints}"></td>
+					<td th:text="${match.loserPoints}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+	<div th:replace="templates/footer :: copyright" ></div>
+</body>
+</html>
