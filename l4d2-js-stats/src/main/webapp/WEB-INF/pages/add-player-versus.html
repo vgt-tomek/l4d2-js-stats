@@ -29,12 +29,19 @@
 				<tr>
 					<th>Player</th>
 					<th>Team</th>
+					<th>Options</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="player : ${addedPlayers}">
 					<td th:text="${player.name}"></td>
 					<td th:text="${player.winner ? 'Winner' : 'Loser'}"></td>
+					<td>
+						<form method="POST" th:action="${'/match/versus/' + match.id + '/player/delete'}">
+							<input type="hidden" name="user" th:value="${player.userId}" />
+							<input type="submit" name="player-delete" value="Delete" />
+						</form>
+					</td>
 				</tr>
 			</tbody>
 		</table>
