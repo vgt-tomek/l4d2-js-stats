@@ -6,6 +6,7 @@ import java.util.List;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerVersusDto;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
+//TODO A lot of code copied from AddCampaignPlayerValidator. Refactor both validators to extend base class with common code.
 public class AddVersusPlayerValidator {
 	
 	public enum ErrorMessages {
