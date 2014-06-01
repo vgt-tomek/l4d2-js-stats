@@ -23,6 +23,26 @@
 			</tbody>
 		</table>
 		
+		<h2>Add player</h2>
+		<form method="POST" action="">
+			<div class="errors" th:if="${errors != null}">
+				<p class="error" th:each="error : ${errors}" th:text="${error}"></p>
+			</div>
+			<div>
+				<label for="add-player-user">User:</label>
+				<select id="add-player-user" name="user" th:include="templates/form :: player-picker (players=${activePlayers}, value='0')"></select>
+			</div>
+			<div>
+				<input id="add-player-team-winner" type="radio" name="win" value="true" />
+				<label for="add-player-team-winner">winner team</label>
+				<input id="add-player-team-loser" type="radio" name="win" value="false" />
+				<label for="add-player-team-loser">loser team</label>
+			</div>
+			<div>
+				<input type="submit" name="add-player-submit" value="Add player" />
+			</div>
+		</form>
+		
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>

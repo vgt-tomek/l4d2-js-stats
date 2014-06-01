@@ -24,6 +24,7 @@ import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.MatchServiceException;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
+import pl.vgtworld.l4d2jsstats.user.UserService;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
 @Path("/match")
@@ -36,12 +37,17 @@ public class VersusMatchController extends BaseController {
 	private static final String FORM_REQUEST_PARAM_KEY = "form";
 
 	private static final String MATCH_REQUEST_PARAM_KEY = "match";
+
+	private static final String ACTIVE_PLAYERS_REQUEST_PARAM_KEY = "activePlayers";
 	
 	@Inject
 	private GameMapService mapService;
 	
 	@Inject
 	private MatchService matchService;
+	
+	@Inject
+	private UserService userService;
 	
 	@GET
 	@Path("/add/versus")
@@ -95,8 +101,10 @@ public class VersusMatchController extends BaseController {
 		if (match == null) {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
+		UserDto[] activePlayers = userService.findActiveUsers();
 		
 		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
+		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
 		
 		return Response.ok(render("add-player-versus")).build();
 	}
