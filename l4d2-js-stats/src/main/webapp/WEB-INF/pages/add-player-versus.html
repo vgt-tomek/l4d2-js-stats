@@ -30,7 +30,7 @@
 			</div>
 			<div>
 				<label for="add-player-user">User:</label>
-				<select id="add-player-user" name="user" th:include="templates/form :: player-picker (players=${activePlayers}, value='0')"></select>
+				<select id="add-player-user" name="user" th:include="templates/form :: player-picker (players=${activePlayers}, value=${form.user})"></select>
 			</div>
 			<div>
 				<input id="add-player-team-winner" type="radio" name="win" value="true" />

@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import pl.vgtworld.l4d2jsstats.App;
 import pl.vgtworld.l4d2jsstats.BaseController;
+import pl.vgtworld.l4d2jsstats.addmatch.campaign.AddVersusPlayerFormDto;
 import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
@@ -102,9 +103,11 @@ public class VersusMatchController extends BaseController {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
 		UserDto[] activePlayers = userService.findActiveUsers();
+		AddVersusPlayerFormDto form = new AddVersusPlayerFormDto();
 		
 		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
 		request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
+		request.setAttribute(FORM_REQUEST_PARAM_KEY, form);
 		
 		return Response.ok(render("add-player-versus")).build();
 	}
