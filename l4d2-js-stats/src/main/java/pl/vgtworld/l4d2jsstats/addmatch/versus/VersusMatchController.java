@@ -1,7 +1,9 @@
 package pl.vgtworld.l4d2jsstats.addmatch.versus;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -111,6 +113,7 @@ public class VersusMatchController extends BaseController {
 		}
 		UserDto[] activePlayers = userService.findActiveUsers();
 		PlayerVersusDto[] addedPlayers = playerService.findPlayersFromVersusMatch(matchId);
+		activePlayers = filterNotAddedPlayers(activePlayers, addedPlayers);
 		AddVersusPlayerFormDto form = new AddVersusPlayerFormDto();
 		
 		request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
@@ -146,6 +149,7 @@ public class VersusMatchController extends BaseController {
 				request.setAttribute("errors", validator.getErrors());
 			}
 			request.setAttribute(MATCH_REQUEST_PARAM_KEY, match);
+			activePlayers = filterNotAddedPlayers(activePlayers, addedPlayers);
 			request.setAttribute(ACTIVE_PLAYERS_REQUEST_PARAM_KEY, activePlayers);
 			request.setAttribute(ADDED_PLAYERS_REQUEST_PARAM_KEY, addedPlayers);
 			
@@ -156,4 +160,20 @@ public class VersusMatchController extends BaseController {
 			return Response.ok(render("errors/unexpected-exception")).build();
 		}
 	}
+	
+	//TODO Almost exact copy of the same method in CampaignMatchController. Refactor into utility method.
+	private UserDto[] filterNotAddedPlayers(UserDto[] userList, PlayerVersusDto[] addedPlayers) {
+		List<UserDto> filteredList = new ArrayList<>();
+		List<Integer> addedPlayersId = new ArrayList<>();
+		for (PlayerVersusDto player : addedPlayers) {
+			addedPlayersId.add(player.getUserId());
+		}
+		for (UserDto user : userList) {
+			if (!addedPlayersId.contains(user.getId())) {
+				filteredList.add(user);
+			}
+		}
+		return filteredList.toArray(new UserDto[filteredList.size()]);
+	}
+	
 }
