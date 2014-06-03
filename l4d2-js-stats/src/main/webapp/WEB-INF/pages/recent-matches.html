@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="templates/head :: default"></head>
+<body>
+	<div th:replace="templates/header :: default"></div>
+	<div id="content">
+		<h1>Recent matches</h1>
+		
+		<table>
+			<thead>
+				<tr>
+					<th>Played at</th>
+					<th>Match type</th>
+					<th>Map</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="match : ${recentMatches}">
+					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
+					<td th:text="${match.type}"></td>
+					<td th:text="${match.mapName}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div th:replace="templates/footer :: copyright" ></div>
+</body>
+</html>

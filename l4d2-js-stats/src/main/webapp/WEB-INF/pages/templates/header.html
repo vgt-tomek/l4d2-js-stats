@@ -8,6 +8,7 @@
 		</p>
 		<ul class="#main-menu">
 			<li><a href="/">Home</a></li>
+			<li><a href="/recent-matches">Recent matches</a></li>
 			<li th:if="${user != null}"><a href="/match/add/picker">Add match</a></li>
 			<li th:if="${user == null}"><a href="/login">Login</a></li>
 			<li th:if="${user == null}"><a href="/register">Register</a></li>

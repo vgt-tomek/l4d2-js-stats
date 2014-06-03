@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import pl.vgtworld.l4d2jsstats.map.GameMap;
@@ -16,7 +18,13 @@ import pl.vgtworld.l4d2jsstats.user.User;
 
 @Entity
 @Table(name = "matches")
+@NamedQueries({
+		@NamedQuery(name = Match.QUERY_FIND_RECENT,
+			query = "SELECT m FROM Match m WHERE m.active = TRUE ORDER BY m.id")
+})
 public class Match {
+	
+	public static final String QUERY_FIND_RECENT = "Match.findRecent";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
