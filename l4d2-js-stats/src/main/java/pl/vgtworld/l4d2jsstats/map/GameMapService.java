@@ -11,6 +11,14 @@ public class GameMapService {
 	@Inject
 	private GameMapDao dao;
 	
+	public GameMapDto findById(int mapId) {
+		GameMap map = dao.findById(mapId);
+		if (map == null) {
+			return null;
+		}
+		return mapFrom(map);
+	}
+	
 	public GameMapDto[] findAll() {
 		GameMap[] maps = dao.findAll();
 		GameMapDto[] dtoList = new GameMapDto[maps.length];

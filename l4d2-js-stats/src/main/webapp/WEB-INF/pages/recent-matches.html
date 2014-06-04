@@ -17,7 +17,9 @@
 				<tr th:each="match : ${recentMatches}">
 					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
 					<td th:text="${match.type}"></td>
-					<td th:text="${match.mapName}"></td>
+					<td>
+						<a th:href="${'/map/' + match.mapId}" th:text="${match.mapName}"></a>
+					</td>
 				</tr>
 			</tbody>
 		</table>
