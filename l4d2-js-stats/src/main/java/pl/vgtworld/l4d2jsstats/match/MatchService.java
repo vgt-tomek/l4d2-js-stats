@@ -131,6 +131,15 @@ public class MatchService {
 		return dtoList;
 	}
 	
+	public RecentMatchDto[] findRecentMatchesFromMap(int mapId, int count) {
+		Match[] recentMatches = matchDao.findRecentMatchesFromMap(mapId, count);
+		RecentMatchDto[] dtoList = new RecentMatchDto[recentMatches.length];
+		for (int i = 0; i < recentMatches.length; ++i) {
+			dtoList[i] = mapFrom(recentMatches[i]);
+		}
+		return dtoList;
+	}
+	
 	private CampaignMatchDto mapFrom(MatchCampaign match) {
 		CampaignMatchDto dto = new CampaignMatchDto();
 		dto.setId(match.getMatch().getId());

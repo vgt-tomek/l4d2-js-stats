@@ -28,4 +28,14 @@ public class MatchDao {
 		List<Match> result = query.getResultList();
 		return result.toArray(new Match[result.size()]);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Match[] findRecentMatchesFromMap(int mapId, int count) {
+		Query query = em.createNamedQuery(Match.QUERY_FIND_RECENT_FROM_MAP);
+		query.setParameter("mapId", mapId);
+		query.setMaxResults(count);
+		List<Match> result = query.getResultList();
+		return result.toArray(new Match[result.size()]);
+	}
+	
 }

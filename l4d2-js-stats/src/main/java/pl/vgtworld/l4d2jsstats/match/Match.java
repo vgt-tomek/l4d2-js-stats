@@ -20,11 +20,15 @@ import pl.vgtworld.l4d2jsstats.user.User;
 @Table(name = "matches")
 @NamedQueries({
 		@NamedQuery(name = Match.QUERY_FIND_RECENT,
-			query = "SELECT m FROM Match m WHERE m.active = TRUE ORDER BY m.id")
+			query = "SELECT m FROM Match m WHERE m.active = TRUE ORDER BY m.id"),
+		@NamedQuery(name = Match.QUERY_FIND_RECENT_FROM_MAP,
+			query = "SELECT m FROM Match m WHERE m.active = TRUE AND m.map.id = :mapId ORDER BY m.id")
 })
 public class Match {
 	
 	public static final String QUERY_FIND_RECENT = "Match.findRecent";
+	
+	public static final String QUERY_FIND_RECENT_FROM_MAP = "Match.findRecentFromMap";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

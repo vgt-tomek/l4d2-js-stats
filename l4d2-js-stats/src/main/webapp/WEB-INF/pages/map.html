@@ -5,6 +5,22 @@
 	<div id="content">
 		<h1 th:text="${map.name + ' statistics'}"></h1>
 		
+		<h2>Recent matches</h2>
+		
+		<table>
+			<thead>
+				<tr>
+					<th>Played at</th>
+					<th>Match type</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="match : ${recentMatches}">
+					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
+					<td th:text="${match.type}"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>
