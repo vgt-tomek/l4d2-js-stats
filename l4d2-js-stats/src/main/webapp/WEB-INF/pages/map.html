@@ -12,12 +12,16 @@
 				<tr>
 					<th>Played at</th>
 					<th>Match type</th>
+					<th>Links</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="match : ${recentMatches}">
 					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
 					<td th:text="${match.type}"></td>
+					<td>
+						<a th:href="${'/match/' + match.id + '/' + match.typeIdentifier}">Details</a>
+					</td>
 				</tr>
 			</tbody>
 		</table>

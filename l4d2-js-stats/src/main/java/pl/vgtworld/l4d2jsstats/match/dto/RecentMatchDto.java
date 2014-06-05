@@ -8,6 +8,8 @@ public class RecentMatchDto {
 	
 	private String type;
 	
+	private String typeIdentifier;
+	
 	private int mapId;
 	
 	private String mapName;
@@ -30,6 +32,14 @@ public class RecentMatchDto {
 		this.type = type;
 	}
 	
+	public String getTypeIdentifier() {
+		return typeIdentifier;
+	}
+
+	public void setTypeIdentifier(String typeIdentifier) {
+		this.typeIdentifier = typeIdentifier;
+	}
+
 	public int getMapId() {
 		return mapId;
 	}

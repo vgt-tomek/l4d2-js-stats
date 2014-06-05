@@ -8,9 +8,11 @@
 		<table>
 			<thead>
 				<tr>
+					<th></th>
 					<th>Played at</th>
 					<th>Match type</th>
 					<th>Map</th>
+					<th>Links</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -19,6 +21,9 @@
 					<td th:text="${match.type}"></td>
 					<td>
 						<a th:href="${'/map/' + match.mapId}" th:text="${match.mapName}"></a>
+					</td>
+					<td>
+						<a th:href="${'/match/' + match.id + '/' + match.typeIdentifier}">Details</a>
 					</td>
 				</tr>
 			</tbody>

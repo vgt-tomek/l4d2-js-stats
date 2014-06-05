@@ -169,6 +169,7 @@ public class MatchService {
 		RecentMatchDto dto = new RecentMatchDto();
 		dto.setId(match.getId());
 		dto.setType(match.getMatchType().getName());
+		dto.setTypeIdentifier(match.getMatchType().getIdentifier());
 		dto.setMapId(match.getMap().getId());
 		dto.setMapName(match.getMap().getName());
 		dto.setPlayedAt(match.getPlayedAt());
