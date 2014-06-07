@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 import pl.vgtworld.l4d2jsstats.BaseController;
 import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
+import pl.vgtworld.l4d2jsstats.map.dto.GameMapGeneralStatisticsDto;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
 
@@ -36,6 +37,9 @@ public class MapStats extends BaseController {
 		
 		setPageTitle(String.format("%s statistics", map.getName()));
 		request.setAttribute("map", map);
+		
+		GameMapGeneralStatisticsDto mapStatistics = mapService.getMapStatistics(mapId);
+		request.setAttribute("mapStatistics", mapStatistics);
 		
 		RecentMatchDto[] recentMatches = matchService.findRecentMatchesFromMap(map.getId(), RECENT_MATCHES_COUNT);
 		request.setAttribute("recentMatches", recentMatches);

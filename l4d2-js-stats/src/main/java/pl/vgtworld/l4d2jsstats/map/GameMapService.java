@@ -4,12 +4,17 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
+import pl.vgtworld.l4d2jsstats.map.dto.GameMapGeneralStatisticsDto;
+import pl.vgtworld.l4d2jsstats.match.MatchDao;
 
 @Stateless
 public class GameMapService {
 	
 	@Inject
 	private GameMapDao dao;
+	
+	@Inject
+	private MatchDao matchDao;
 	
 	public GameMapDto findById(int mapId) {
 		GameMap map = dao.findById(mapId);
@@ -26,6 +31,16 @@ public class GameMapService {
 			dtoList[i] = mapFrom(maps[i]);
 		}
 		return dtoList;
+	}
+	
+	public GameMapGeneralStatisticsDto getMapStatistics(int mapId) {
+		GameMapGeneralStatisticsDto dto = new GameMapGeneralStatisticsDto();
+		if (dao.findById(mapId) == null) {
+			return dto;
+		}
+		long totalMatchesPlayed = matchDao.getTotalMatchesPlayedOnMap(mapId);
+		dto.setTotalMatchesPlayed(totalMatchesPlayed);
+		return dto;
 	}
 	
 	private GameMapDto mapFrom(GameMap map) {

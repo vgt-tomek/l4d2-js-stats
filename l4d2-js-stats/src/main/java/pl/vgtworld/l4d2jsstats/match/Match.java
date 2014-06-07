@@ -22,13 +22,17 @@ import pl.vgtworld.l4d2jsstats.user.User;
 		@NamedQuery(name = Match.QUERY_FIND_RECENT,
 			query = "SELECT m FROM Match m WHERE m.active = TRUE ORDER BY m.id"),
 		@NamedQuery(name = Match.QUERY_FIND_RECENT_FROM_MAP,
-			query = "SELECT m FROM Match m WHERE m.active = TRUE AND m.map.id = :mapId ORDER BY m.id")
+			query = "SELECT m FROM Match m WHERE m.active = TRUE AND m.map.id = :mapId ORDER BY m.id"),
+		@NamedQuery(name = Match.QUERY_TOTAL_MATCHES_PLAYED_ON_MAP,
+			query = "SELECT COUNT(m) FROM Match m WHERE m.map.id = :mapId AND m.active = TRUE")
 })
 public class Match {
 	
 	public static final String QUERY_FIND_RECENT = "Match.findRecent";
 	
 	public static final String QUERY_FIND_RECENT_FROM_MAP = "Match.findRecentFromMap";
+	
+	public static final String QUERY_TOTAL_MATCHES_PLAYED_ON_MAP = "Match.totalMatchesPlayedOnMap";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

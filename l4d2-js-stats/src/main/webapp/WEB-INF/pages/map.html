@@ -5,8 +5,21 @@
 	<div id="content">
 		<h1 th:text="${map.name + ' statistics'}"></h1>
 		
-		<h2>Recent matches</h2>
+		<h2>General statistics</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Total matches played</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td th:text="${mapStatistics.totalMatchesPlayed}"></td>
+				</tr>
+			</tbody>
+		</table>
 		
+		<h2>Recent matches</h2>
 		<table>
 			<thead>
 				<tr>
