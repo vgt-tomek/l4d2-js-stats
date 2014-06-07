@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapGeneralStatisticsDto;
 import pl.vgtworld.l4d2jsstats.match.MatchDao;
+import pl.vgtworld.l4d2jsstats.match.MatchVersusDao;
 
 @Stateless
 public class GameMapService {
@@ -15,6 +16,9 @@ public class GameMapService {
 	
 	@Inject
 	private MatchDao matchDao;
+	
+	@Inject
+	private MatchVersusDao versusDao;
 	
 	public GameMapDto findById(int mapId) {
 		GameMap map = dao.findById(mapId);
@@ -40,6 +44,8 @@ public class GameMapService {
 		}
 		long totalMatchesPlayed = matchDao.getTotalMatchesPlayedOnMap(mapId);
 		dto.setTotalMatchesPlayed(totalMatchesPlayed);
+		int topWinnerPoints = versusDao.getTopWinnerPointsOnMap(mapId);
+		dto.setTopVersusPoints(topWinnerPoints);
 		return dto;
 	}
 	

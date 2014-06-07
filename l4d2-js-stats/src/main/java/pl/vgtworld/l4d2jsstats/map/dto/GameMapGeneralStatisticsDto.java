@@ -10,7 +10,7 @@ public class GameMapGeneralStatisticsDto {
 	
 	private float averageVersusPoints;
 	
-	private float topVersusPoints;
+	private int topVersusPoints;
 	
 	public long getTotalMatchesPlayed() {
 		return totalMatchesPlayed;
@@ -44,11 +44,11 @@ public class GameMapGeneralStatisticsDto {
 		this.averageVersusPoints = averageVersusPoints;
 	}
 	
-	public float getTopVersusPoints() {
+	public int getTopVersusPoints() {
 		return topVersusPoints;
 	}
 	
-	public void setTopVersusPoints(float topVersusPoints) {
+	public void setTopVersusPoints(int topVersusPoints) {
 		this.topVersusPoints = topVersusPoints;
 	}
 	
