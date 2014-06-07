@@ -24,6 +24,24 @@
 				</tr>
 			</tbody>
 		</table>
+		
+		<h2>Players</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Survived</th>
+					<th>Deaths</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="player : ${players}">
+					<td th:text="${player.name}"></td>
+					<td th:text="${player.survived ? 'yes' : 'no'}"></td>
+					<td th:text="${player.deaths}"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>

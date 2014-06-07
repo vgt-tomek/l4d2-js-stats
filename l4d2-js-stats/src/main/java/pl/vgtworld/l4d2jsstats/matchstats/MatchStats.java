@@ -11,17 +11,24 @@ import pl.vgtworld.l4d2jsstats.BaseController;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
+import pl.vgtworld.l4d2jsstats.player.PlayerService;
+import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 
 @Path("/match/{matchId}")
 public class MatchStats extends BaseController {
 	
 	private static final String MATCH_REQUEST_KEY = "match";
 	
+	private static final String PLAYERS_REQUEST_KEY = "players";
+	
 	@PathParam("matchId")
 	private int matchId;
 	
 	@Inject
 	private MatchService matchService;
+	
+	@Inject
+	private PlayerService playerService;
 	
 	@GET
 	@Path("/campaign")
@@ -30,8 +37,10 @@ public class MatchStats extends BaseController {
 		if (match == null) {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
+		PlayerCampaignDto[] players = playerService.findPlayersFromCampaignMatch(matchId);
 		
 		request.setAttribute(MATCH_REQUEST_KEY, match);
+		request.setAttribute(PLAYERS_REQUEST_KEY, players);
 		return Response.ok(render("match-campaign")).build();
 	}
 	
