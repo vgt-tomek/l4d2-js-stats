@@ -25,6 +25,22 @@
 				</tr>
 			</tbody>
 		</table>
+		
+		<h2>Players</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Team</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="player : ${players}">
+					<td th:text="${player.name}"></td>
+					<td th:text="${player.winner ? 'Winner' : 'Loser'}"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>

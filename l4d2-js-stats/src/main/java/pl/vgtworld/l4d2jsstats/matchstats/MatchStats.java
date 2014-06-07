@@ -13,6 +13,7 @@ import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
 import pl.vgtworld.l4d2jsstats.player.PlayerService;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
+import pl.vgtworld.l4d2jsstats.player.dto.PlayerVersusDto;
 
 @Path("/match/{matchId}")
 public class MatchStats extends BaseController {
@@ -51,8 +52,10 @@ public class MatchStats extends BaseController {
 		if (match == null) {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
+		PlayerVersusDto[] players = playerService.findPlayersFromVersusMatch(matchId);
 		
 		request.setAttribute(MATCH_REQUEST_KEY, match);
+		request.setAttribute(PLAYERS_REQUEST_KEY, players);
 		return Response.ok(render("match-versus")).build();
 	}
 	
