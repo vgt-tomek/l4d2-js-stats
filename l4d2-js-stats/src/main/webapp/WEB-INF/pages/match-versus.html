@@ -4,6 +4,27 @@
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
 		<h1>Versus match statistics</h1>
+		
+		<h2>General statistics</h2>
+		
+		<table>
+			<thead>
+				<tr>
+					<th>Map name</th>
+					<th>Played at</th>
+					<th>Winner team points</th>
+					<th>Loser team points</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td th:text="${match.mapName}"></td>
+					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
+					<td th:text="${match.winnerPoints}"></td>
+					<td th:text="${match.loserPoints}"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>
