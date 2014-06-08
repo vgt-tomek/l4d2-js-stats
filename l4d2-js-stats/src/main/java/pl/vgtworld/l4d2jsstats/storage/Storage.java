@@ -1,6 +1,8 @@
 package pl.vgtworld.l4d2jsstats.storage;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -15,6 +17,19 @@ public class Storage {
 	private static final String MATCH_SCREENSHOT_SUBFOLDER = "match-screenshots";
 	
 	private File matchScreenshotsDirectory;
+	
+	public void saveMatchScreenshot(byte[] bytes, String name) throws IOException {
+		FileOutputStream fos = null;
+		try {
+			File file = new File(matchScreenshotsDirectory, name);
+			fos = new FileOutputStream(file);
+			fos.write(bytes);
+		} finally {
+			if (fos != null) {
+				fos.close();
+			}
+		}
+	}
 	
 	@PostConstruct
 	private void init() {

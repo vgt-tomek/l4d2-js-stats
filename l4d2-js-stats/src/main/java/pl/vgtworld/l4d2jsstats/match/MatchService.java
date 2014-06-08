@@ -1,5 +1,7 @@
 package pl.vgtworld.l4d2jsstats.match;
 
+import java.io.IOException;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -12,6 +14,7 @@ import pl.vgtworld.l4d2jsstats.map.GameMapDao;
 import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
+import pl.vgtworld.l4d2jsstats.storage.Storage;
 import pl.vgtworld.l4d2jsstats.user.User;
 import pl.vgtworld.l4d2jsstats.user.UserDao;
 
@@ -35,6 +38,9 @@ public class MatchService {
 	
 	@Inject
 	private MatchTypeDao matchTypeDao;
+	
+	@Inject
+	private Storage storage;
 	
 	@Inject
 	private DifficultyLevelDao difficultyDao;
@@ -89,6 +95,15 @@ public class MatchService {
 		campaign.setRestarts(form.getRestarts());
 		campaign.setDifficulty(difficulty);
 		matchCampaignDao.add(campaign);
+		
+		try {
+			if (form.getImage().length > 0) {
+				storage.saveMatchScreenshot(form.getImage(), "" + match.getId());
+			}
+		} catch (IOException e) {
+			// TODO Remove created match from database.
+			throw new MatchServiceException("Unexpected error while trying to save image attachment.", e);
+		}
 		
 		return match.getId();
 	}
