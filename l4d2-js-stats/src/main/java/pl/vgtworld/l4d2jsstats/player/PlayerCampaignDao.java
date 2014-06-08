@@ -37,4 +37,10 @@ public class PlayerCampaignDao {
 		return (long) (query.getSingleResult());
 	}
 	
+	public long getTotalDeathCountOnCampaignMap(int mapId) {
+		Query query = em.createNamedQuery(PlayerCampaign.QUERY_COUNT_PLAYER_DEATHS_FOR_MAP);
+		query.setParameter("mapId", mapId);
+		return (long) (query.getSingleResult());
+	}
+	
 }

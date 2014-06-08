@@ -52,6 +52,8 @@ public class GameMapService {
 		dto.setTopVersusPoints(topWinnerPoints);
 		float survivalPercentage = calculateSurvivalPercentageForMap(mapId);
 		dto.setCampaignSurvivalPercentage(survivalPercentage);
+		float averageDeathPerMatch = calculateAverageDeathCount(mapId, totalMatchesPlayed);
+		dto.setAverageCampaignDeathCount(averageDeathPerMatch);
 		return dto;
 	}
 	
@@ -68,6 +70,12 @@ public class GameMapService {
 		long totalCount = playerCampaignDao.getTotalPlayersCountOnCampaignMap(mapId);
 		float survivalPercentage = (survivedCount * 100) / (float) totalCount;
 		return survivalPercentage;
+	}
+	
+	private float calculateAverageDeathCount(int mapId, long totalMatchesPlayed) {
+		long totalDeaths = playerCampaignDao.getTotalDeathCountOnCampaignMap(mapId);
+		float averageDeathPerMatch = totalDeaths / (float) totalMatchesPlayed;
+		return averageDeathPerMatch;
 	}
 	
 }
