@@ -7,6 +7,7 @@ import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapGeneralStatisticsDto;
 import pl.vgtworld.l4d2jsstats.match.MatchDao;
 import pl.vgtworld.l4d2jsstats.match.MatchVersusDao;
+import pl.vgtworld.l4d2jsstats.player.PlayerCampaignDao;
 
 @Stateless
 public class GameMapService {
@@ -19,6 +20,9 @@ public class GameMapService {
 	
 	@Inject
 	private MatchVersusDao versusDao;
+	
+	@Inject
+	private PlayerCampaignDao playerCampaignDao;
 	
 	public GameMapDto findById(int mapId) {
 		GameMap map = dao.findById(mapId);
@@ -46,6 +50,8 @@ public class GameMapService {
 		dto.setTotalMatchesPlayed(totalMatchesPlayed);
 		int topWinnerPoints = versusDao.getTopWinnerPointsOnMap(mapId);
 		dto.setTopVersusPoints(topWinnerPoints);
+		float survivalPercentage = calculateSurvivalPercentageForMap(mapId);
+		dto.setCampaignSurvivalPercentage(survivalPercentage);
 		return dto;
 	}
 	
@@ -56,4 +62,12 @@ public class GameMapService {
 		dto.setImage(map.getImage());
 		return dto;
 	}
+	
+	private float calculateSurvivalPercentageForMap(int mapId) {
+		long survivedCount = playerCampaignDao.getSurvivedPlayersCountOnCampaignMap(mapId);
+		long totalCount = playerCampaignDao.getTotalPlayersCountOnCampaignMap(mapId);
+		float survivalPercentage = (survivedCount * 100) / (float) totalCount;
+		return survivalPercentage;
+	}
+	
 }

@@ -25,4 +25,16 @@ public class PlayerCampaignDao {
 		return result.toArray(new PlayerCampaign[result.size()]);
 	}
 	
+	public long getTotalPlayersCountOnCampaignMap(int mapId) {
+		Query query = em.createNamedQuery(PlayerCampaign.QUERY_COUNT_TOTAL_PLAYERS_FOR_MAP);
+		query.setParameter("mapId", mapId);
+		return (long) (query.getSingleResult());
+	}
+	
+	public long getSurvivedPlayersCountOnCampaignMap(int mapId) {
+		Query query = em.createNamedQuery(PlayerCampaign.QUERY_COUNT_SURVIVED_PLAYERS_FOR_MAP);
+		query.setParameter("mapId", mapId);
+		return (long) (query.getSingleResult());
+	}
+	
 }

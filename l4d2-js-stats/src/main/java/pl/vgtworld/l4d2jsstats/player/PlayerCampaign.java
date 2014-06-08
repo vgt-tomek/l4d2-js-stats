@@ -13,11 +13,21 @@ import javax.persistence.Table;
 @Table(name = "players_campaign")
 @NamedQueries({
 		@NamedQuery(name = PlayerCampaign.QUERY_FIND_FROM_MATCH,
-			query = "SELECT c FROM PlayerCampaign c JOIN c.player p WHERE p.match.id = :matchId")
+			query = "SELECT c FROM PlayerCampaign c JOIN c.player p WHERE p.match.id = :matchId"),
+		@NamedQuery(name = PlayerCampaign.QUERY_COUNT_TOTAL_PLAYERS_FOR_MAP,
+			query = "SELECT COUNT(c) FROM PlayerCampaign c JOIN c.player p JOIN p.match m "
+				+ "WHERE m.active = TRUE AND m.matchType.id = 1 AND m.map.id = :mapId"),
+		@NamedQuery(name = PlayerCampaign.QUERY_COUNT_SURVIVED_PLAYERS_FOR_MAP,
+		query = "SELECT COUNT(c) FROM PlayerCampaign c JOIN c.player p JOIN p.match m "
+			+ "WHERE m.active = TRUE AND m.matchType.id = 1 AND m.map.id = :mapId AND c.survived = TRUE")
 })
 public class PlayerCampaign implements Serializable {
 	
 	public static final String QUERY_FIND_FROM_MATCH = "PlayerCampaign.findFromMatch";
+	
+	public static final String QUERY_COUNT_TOTAL_PLAYERS_FOR_MAP = "PlayerCampaign.countTotalPlayersForMap";
+	
+	public static final String QUERY_COUNT_SURVIVED_PLAYERS_FOR_MAP = "PlayerCampaign.countSurvivedPlayersForMap";
 	
 	private static final long serialVersionUID = 1L;
 	
