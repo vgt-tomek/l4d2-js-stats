@@ -36,7 +36,7 @@ import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 import pl.vgtworld.l4d2jsstats.user.UserService;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
-@Path("/match")
+@Path("/new-match")
 public class CampaignMatchController extends BaseController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CampaignMatchController.class);
@@ -113,7 +113,7 @@ public class CampaignMatchController extends BaseController {
 		
 		try {
 			int matchId = matchService.createCampaignMatch(user.getId(), form);
-			String location = String.format("/match/campaign/%d/player/add", matchId);
+			String location = String.format("/new-match/campaign/%d/player/add", matchId);
 			return seeOther(location);
 		} catch (MatchServiceException e) {
 			LOGGER.warn("Exception while trying to create match ({}).", e.getMessage());

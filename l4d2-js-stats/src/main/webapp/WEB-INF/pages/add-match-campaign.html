@@ -5,7 +5,7 @@
 	<div id="content">
 		<h1>Add campaign match</h1>
 		
-		<form method="POST" action="/match/add/campaign">
+		<form method="POST" action="/new-match/add/campaign">
 			<div class="errors" th:if="${errors != null}">
 				<p class="error" th:each="error : ${errors}" th:text="${error}"></p>
 			</div>

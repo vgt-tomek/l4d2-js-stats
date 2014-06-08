@@ -16,7 +16,7 @@ import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.MatchServiceException;
 import pl.vgtworld.l4d2jsstats.player.PlayerService;
 
-@Path("/match")
+@Path("/new-match")
 public class MatchController extends BaseController {
 	
 	@Inject
@@ -40,7 +40,7 @@ public class MatchController extends BaseController {
 		@Form DeletePlayerFormDto form, @PathParam("matchType") String matchType, @PathParam("matchId") int matchId) {
 		int userId = form.getUserId();
 		playerService.deleteUserFromMatch(userId, matchId);
-		return seeOther(String.format("/match/%s/%d/player/add", matchType, matchId));
+		return seeOther(String.format("/new-match/%s/%d/player/add", matchType, matchId));
 	}
 	
 	@POST
