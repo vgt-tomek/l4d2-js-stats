@@ -32,7 +32,7 @@ import pl.vgtworld.l4d2jsstats.player.dto.PlayerVersusDto;
 import pl.vgtworld.l4d2jsstats.user.UserService;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
-@Path("/match")
+@Path("/new-match")
 public class VersusMatchController extends BaseController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(VersusMatchController.class);
@@ -93,7 +93,7 @@ public class VersusMatchController extends BaseController {
 		
 		try {
 			int matchId = matchService.createVersusMatch(user.getId(), form);
-			String location = String.format("/match/versus/%d/player/add", matchId);
+			String location = String.format("/new-match/versus/%d/player/add", matchId);
 			return seeOther(location);
 		} catch (MatchServiceException e) {
 			LOGGER.warn("Exception while trying to create match ({}).", e.getMessage());

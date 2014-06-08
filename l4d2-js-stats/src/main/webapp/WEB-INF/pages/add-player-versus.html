@@ -37,7 +37,7 @@
 					<td th:text="${player.name}"></td>
 					<td th:text="${player.winner ? 'Winner' : 'Loser'}"></td>
 					<td>
-						<form method="POST" th:action="${'/match/versus/' + match.id + '/player/delete'}">
+						<form method="POST" th:action="${'/new-match/versus/' + match.id + '/player/delete'}">
 							<input type="hidden" name="user" th:value="${player.userId}" />
 							<input type="submit" name="player-delete" value="Delete" />
 						</form>
@@ -69,7 +69,7 @@
 			</div>
 		</form>
 		
-		<form method="POST" th:action="${'/match/' + match.id + '/activate'}">
+		<form method="POST" th:action="${'/new-match/' + match.id + '/activate'}">
 			<div>
 				<input type="submit" name="match-activate" value="Publish match" />
 			</div>
