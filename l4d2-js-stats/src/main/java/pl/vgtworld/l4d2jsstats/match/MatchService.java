@@ -97,6 +97,7 @@ public class MatchService {
 		match.setMap(map);
 		match.setActive(false);
 		match.setPlayedAt(form.getDateParsed());
+		match.setImageName(imageAttachmentFilename);
 		matchDao.add(match);
 		
 		MatchCampaign campaign = new MatchCampaign();

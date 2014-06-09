@@ -76,6 +76,7 @@ CREATE TABLE `matches` (
 `owner_id` INT UNSIGNED NOT NULL,
 `map_id` INT UNSIGNED NOT NULL,
 `played_at` DATETIME NOT NULL,
+`image_name` varchar(255),
 `active` BOOLEAN NOT NULL,
 CONSTRAINT `match_type_id_fkey` FOREIGN KEY (`match_type_id`) REFERENCES `match_types` (`id`)
 ON DELETE CASCADE ON UPDATE CASCADE,
