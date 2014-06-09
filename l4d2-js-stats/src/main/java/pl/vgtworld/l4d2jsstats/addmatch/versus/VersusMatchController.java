@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.annotations.Form;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,8 +78,9 @@ public class VersusMatchController extends BaseController {
 	
 	@POST
 	@Path("/add/versus")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.TEXT_HTML)
-	public Response submitMatch(@Form AddVersusMatchFormDto form) {
+	public Response submitMatch(@MultipartForm AddVersusMatchFormDto form) {
 		GameMapDto[] maps = mapService.findAll();
 		UserDto user = getLoggedUser();
 		
