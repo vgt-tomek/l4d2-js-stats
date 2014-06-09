@@ -1,8 +1,11 @@
 package pl.vgtworld.l4d2jsstats.storage;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -29,6 +32,11 @@ public class Storage {
 				fos.close();
 			}
 		}
+	}
+	
+	public InputStream getMatchScreenshot(String name) throws FileNotFoundException {
+		File file = new File(matchScreenshotsDirectory, name);
+		return new FileInputStream(file);
 	}
 	
 	@PostConstruct
