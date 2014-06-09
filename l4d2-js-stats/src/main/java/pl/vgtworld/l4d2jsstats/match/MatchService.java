@@ -84,13 +84,16 @@ public class MatchService {
 			throw new MatchServiceException("Unknown map.");
 		}
 		
-		String imageAttachmentFilename = String.format(
-			"%1$tY-%1$tm-%1$td_%1$tH.%1$tM.%1$tS_%2$d_%3$d.jpg",
-			new Date(),
-			user.getId(),
-			form.getMapId()
-			);
-		saveImageAttachment(form.getImage(), imageAttachmentFilename);
+		String imageAttachmentFilename = null;
+		if (form.getImage().length > 0) {
+			imageAttachmentFilename = String.format(
+				"%1$tY-%1$tm-%1$td_%1$tH.%1$tM.%1$tS_%2$d_%3$d.jpg",
+				new Date(),
+				user.getId(),
+				form.getMapId()
+				);
+			saveImageAttachment(form.getImage(), imageAttachmentFilename);
+		}
 		
 		match.setMatchType(matchType);
 		match.setOwner(user);
@@ -195,9 +198,7 @@ public class MatchService {
 	
 	private void saveImageAttachment(byte[] bytes, String imageAttachmentFilename) throws MatchServiceException {
 		try {
-			if (bytes.length > 0) {
-				storage.saveMatchScreenshot(bytes, imageAttachmentFilename);
-			}
+			storage.saveMatchScreenshot(bytes, imageAttachmentFilename);
 		} catch (IOException e) {
 			throw new MatchServiceException("Unexpected error while trying to save image attachment.", e);
 		}
