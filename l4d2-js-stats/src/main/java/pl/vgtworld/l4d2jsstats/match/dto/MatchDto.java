@@ -2,11 +2,11 @@ package pl.vgtworld.l4d2jsstats.match.dto;
 
 import java.util.Date;
 
-public abstract class MatchBaseDto {
+public class MatchDto {
 	
 	private int id;
 	
-	private int ownerId;
+	private String matchType;
 	
 	private int mapId;
 	
@@ -14,7 +14,9 @@ public abstract class MatchBaseDto {
 	
 	private Date playedAt;
 	
-	private String image;
+	private String imageName;
+	
+	private boolean active;
 	
 	public int getId() {
 		return id;
@@ -24,12 +26,12 @@ public abstract class MatchBaseDto {
 		this.id = id;
 	}
 	
-	public int getOwnerId() {
-		return ownerId;
+	public String getMatchType() {
+		return matchType;
 	}
 	
-	public void setOwnerId(int ownerId) {
-		this.ownerId = ownerId;
+	public void setMatchType(String matchType) {
+		this.matchType = matchType;
 	}
 	
 	public int getMapId() {
@@ -56,12 +58,20 @@ public abstract class MatchBaseDto {
 		this.playedAt = playedAt;
 	}
 	
-	public String getImage() {
-		return image;
+	public String getImageName() {
+		return imageName;
 	}
 	
-	public void setImage(String image) {
-		this.image = image;
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 }

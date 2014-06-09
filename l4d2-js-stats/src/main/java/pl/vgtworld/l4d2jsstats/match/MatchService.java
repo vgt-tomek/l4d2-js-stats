@@ -13,6 +13,7 @@ import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevelDao;
 import pl.vgtworld.l4d2jsstats.map.GameMap;
 import pl.vgtworld.l4d2jsstats.map.GameMapDao;
 import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
+import pl.vgtworld.l4d2jsstats.match.dto.MatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
 import pl.vgtworld.l4d2jsstats.storage.Storage;
@@ -23,7 +24,7 @@ import pl.vgtworld.l4d2jsstats.user.UserDao;
 public class MatchService {
 	
 	private static final String IMAGE_ATTACHMENT_TEMPLATE = "%1$tY-%1$tm-%1$td_%1$tH.%1$tM.%1$tS_%2$d_%3$d.jpg";
-
+	
 	@Inject
 	private MatchDao matchDao;
 	
@@ -47,6 +48,14 @@ public class MatchService {
 	
 	@Inject
 	private DifficultyLevelDao difficultyDao;
+	
+	public MatchDto findMatchById(int matchId) {
+		Match match = matchDao.findById(matchId);
+		if (match == null) {
+			return null;
+		}
+		return mapMatchFrom(match);
+	}
 	
 	public CampaignMatchDto findCampaignById(int matchId) {
 		MatchCampaign match = matchCampaignDao.findById(matchId);
@@ -181,6 +190,7 @@ public class MatchService {
 		dto.setMapId(match.getMatch().getMap().getId());
 		dto.setMapName(match.getMatch().getMap().getName());
 		dto.setPlayedAt(match.getMatch().getPlayedAt());
+		dto.setImage(match.getMatch().getImageName());
 		dto.setTotalTime(match.getTime());
 		dto.setDifficultyName(match.getDifficulty().getName());
 		dto.setRestarts(match.getRestarts());
@@ -194,6 +204,7 @@ public class MatchService {
 		dto.setMapId(match.getMatch().getMap().getId());
 		dto.setMapName(match.getMatch().getMap().getName());
 		dto.setPlayedAt(match.getMatch().getPlayedAt());
+		dto.setImage(match.getMatch().getImageName());
 		dto.setWinnerPoints(match.getWinnerPoints());
 		dto.setLoserPoints(match.getLoserPoints());
 		return dto;
@@ -207,6 +218,18 @@ public class MatchService {
 		dto.setMapId(match.getMap().getId());
 		dto.setMapName(match.getMap().getName());
 		dto.setPlayedAt(match.getPlayedAt());
+		return dto;
+	}
+	
+	private MatchDto mapMatchFrom(Match match) {
+		MatchDto dto = new MatchDto();
+		dto.setId(match.getId());
+		dto.setMatchType(match.getMatchType().getName());
+		dto.setMapId(match.getMap().getId());
+		dto.setMapName(match.getMap().getName());
+		dto.setPlayedAt(match.getPlayedAt());
+		dto.setImageName(match.getImageName());
+		dto.setActive(match.isActive());
 		return dto;
 	}
 	
