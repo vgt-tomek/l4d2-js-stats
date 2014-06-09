@@ -14,6 +14,8 @@ public abstract class MatchBaseDto {
 	
 	private Date playedAt;
 	
+	private String image;
+	
 	public int getId() {
 		return id;
 	}
@@ -52,6 +54,14 @@ public abstract class MatchBaseDto {
 	
 	public void setPlayedAt(Date playedAt) {
 		this.playedAt = playedAt;
+	}
+	
+	public String getImage() {
+		return image;
+	}
+	
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 }

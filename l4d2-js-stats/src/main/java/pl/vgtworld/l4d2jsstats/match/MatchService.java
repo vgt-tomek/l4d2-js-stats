@@ -190,6 +190,7 @@ public class MatchService {
 		dto.setMapId(match.getMatch().getMap().getId());
 		dto.setMapName(match.getMatch().getMap().getName());
 		dto.setPlayedAt(match.getMatch().getPlayedAt());
+		dto.setImage(match.getMatch().getImageName());
 		dto.setTotalTime(match.getTime());
 		dto.setDifficultyName(match.getDifficulty().getName());
 		dto.setRestarts(match.getRestarts());
