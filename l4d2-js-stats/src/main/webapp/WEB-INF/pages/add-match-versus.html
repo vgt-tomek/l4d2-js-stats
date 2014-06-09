@@ -5,7 +5,7 @@
 	<div id="content">
 		<h1>Add versus match</h1>
 		
-		<form method="POST" action="/new-match/add/versus">
+		<form method="POST" action="/new-match/add/versus" enctype="multipart/form-data">
 			<div class="errors" th:if="${errors != null}">
 				<p class="error" th:each="error : ${errors}" th:text="${error}"></p>
 			</div>
@@ -24,6 +24,10 @@
 			<div>
 				<label for="add-match-loser-points">Loser team points:</label>
 				<input id="add-match-loser-points" name="loser-points" th:value="${form.loserPoints}" /> 
+			</div>
+			<div>
+				<label for="add-match-image">Final screenshot:</label>
+				<input id="add-match-image" name="image" type="file" />
 			</div>
 			<div>
 				<input type="submit" name="add-match-submit" value="Add match" />

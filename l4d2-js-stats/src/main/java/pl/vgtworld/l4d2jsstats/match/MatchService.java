@@ -22,6 +22,8 @@ import pl.vgtworld.l4d2jsstats.user.UserDao;
 @Stateless
 public class MatchService {
 	
+	private static final String IMAGE_ATTACHMENT_TEMPLATE = "%1$tY-%1$tm-%1$td_%1$tH.%1$tM.%1$tS_%2$d_%3$d.jpg";
+
 	@Inject
 	private MatchDao matchDao;
 	
@@ -87,7 +89,7 @@ public class MatchService {
 		String imageAttachmentFilename = null;
 		if (form.getImage().length > 0) {
 			imageAttachmentFilename = String.format(
-				"%1$tY-%1$tm-%1$td_%1$tH.%1$tM.%1$tS_%2$d_%3$d.jpg",
+				IMAGE_ATTACHMENT_TEMPLATE,
 				new Date(),
 				user.getId(),
 				form.getMapId()
@@ -126,11 +128,23 @@ public class MatchService {
 			throw new MatchServiceException("Unknown map.");
 		}
 		
+		String imageAttachmentFilename = null;
+		if (form.getImage().length > 0) {
+			imageAttachmentFilename = String.format(
+				IMAGE_ATTACHMENT_TEMPLATE,
+				new Date(),
+				user.getId(),
+				form.getMapId()
+				);
+			saveImageAttachment(form.getImage(), imageAttachmentFilename);
+		}
+		
 		match.setMatchType(matchType);
 		match.setOwner(user);
 		match.setMap(map);
 		match.setActive(false);
 		match.setPlayedAt(form.getDateParsed());
+		match.setImageName(imageAttachmentFilename);
 		matchDao.add(match);
 		
 		MatchVersus versus = new MatchVersus();
