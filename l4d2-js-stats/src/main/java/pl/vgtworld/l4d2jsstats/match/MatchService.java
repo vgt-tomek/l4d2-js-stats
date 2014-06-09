@@ -204,6 +204,7 @@ public class MatchService {
 		dto.setMapId(match.getMatch().getMap().getId());
 		dto.setMapName(match.getMatch().getMap().getName());
 		dto.setPlayedAt(match.getMatch().getPlayedAt());
+		dto.setImage(match.getMatch().getImageName());
 		dto.setWinnerPoints(match.getWinnerPoints());
 		dto.setLoserPoints(match.getLoserPoints());
 		return dto;

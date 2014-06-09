@@ -14,6 +14,7 @@
 					<th>Played at</th>
 					<th>Winner team points</th>
 					<th>Loser team points</th>
+					<th th:if="${match.image != null}">Image</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -22,6 +23,9 @@
 					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
 					<td th:text="${match.winnerPoints}"></td>
 					<td th:text="${match.loserPoints}"></td>
+					<td th:if="${match.image != null}">
+						<a th:href="${'/match-image/' + match.id}">screenshot</a>
+					</td>
 				</tr>
 			</tbody>
 		</table>
