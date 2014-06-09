@@ -1,6 +1,7 @@
 package pl.vgtworld.l4d2jsstats.match;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -82,6 +83,15 @@ public class MatchService {
 		if (map == null) {
 			throw new MatchServiceException("Unknown map.");
 		}
+		
+		String imageAttachmentFilename = String.format(
+			"%1$tY-%1$tm-%1$td_%1$tH.%1$tM.%1$tS_%2$d_%3$d.jpg",
+			new Date(),
+			user.getId(),
+			form.getMapId()
+			);
+		saveImageAttachment(form.getImage(), imageAttachmentFilename);
+		
 		match.setMatchType(matchType);
 		match.setOwner(user);
 		match.setMap(map);
@@ -95,15 +105,6 @@ public class MatchService {
 		campaign.setRestarts(form.getRestarts());
 		campaign.setDifficulty(difficulty);
 		matchCampaignDao.add(campaign);
-		
-		try {
-			if (form.getImage().length > 0) {
-				storage.saveMatchScreenshot(form.getImage(), "" + match.getId());
-			}
-		} catch (IOException e) {
-			// TODO Remove created match from database.
-			throw new MatchServiceException("Unexpected error while trying to save image attachment.", e);
-		}
 		
 		return match.getId();
 	}
@@ -189,6 +190,16 @@ public class MatchService {
 		dto.setMapName(match.getMap().getName());
 		dto.setPlayedAt(match.getPlayedAt());
 		return dto;
+	}
+	
+	private void saveImageAttachment(byte[] bytes, String imageAttachmentFilename) throws MatchServiceException {
+		try {
+			if (bytes.length > 0) {
+				storage.saveMatchScreenshot(bytes, imageAttachmentFilename);
+			}
+		} catch (IOException e) {
+			throw new MatchServiceException("Unexpected error while trying to save image attachment.", e);
+		}
 	}
 	
 }
