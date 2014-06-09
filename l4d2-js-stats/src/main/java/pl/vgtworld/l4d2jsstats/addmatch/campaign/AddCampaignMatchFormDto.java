@@ -3,6 +3,9 @@ package pl.vgtworld.l4d2jsstats.addmatch.campaign;
 import java.util.Date;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.core.MediaType;
+
+import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 public class AddCampaignMatchFormDto {
 	
@@ -24,6 +27,10 @@ public class AddCampaignMatchFormDto {
 	
 	@FormParam("restarts")
 	private int restarts;
+	
+	@FormParam("image")
+	@PartType(MediaType.APPLICATION_OCTET_STREAM)
+	private byte[] image;
 	
 	public int getMapId() {
 		return mapId;
@@ -79,6 +86,14 @@ public class AddCampaignMatchFormDto {
 	
 	public void setRestarts(int restarts) {
 		this.restarts = restarts;
+	}
+	
+	public byte[] getImage() {
+		return image;
+	}
+	
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 	
 }

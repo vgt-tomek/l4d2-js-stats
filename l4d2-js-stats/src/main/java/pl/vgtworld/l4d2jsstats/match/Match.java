@@ -51,6 +51,9 @@ public class Match {
 	@Column(name = "played_at")
 	private Date playedAt;
 	
+	@Column(name = "image_name")
+	private String imageName;
+	
 	private boolean active;
 	
 	public int getId() {
@@ -91,6 +94,14 @@ public class Match {
 	
 	public void setPlayedAt(Date playedAt) {
 		this.playedAt = playedAt;
+	}
+	
+	public String getImageName() {
+		return imageName;
+	}
+	
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 	
 	public boolean isActive() {
