@@ -4,6 +4,24 @@
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
 		<h1>Home</h1>
+		
+		<h2>Most played maps</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Map</th>
+					<th>Match count</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="mostPlayedMap : ${mostPlayedMaps}">
+					<td >
+						<a th:href="${'/map/' + mostPlayedMap.mapId}" th:text="${mostPlayedMap.mapName}"></a>
+					</td>
+					<td th:text="${mostPlayedMap.gamesCount}"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>
