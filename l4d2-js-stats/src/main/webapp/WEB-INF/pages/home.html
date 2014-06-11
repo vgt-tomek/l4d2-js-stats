@@ -22,6 +22,22 @@
 				</tr>
 			</tbody>
 		</table>
+		
+		<h2>Most active players</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Player</th>
+					<th>Match count</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="mostActivePlayer : ${mostActivePlayers}">
+					<td th:text="${mostActivePlayer.playerName}"></td>
+					<td th:text="${mostActivePlayer.matchCount}"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>

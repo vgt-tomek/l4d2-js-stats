@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import pl.vgtworld.l4d2jsstats.match.Match;
 import pl.vgtworld.l4d2jsstats.match.MatchDao;
+import pl.vgtworld.l4d2jsstats.player.dto.MostActivePlayerDto;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerVersusDto;
 import pl.vgtworld.l4d2jsstats.user.User;
@@ -92,6 +93,10 @@ public class PlayerService {
 			dtoList[i] = mapFrom(players[i]);
 		}
 		return dtoList;
+	}
+	
+	public MostActivePlayerDto[] getMostActivePlayers() {
+		return playerDao.getMostActivePlayers();
 	}
 	
 	private PlayerCampaignDto mapFrom(PlayerCampaign player) {
