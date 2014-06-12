@@ -1,10 +1,15 @@
 package pl.vgtworld.l4d2jsstats.match;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import pl.vgtworld.l4d2jsstats.addmatch.campaign.AddCampaignMatchFormDto;
 import pl.vgtworld.l4d2jsstats.addmatch.versus.AddVersusMatchFormDto;
@@ -13,6 +18,7 @@ import pl.vgtworld.l4d2jsstats.difficulty.DifficultyLevelDao;
 import pl.vgtworld.l4d2jsstats.map.GameMap;
 import pl.vgtworld.l4d2jsstats.map.GameMapDao;
 import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
+import pl.vgtworld.l4d2jsstats.match.dto.MapBreakDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
@@ -181,6 +187,26 @@ public class MatchService {
 			dtoList[i] = mapFrom(recentMatches[i]);
 		}
 		return dtoList;
+	}
+	
+	public MapBreakDto[] getMapsByLongestBreak() {
+		GameMap[] maps = mapDao.findAll();
+		List<MapBreakDto> dtoList = new ArrayList<>();
+		for (GameMap map : maps) {
+			Match[] recentMatches = matchDao.findRecentMatchesFromMap(map.getId(), 1);
+			
+			MapBreakDto dto = new MapBreakDto();
+			dto.setMapId(map.getId());
+			dto.setMapName(map.getName());
+			if (recentMatches.length == 1) {
+				Date matchDate = recentMatches[0].getPlayedAt();
+				int dayDifference = Days.daysBetween(new DateTime(matchDate), new DateTime()).getDays();
+				dto.setBreakDayCount(dayDifference);
+			}
+			dtoList.add(dto);
+		}
+		
+		return dtoList.toArray(new MapBreakDto[dtoList.size()]);
 	}
 	
 	private CampaignMatchDto mapFrom(MatchCampaign match) {

@@ -9,6 +9,8 @@ import javax.ws.rs.core.MediaType;
 import pl.vgtworld.l4d2jsstats.BaseController;
 import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.MostPlayedMapDto;
+import pl.vgtworld.l4d2jsstats.match.MatchService;
+import pl.vgtworld.l4d2jsstats.match.dto.MapBreakDto;
 import pl.vgtworld.l4d2jsstats.player.PlayerService;
 import pl.vgtworld.l4d2jsstats.player.dto.MostActivePlayerDto;
 
@@ -21,6 +23,9 @@ public class HomeController extends BaseController {
 	@Inject
 	private PlayerService playerService;
 	
+	@Inject
+	private MatchService matchService;
+	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String getHome() {
@@ -31,6 +36,9 @@ public class HomeController extends BaseController {
 		
 		MostActivePlayerDto[] mostActivePlayers = playerService.getMostActivePlayers();
 		request.setAttribute("mostActivePlayers", mostActivePlayers);
+		
+		MapBreakDto[] mapsByBreak = matchService.getMapsByLongestBreak();
+		request.setAttribute("mapsByBreak", mapsByBreak);
 		
 		return render("home");
 	}
