@@ -1,6 +1,7 @@
 package pl.vgtworld.l4d2jsstats.match.dto;
 
-public class MapBreakDto {
+
+public class MapBreakDto implements Comparable<MapBreakDto> {
 	
 	private int mapId;
 	
@@ -30,6 +31,20 @@ public class MapBreakDto {
 	
 	public void setBreakDayCount(Integer breakDayCount) {
 		this.breakDayCount = breakDayCount;
+	}
+
+	@Override
+	public int compareTo(MapBreakDto other) {
+		if (breakDayCount == null && other.getBreakDayCount() == null) {
+			return 0;
+		}
+		if (breakDayCount == null) {
+			return -1;
+		}
+		if (other.getBreakDayCount() == null) {
+			return 1;
+		}
+		return other.getBreakDayCount() - getBreakDayCount();
 	}
 	
 }

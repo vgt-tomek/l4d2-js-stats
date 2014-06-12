@@ -2,6 +2,7 @@ package pl.vgtworld.l4d2jsstats.match;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -206,6 +207,7 @@ public class MatchService {
 			dtoList.add(dto);
 		}
 		
+		Collections.sort(dtoList);
 		return dtoList.toArray(new MapBreakDto[dtoList.size()]);
 	}
 	
