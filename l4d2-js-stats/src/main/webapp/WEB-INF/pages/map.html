@@ -6,7 +6,12 @@
 		<h1 th:text="${map.name + ' statistics'}"></h1>
 		
 		<h2>General statistics</h2>
-		<table>
+		
+		<p th:if="${mapStatistics.totalMatchesPlayed == 0}">
+			No matches played on this map.
+		</p>
+		
+		<table th:if="${mapStatistics.totalMatchesPlayed > 0}">
 			<thead>
 				<tr>
 					<th>Total matches played</th>
@@ -25,8 +30,8 @@
 			</tbody>
 		</table>
 		
-		<h2>Recent matches</h2>
-		<table>
+		<h2 th:if="${mapStatistics.totalMatchesPlayed > 0}">Recent matches</h2>
+		<table th:if="${mapStatistics.totalMatchesPlayed > 0}">
 			<thead>
 				<tr>
 					<th>Played at</th>
