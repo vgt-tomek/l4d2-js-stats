@@ -60,6 +60,10 @@ public class UserService {
 		return true;
 	}
 	
+	public User findById(int userId) {
+		return dao.findById(userId);
+	}
+	
 	public UserDto findByLogin(String login) {
 		User user = dao.findByLogin(login);
 		if (user == null) {
@@ -124,5 +128,5 @@ public class UserService {
 		dto.setCreatedAt(user.getCreatedAt());
 		return dto;
 	}
-	
+
 }
