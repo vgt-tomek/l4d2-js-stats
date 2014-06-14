@@ -10,8 +10,8 @@ import javax.ws.rs.core.Response;
 import pl.vgtworld.l4d2jsstats.BaseController;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
-import pl.vgtworld.l4d2jsstats.user.User;
 import pl.vgtworld.l4d2jsstats.user.UserService;
+import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 
 @Path("/user/{userId}")
 public class UserStats extends BaseController {
@@ -29,7 +29,7 @@ public class UserStats extends BaseController {
 	
 	@GET
 	public Response getUserStats() {
-		User user = userService.findById(userId);
+		UserDto user = userService.findById(userId);
 		if (user == null) {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}

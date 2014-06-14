@@ -60,8 +60,12 @@ public class UserService {
 		return true;
 	}
 	
-	public User findById(int userId) {
-		return dao.findById(userId);
+	public UserDto findById(int userId) {
+		User user = dao.findById(userId);
+		if (user == null) {
+			return null;
+		}
+		return mapToUserLoginDto(user);
 	}
 	
 	public UserDto findByLogin(String login) {
