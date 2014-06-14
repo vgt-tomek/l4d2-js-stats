@@ -19,7 +19,7 @@ import pl.vgtworld.l4d2jsstats.user.User;
 			query = "DELETE FROM Player p WHERE p.user.id = :userId AND p.match.id = :matchId"),
 		@NamedQuery(name = Player.QUERY_MOST_ACTIVE,
 			query = "SELECT new pl.vgtworld.l4d2jsstats.player.dto.MostActivePlayerDto(p.user.id, p.user.login, COUNT(p)) "
-				+ "FROM Player p JOIN p.match WHERE p.match.active = TRUE GROUP BY p.user.id ORDER BY COUNT(p) DESC")
+				+ "FROM Player p JOIN p.match m WHERE p.match.active = TRUE GROUP BY p.user.id ORDER BY COUNT(p) DESC")
 })
 public class Player {
 	
