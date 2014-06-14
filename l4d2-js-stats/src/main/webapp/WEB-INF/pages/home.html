@@ -56,6 +56,22 @@
 				</tr>
 			</tbody>
 		</table>
+		
+		<h2>Players activity</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Player</th>
+					<th>Days since last match</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="userActivity : ${usersActivity}">
+					<td th:text="${userActivity.userName}"></td>
+					<td th:text="${userActivity.daysInactive == null ? 'not played' : userActivity.daysInactive}"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>

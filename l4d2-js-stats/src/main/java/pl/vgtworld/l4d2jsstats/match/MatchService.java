@@ -22,6 +22,7 @@ import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MapBreakDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
+import pl.vgtworld.l4d2jsstats.match.dto.UserActivityDto;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
 import pl.vgtworld.l4d2jsstats.storage.Storage;
 import pl.vgtworld.l4d2jsstats.user.User;
@@ -209,6 +210,27 @@ public class MatchService {
 		
 		Collections.sort(dtoList);
 		return dtoList.toArray(new MapBreakDto[dtoList.size()]);
+	}
+	
+	public UserActivityDto[] getUsersActivity() {
+		User[] users = userDao.findActive();
+		List<UserActivityDto> dtoList = new ArrayList<>();
+		for (User user : users) {
+			Match[] recentMatches = matchDao.findRecentMatchesForUser(user.getId(), 1);
+			
+			UserActivityDto dto = new UserActivityDto();
+			dto.setUserId(user.getId());
+			dto.setUserName(user.getLogin());
+			if (recentMatches.length == 1) {
+				Date matchDate = recentMatches[0].getPlayedAt();
+				int dayDifference = Days.daysBetween(new DateTime(matchDate), new DateTime()).getDays();
+				dto.setDaysInactive(dayDifference);
+			}
+			dtoList.add(dto);
+		}
+		
+		Collections.sort(dtoList);
+		return dtoList.toArray(new UserActivityDto[dtoList.size()]);
 	}
 	
 	private CampaignMatchDto mapFrom(MatchCampaign match) {
