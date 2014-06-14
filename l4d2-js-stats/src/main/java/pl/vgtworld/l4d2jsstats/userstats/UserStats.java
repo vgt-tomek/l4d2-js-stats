@@ -33,6 +33,8 @@ public class UserStats extends BaseController {
 		if (user == null) {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
+		request.setAttribute("user", user);
+		setPageTitle(user.getLogin() + " profile");
 		
 		RecentMatchDto[] recentMatches = matchService.findRecentMatchesForUser(userId, RECENT_MATCHES_COUNT);
 		request.setAttribute("recentMatches", recentMatches);

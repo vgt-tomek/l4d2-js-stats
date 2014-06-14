@@ -3,7 +3,7 @@
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<h1>User profile</h1>
+		<h1 th:text="${user.login + ' profile'}"></h1>
 		
 		<h2>Recent matches</h2>
 		<table>
