@@ -38,6 +38,15 @@ public class MatchDao {
 		return result.toArray(new Match[result.size()]);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Match[] findRecentMatchesForUser(int userId, int count) {
+		Query query = em.createNamedQuery(Match.QUERY_FIND_RECENT_FOR_USER);
+		query.setParameter("userId", userId);
+		query.setMaxResults(count);
+		List<Match> result = query.getResultList();
+		return result.toArray(new Match[result.size()]);
+	}
+	
 	public long getTotalMatchesPlayedOnMap(int mapId) {
 		Query query = em.createNamedQuery(Match.QUERY_TOTAL_MATCHES_PLAYED_ON_MAP);
 		query.setParameter("mapId", mapId);
