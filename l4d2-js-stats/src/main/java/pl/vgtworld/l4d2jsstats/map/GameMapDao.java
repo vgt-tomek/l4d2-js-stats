@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import pl.vgtworld.l4d2jsstats.map.dto.MostPlayedMapDto;
+
 @Stateless
 public class GameMapDao {
 	
@@ -22,6 +24,13 @@ public class GameMapDao {
 	
 	public GameMap findById(int mapId) {
 		return em.find(GameMap.class, mapId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public MostPlayedMapDto[] getMostPlayedMaps() {
+		Query query = em.createNamedQuery(GameMap.QUERY_MOST_PLAYED);
+		List<MostPlayedMapDto> result = query.getResultList();
+		return result.toArray(new MostPlayedMapDto[result.size()]);
 	}
 	
 }

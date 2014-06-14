@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapGeneralStatisticsDto;
+import pl.vgtworld.l4d2jsstats.map.dto.MostPlayedMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchDao;
 import pl.vgtworld.l4d2jsstats.match.MatchVersusDao;
 import pl.vgtworld.l4d2jsstats.player.PlayerCampaignDao;
@@ -55,6 +56,10 @@ public class GameMapService {
 		float averageDeathPerMatch = calculateAverageDeathCount(mapId, totalMatchesPlayed);
 		dto.setAverageCampaignDeathCount(averageDeathPerMatch);
 		return dto;
+	}
+	
+	public MostPlayedMapDto[] getMostPlayedMaps() {
+		return dao.getMostPlayedMaps();
 	}
 	
 	private GameMapDto mapFrom(GameMap map) {

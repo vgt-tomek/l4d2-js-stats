@@ -13,11 +13,16 @@ import javax.persistence.Table;
 @Table(name = "maps")
 @NamedQueries({
 		@NamedQuery(name = GameMap.QUERY_FIND_ALL,
-			query = "SELECT m FROM GameMap m ORDER BY m.displayOrder")
+			query = "SELECT m FROM GameMap m ORDER BY m.displayOrder"),
+		@NamedQuery(name = GameMap.QUERY_MOST_PLAYED,
+			query = "SELECT new pl.vgtworld.l4d2jsstats.map.dto.MostPlayedMapDto(m.map.id, m.map.name, COUNT(m)) "
+				+ "FROM Match m WHERE m.active = TRUE GROUP BY m.map.id ORDER BY COUNT(m) DESC")
 })
 public class GameMap {
 	
 	public static final String QUERY_FIND_ALL = "GameMap.findAll";
+	
+	public static final String QUERY_MOST_PLAYED = "GameMap.mostPlayed";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

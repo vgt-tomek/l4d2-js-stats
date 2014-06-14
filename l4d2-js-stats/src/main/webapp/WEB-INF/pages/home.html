@@ -4,6 +4,74 @@
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
 		<h1>Home</h1>
+		
+		<h2>Most played maps</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Map</th>
+					<th>Match count</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="mostPlayedMap : ${mostPlayedMaps}">
+					<td >
+						<a th:href="${'/map/' + mostPlayedMap.mapId}" th:text="${mostPlayedMap.mapName}"></a>
+					</td>
+					<td th:text="${mostPlayedMap.gamesCount}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h2>Map list by longest break</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Map</th>
+					<th>Days</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="map : ${mapsByBreak}">
+					<td>
+						<a th:href="${'/map/' + map.mapId}" th:text="${map.mapName}"></a>
+					</td>
+					<td th:text="${map.breakDayCount == null ? 'not played' : map.breakDayCount}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h2>Most active players</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Player</th>
+					<th>Match count</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="mostActivePlayer : ${mostActivePlayers}">
+					<td th:text="${mostActivePlayer.playerName}"></td>
+					<td th:text="${mostActivePlayer.matchCount}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h2>Players activity</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Player</th>
+					<th>Days since last match</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="userActivity : ${usersActivity}">
+					<td th:text="${userActivity.userName}"></td>
+					<td th:text="${userActivity.daysInactive == null ? 'not played' : userActivity.daysInactive}"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>
