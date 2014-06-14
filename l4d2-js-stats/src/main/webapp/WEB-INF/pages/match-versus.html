@@ -40,7 +40,9 @@
 			</thead>
 			<tbody>
 				<tr th:each="player : ${players}">
-					<td th:text="${player.name}"></td>
+					<td>
+						<a th:href="${'/user/' + player.userId}" th:text="${player.name}"></a>
+					</td>
 					<td th:text="${player.winner ? 'Winner' : 'Loser'}"></td>
 				</tr>
 			</tbody>
