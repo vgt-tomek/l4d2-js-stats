@@ -8,17 +8,24 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import pl.vgtworld.l4d2jsstats.BaseController;
+import pl.vgtworld.l4d2jsstats.match.MatchService;
+import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
 import pl.vgtworld.l4d2jsstats.user.User;
 import pl.vgtworld.l4d2jsstats.user.UserService;
 
 @Path("/user/{userId}")
 public class UserStats extends BaseController {
 	
+	private static final int RECENT_MATCHES_COUNT = 10;
+
 	@PathParam("userId")
 	private int userId;
 	
 	@Inject
 	private UserService userService;
+	
+	@Inject
+	private MatchService matchService;
 	
 	@GET
 	public Response getUserStats() {
@@ -26,6 +33,9 @@ public class UserStats extends BaseController {
 		if (user == null) {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
+		
+		RecentMatchDto[] recentMatches = matchService.findRecentMatchesForUser(userId, RECENT_MATCHES_COUNT);
+		request.setAttribute("recentMatches", recentMatches);
 		
 		return Response.ok(render("user")).build();
 	}
