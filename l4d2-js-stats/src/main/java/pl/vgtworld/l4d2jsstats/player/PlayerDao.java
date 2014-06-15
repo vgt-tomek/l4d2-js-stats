@@ -54,4 +54,14 @@ public class PlayerDao {
 		return (long) result;
 	}
 	
+	public long getWonVersusCount(int userId) {
+		Query query = em.createNamedQuery(Player.QUERY_WON_VERSUS_COUNT);
+		query.setParameter("userId", userId);
+		Object result = query.getSingleResult();
+		if (result == null) {
+			return 0;
+		}
+		return (long) result;
+	}
+	
 }

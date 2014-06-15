@@ -8,7 +8,7 @@ public class UserGeneralStatisticsDto {
 	
 	private long campaignSurviveCount;
 	
-	private float versusWinCount;
+	private long versusWinCount;
 	
 	public long getTotalCampaignMatchesPlayed() {
 		return totalCampaignMatchesPlayed;
@@ -34,11 +34,11 @@ public class UserGeneralStatisticsDto {
 		this.campaignSurviveCount = campaignSurviveCount;
 	}
 	
-	public float getVersusWinCount() {
+	public long getVersusWinCount() {
 		return versusWinCount;
 	}
 	
-	public void setVersusWinCount(float versusWinCount) {
+	public void setVersusWinCount(long versusWinCount) {
 		this.versusWinCount = versusWinCount;
 	}
 	
