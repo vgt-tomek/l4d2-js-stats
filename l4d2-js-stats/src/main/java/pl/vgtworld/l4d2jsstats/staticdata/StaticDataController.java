@@ -12,8 +12,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Path("/static")
 public class StaticDataController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(StaticDataController.class);
 	
 	@GET
 	@Path("/css/{filename}")
@@ -30,7 +35,7 @@ public class StaticDataController {
 	}
 	
 	@GET
-	@Path("/font/{filename}")
+	@Path("/fonts/{filename}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response getFontFile(@PathParam("filename") String filename) {
 		return getResource(filename, "font");		
@@ -45,11 +50,12 @@ public class StaticDataController {
 			}
 			return Response.ok(stream).build();
 		}
+		LOGGER.debug("Filename {} is not valid. Aborting.", filename);
 		return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 	}
 	
 	private boolean validateFilename(String filename) {
-		Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\-\\.]+\\.css$");
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\-\\.]+\\.[a-z]+$");
 		Matcher matcher = pattern.matcher(filename);
 		if (matcher.find()) {
 			return true;
