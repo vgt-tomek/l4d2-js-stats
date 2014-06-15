@@ -19,13 +19,18 @@ import pl.vgtworld.l4d2jsstats.user.User;
 			query = "DELETE FROM Player p WHERE p.user.id = :userId AND p.match.id = :matchId"),
 		@NamedQuery(name = Player.QUERY_MOST_ACTIVE,
 			query = "SELECT new pl.vgtworld.l4d2jsstats.player.dto.MostActivePlayerDto(p.user.id, p.user.login, COUNT(p)) "
-				+ "FROM Player p JOIN p.match m WHERE p.match.active = TRUE GROUP BY p.user.id ORDER BY COUNT(p) DESC")
+				+ "FROM Player p JOIN p.match m WHERE p.match.active = TRUE GROUP BY p.user.id ORDER BY COUNT(p) DESC"),
+		@NamedQuery(name = Player.QUERY_MATCH_COUNT,
+			query = "SELECT COUNT(m) FROM Player p JOIN p.match m "
+				+ "WHERE p.user.id = :userId AND m.matchType.id = :matchTypeId AND m.active = TRUE")
 })
 public class Player {
 	
 	public static final String QUERY_DELETE_USER_FROM_MATCH = "Player.deleteUserFromMatch";
 	
 	public static final String QUERY_MOST_ACTIVE = "Player.mostActive";
+	
+	public static final String QUERY_MATCH_COUNT = "Player.matchCount";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -10,8 +10,10 @@ import javax.ws.rs.core.Response;
 import pl.vgtworld.l4d2jsstats.BaseController;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
+import pl.vgtworld.l4d2jsstats.player.PlayerService;
 import pl.vgtworld.l4d2jsstats.user.UserService;
 import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
+import pl.vgtworld.l4d2jsstats.userstats.dto.UserGeneralStatisticsDto;
 
 @Path("/user/{userId}")
 public class UserStats extends BaseController {
@@ -25,6 +27,9 @@ public class UserStats extends BaseController {
 	private UserService userService;
 	
 	@Inject
+	private PlayerService playerService;
+	
+	@Inject
 	private MatchService matchService;
 	
 	@GET
@@ -35,6 +40,9 @@ public class UserStats extends BaseController {
 		}
 		request.setAttribute("user", user);
 		setPageTitle(user.getLogin() + " profile");
+		
+		UserGeneralStatisticsDto playerStatistics = playerService.getPlayerStatistics(userId);
+		request.setAttribute("playerStatistics", playerStatistics);
 		
 		RecentMatchDto[] recentMatches = matchService.findRecentMatchesForUser(userId, RECENT_MATCHES_COUNT);
 		request.setAttribute("recentMatches", recentMatches);

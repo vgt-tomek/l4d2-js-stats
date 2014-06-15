@@ -5,6 +5,22 @@
 	<div id="content">
 		<h1 th:text="${user.login + ' profile'}"></h1>
 		
+		<h2>General statistics</h2>
+		<ul>
+			<li>
+				<strong>Total matches played:</strong>
+				<span th:text="${playerStatistics.totalCampaignMatchesPlayed + playerStatistics.totalVersusMatchesPlayed}"></span>
+			</li>
+			<li>
+				<strong>Campaign matches played:</strong>
+				<span th:text="${playerStatistics.totalCampaignMatchesPlayed}"></span>
+			</li>
+			<li>
+				<strong>Versus matches played:</strong>
+				<span th:text="${playerStatistics.totalVersusMatchesPlayed}"></span>
+			</li>
+		</ul>
+		
 		<h2>Recent matches</h2>
 		<table>
 			<thead>
