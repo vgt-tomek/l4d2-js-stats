@@ -6,7 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-@Path("/images/js.png")
+@Path("/favicon.ico")
 public class FaviconController {
 	
 	@GET
