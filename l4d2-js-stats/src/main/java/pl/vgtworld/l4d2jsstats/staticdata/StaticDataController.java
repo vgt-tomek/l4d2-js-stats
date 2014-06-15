@@ -1,4 +1,4 @@
-package pl.vgtworld.l4d2jsstats.css;
+package pl.vgtworld.l4d2jsstats.staticdata;
 
 import java.io.InputStream;
 import java.util.regex.Matcher;
@@ -12,17 +12,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/static/css/{filename}")
-public class CssController {
-	
-	@PathParam("filename")
-	private String filename;
+@Path("/static")
+public class StaticDataController {
 	
 	@GET
+	@Path("/css/{filename}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response getCssFile() {
+	public Response getCssFile(@PathParam("filename") String filename) {
+		return getResource(filename, "css");
+	}
+	
+	private Response getResource(String filename, String folder) {
 		if (validateFilename(filename)) {
-			InputStream stream = CssController.class.getResourceAsStream("/css/" + filename);
+			String resourcePath = String.format("/%s/%s", folder, filename);
+			InputStream stream = StaticDataController.class.getResourceAsStream(resourcePath);
 			if (stream == null) {
 				return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 			}
