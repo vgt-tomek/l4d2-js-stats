@@ -116,6 +116,9 @@ public class PlayerService {
 		long versusMatchCount = playerDao.getMatchCountForPlayer(userId, versusMatchType.getId());
 		dto.setTotalVersusMatchesPlayed(versusMatchCount);
 		
+		long survivedCampaignCount = playerDao.getSurvivedCampaignCount(userId);
+		dto.setCampaignSurviveCount(survivedCampaignCount);
+		
 		return dto;
 	}
 	

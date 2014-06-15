@@ -44,4 +44,14 @@ public class PlayerDao {
 		return (long) result;
 	}
 	
+	public long getSurvivedCampaignCount(int userId) {
+		Query query = em.createNamedQuery(Player.QUERY_SURVIVED_CAMPAIGN_COUNT);
+		query.setParameter("userId", userId);
+		Object result = query.getSingleResult();
+		if (result == null) {
+			return 0;
+		}
+		return (long) result;
+	}
+	
 }

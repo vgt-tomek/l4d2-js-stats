@@ -22,7 +22,10 @@ import pl.vgtworld.l4d2jsstats.user.User;
 				+ "FROM Player p JOIN p.match m WHERE p.match.active = TRUE GROUP BY p.user.id ORDER BY COUNT(p) DESC"),
 		@NamedQuery(name = Player.QUERY_MATCH_COUNT,
 			query = "SELECT COUNT(m) FROM Player p JOIN p.match m "
-				+ "WHERE p.user.id = :userId AND m.matchType.id = :matchTypeId AND m.active = TRUE")
+				+ "WHERE p.user.id = :userId AND m.matchType.id = :matchTypeId AND m.active = TRUE"),
+		@NamedQuery(name = Player.QUERY_SURVIVED_CAMPAIGN_COUNT,
+			query = "SELECT COUNT(m) FROM PlayerCampaign cp JOIN cp.player p JOIN p.match m "
+				+ "WHERE p.user.id = :userId AND cp.survived = TRUE AND m.active = TRUE")
 })
 public class Player {
 	
@@ -31,6 +34,8 @@ public class Player {
 	public static final String QUERY_MOST_ACTIVE = "Player.mostActive";
 	
 	public static final String QUERY_MATCH_COUNT = "Player.matchCount";
+	
+	public static final String QUERY_SURVIVED_CAMPAIGN_COUNT = "Player.survivedCampaignCount";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
