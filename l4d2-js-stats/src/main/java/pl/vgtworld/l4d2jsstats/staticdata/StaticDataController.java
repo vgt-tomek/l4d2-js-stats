@@ -22,6 +22,20 @@ public class StaticDataController {
 		return getResource(filename, "css");
 	}
 	
+	@GET
+	@Path("/js/{filename}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getJsFile(@PathParam("filename") String filename) {
+		return getResource(filename, "js");
+	}
+	
+	@GET
+	@Path("/font/{filename}")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response getFontFile(@PathParam("filename") String filename) {
+		return getResource(filename, "font");		
+	}
+	
 	private Response getResource(String filename, String folder) {
 		if (validateFilename(filename)) {
 			String resourcePath = String.format("/%s/%s", folder, filename);
