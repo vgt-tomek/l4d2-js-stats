@@ -5,11 +5,14 @@ import javax.inject.Inject;
 
 import pl.vgtworld.l4d2jsstats.match.Match;
 import pl.vgtworld.l4d2jsstats.match.MatchDao;
+import pl.vgtworld.l4d2jsstats.match.MatchType;
+import pl.vgtworld.l4d2jsstats.match.MatchTypeDao;
 import pl.vgtworld.l4d2jsstats.player.dto.MostActivePlayerDto;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerVersusDto;
 import pl.vgtworld.l4d2jsstats.user.User;
 import pl.vgtworld.l4d2jsstats.user.UserDao;
+import pl.vgtworld.l4d2jsstats.userstats.dto.UserGeneralStatisticsDto;
 
 @Stateless
 public class PlayerService {
@@ -25,6 +28,9 @@ public class PlayerService {
 	
 	@Inject
 	private MatchDao matchDao;
+	
+	@Inject
+	private MatchTypeDao matchTypeDao;
 	
 	@Inject
 	private UserDao userDao;
@@ -97,6 +103,26 @@ public class PlayerService {
 	
 	public MostActivePlayerDto[] getMostActivePlayers() {
 		return playerDao.getMostActivePlayers();
+	}
+	
+	public UserGeneralStatisticsDto getPlayerStatistics(int userId) {
+		UserGeneralStatisticsDto dto = new UserGeneralStatisticsDto();
+		
+		MatchType campaignMatchType = matchTypeDao.getCampaignMatchType();
+		long campaignMatchCount = playerDao.getMatchCountForPlayer(userId, campaignMatchType.getId());
+		dto.setTotalCampaignMatchesPlayed(campaignMatchCount);
+		
+		MatchType versusMatchType = matchTypeDao.getVersusMatchType();
+		long versusMatchCount = playerDao.getMatchCountForPlayer(userId, versusMatchType.getId());
+		dto.setTotalVersusMatchesPlayed(versusMatchCount);
+		
+		long survivedCampaignCount = playerDao.getSurvivedCampaignCount(userId);
+		dto.setCampaignSurviveCount(survivedCampaignCount);
+		
+		long wonVersusCount = playerDao.getWonVersusCount(userId);
+		dto.setVersusWinCount(wonVersusCount);
+		
+		return dto;
 	}
 	
 	private PlayerCampaignDto mapFrom(PlayerCampaign player) {

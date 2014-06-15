@@ -60,6 +60,14 @@ public class UserService {
 		return true;
 	}
 	
+	public UserDto findById(int userId) {
+		User user = dao.findById(userId);
+		if (user == null) {
+			return null;
+		}
+		return mapToUserLoginDto(user);
+	}
+	
 	public UserDto findByLogin(String login) {
 		User user = dao.findByLogin(login);
 		if (user == null) {
@@ -124,5 +132,5 @@ public class UserService {
 		dto.setCreatedAt(user.getCreatedAt());
 		return dto;
 	}
-	
+
 }

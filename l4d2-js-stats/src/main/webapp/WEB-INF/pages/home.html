@@ -51,7 +51,9 @@
 			</thead>
 			<tbody>
 				<tr th:each="mostActivePlayer : ${mostActivePlayers}">
-					<td th:text="${mostActivePlayer.playerName}"></td>
+					<td>
+						<a th:href="${'/user/' + mostActivePlayer.playerId}" th:text="${mostActivePlayer.playerName}"></a>
+					</td>
 					<td th:text="${mostActivePlayer.matchCount}"></td>
 				</tr>
 			</tbody>
@@ -67,7 +69,9 @@
 			</thead>
 			<tbody>
 				<tr th:each="userActivity : ${usersActivity}">
-					<td th:text="${userActivity.userName}"></td>
+					<td>
+						<a th:href="${'/user/' + userActivity.userId}" th:text="${userActivity.userName}"></a>
+					</td>
 					<td th:text="${userActivity.daysInactive == null ? 'not played' : userActivity.daysInactive}"></td>
 				</tr>
 			</tbody>

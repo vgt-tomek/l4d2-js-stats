@@ -175,20 +175,17 @@ public class MatchService {
 	
 	public RecentMatchDto[] findRecentMatches(int count) {
 		Match[] recentMatches = matchDao.findRecentMatches(count);
-		RecentMatchDto[] dtoList = new RecentMatchDto[recentMatches.length];
-		for (int i = 0; i < recentMatches.length; ++i) {
-			dtoList[i] = mapFrom(recentMatches[i]);
-		}
-		return dtoList;
+		return mapFrom(recentMatches);
 	}
 	
 	public RecentMatchDto[] findRecentMatchesFromMap(int mapId, int count) {
 		Match[] recentMatches = matchDao.findRecentMatchesFromMap(mapId, count);
-		RecentMatchDto[] dtoList = new RecentMatchDto[recentMatches.length];
-		for (int i = 0; i < recentMatches.length; ++i) {
-			dtoList[i] = mapFrom(recentMatches[i]);
-		}
-		return dtoList;
+		return mapFrom(recentMatches);
+	}
+	
+	public RecentMatchDto[] findRecentMatchesForUser(int userId, int count) {
+		Match[] recentMatches = matchDao.findRecentMatchesForUser(userId, count);
+		return mapFrom(recentMatches);
 	}
 	
 	public MapBreakDto[] getMapsByLongestBreak() {
@@ -281,6 +278,14 @@ public class MatchService {
 		dto.setImageName(match.getImageName());
 		dto.setActive(match.isActive());
 		return dto;
+	}
+	
+	private RecentMatchDto[] mapFrom(Match[] recentMatches) {
+		RecentMatchDto[] dtoList = new RecentMatchDto[recentMatches.length];
+		for (int i = 0; i < recentMatches.length; ++i) {
+			dtoList[i] = mapFrom(recentMatches[i]);
+		}
+		return dtoList;
 	}
 	
 	private void saveImageAttachment(byte[] bytes, String imageAttachmentFilename) throws MatchServiceException {

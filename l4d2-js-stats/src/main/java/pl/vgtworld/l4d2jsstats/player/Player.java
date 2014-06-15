@@ -19,13 +19,28 @@ import pl.vgtworld.l4d2jsstats.user.User;
 			query = "DELETE FROM Player p WHERE p.user.id = :userId AND p.match.id = :matchId"),
 		@NamedQuery(name = Player.QUERY_MOST_ACTIVE,
 			query = "SELECT new pl.vgtworld.l4d2jsstats.player.dto.MostActivePlayerDto(p.user.id, p.user.login, COUNT(p)) "
-				+ "FROM Player p JOIN p.match m WHERE p.match.active = TRUE GROUP BY p.user.id ORDER BY COUNT(p) DESC")
+				+ "FROM Player p JOIN p.match m WHERE p.match.active = TRUE GROUP BY p.user.id ORDER BY COUNT(p) DESC"),
+		@NamedQuery(name = Player.QUERY_MATCH_COUNT,
+			query = "SELECT COUNT(m) FROM Player p JOIN p.match m "
+				+ "WHERE p.user.id = :userId AND m.matchType.id = :matchTypeId AND m.active = TRUE"),
+		@NamedQuery(name = Player.QUERY_SURVIVED_CAMPAIGN_COUNT,
+			query = "SELECT COUNT(m) FROM PlayerCampaign cp JOIN cp.player p JOIN p.match m "
+				+ "WHERE p.user.id = :userId AND cp.survived = TRUE AND m.active = TRUE"),
+		@NamedQuery(name = Player.QUERY_WON_VERSUS_COUNT,
+			query = "SELECT COUNT(m) FROM PlayerVersus vp JOIN vp.player p JOIN p.match m "
+				+ "WHERE p.user.id = :userId AND vp.winner = TRUE AND m.active = TRUE")
 })
 public class Player {
 	
 	public static final String QUERY_DELETE_USER_FROM_MATCH = "Player.deleteUserFromMatch";
 	
 	public static final String QUERY_MOST_ACTIVE = "Player.mostActive";
+	
+	public static final String QUERY_MATCH_COUNT = "Player.matchCount";
+	
+	public static final String QUERY_SURVIVED_CAMPAIGN_COUNT = "Player.survivedCampaignCount";
+	
+	public static final String QUERY_WON_VERSUS_COUNT = "Player.wonVersusCount";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

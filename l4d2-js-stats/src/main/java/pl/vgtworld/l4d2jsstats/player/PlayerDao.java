@@ -32,4 +32,36 @@ public class PlayerDao {
 		List<MostActivePlayerDto> result = query.getResultList();
 		return result.toArray(new MostActivePlayerDto[result.size()]);
 	}
+	
+	public long getMatchCountForPlayer(int userId, int matchTypeId) {
+		Query query = em.createNamedQuery(Player.QUERY_MATCH_COUNT);
+		query.setParameter("userId", userId);
+		query.setParameter("matchTypeId", matchTypeId);
+		Object result = query.getSingleResult();
+		if (result == null) {
+			return 0;
+		}
+		return (long) result;
+	}
+	
+	public long getSurvivedCampaignCount(int userId) {
+		Query query = em.createNamedQuery(Player.QUERY_SURVIVED_CAMPAIGN_COUNT);
+		query.setParameter("userId", userId);
+		Object result = query.getSingleResult();
+		if (result == null) {
+			return 0;
+		}
+		return (long) result;
+	}
+	
+	public long getWonVersusCount(int userId) {
+		Query query = em.createNamedQuery(Player.QUERY_WON_VERSUS_COUNT);
+		query.setParameter("userId", userId);
+		Object result = query.getSingleResult();
+		if (result == null) {
+			return 0;
+		}
+		return (long) result;
+	}
+	
 }
