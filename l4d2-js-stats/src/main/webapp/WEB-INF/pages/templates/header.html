@@ -2,17 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <body>
 	<div id="header" th:fragment="default">
-		<p th:if="${user != null}">
-			Logged as <span class="login" th:text="${user.login}"></span>
-			(<a href="/logout">Logout</a>)
-		</p>
-		<ul class="#main-menu">
+		<ul class="nav nav-pills">
 			<li><a href="/">Home</a></li>
 			<li><a href="/recent-matches">Recent matches</a></li>
 			<li th:if="${user != null}"><a href="/new-match/add/picker">Add match</a></li>
 			<li th:if="${user == null}"><a href="/login">Login</a></li>
 			<li th:if="${user == null}"><a href="/register">Register</a></li>
 		</ul>
+		<p th:if="${user != null}">
+			Logged as <span class="login" th:text="${user.login}"></span>
+			(<a href="/logout">Logout</a>)
+		</p>
 	</div>
 </body>
 </html>
