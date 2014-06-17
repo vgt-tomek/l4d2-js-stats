@@ -3,9 +3,11 @@
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<h1>Login</h1>
+		<div class="page-header">
+			<h1>Login</h1>
+		</div>
 		
-		<p>Logged in successfully.</p>
+		<div class="alert alert-success">Logged in successfully.</div>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>
