@@ -38,7 +38,7 @@ public class StaticDataController {
 	@Path("/fonts/{filename}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response getFontFile(@PathParam("filename") String filename) {
-		return getResource(filename, "font");		
+		return getResource(filename, "fonts");		
 	}
 	
 	private Response getResource(String filename, String folder) {
