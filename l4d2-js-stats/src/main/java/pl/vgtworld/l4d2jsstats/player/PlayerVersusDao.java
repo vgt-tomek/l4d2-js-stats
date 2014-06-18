@@ -24,4 +24,11 @@ public class PlayerVersusDao {
 		List<PlayerVersus> result = query.getResultList();
 		return result.toArray(new PlayerVersus[result.size()]);
 	}
+	
+	public long getTotalPlayersCountForMatch(int matchId) {
+		Query query = em.createNamedQuery(PlayerVersus.QUERY_COUNT_TOTAL_PLAYERS_FOR_MATCH);
+		query.setParameter("matchId", matchId);
+		return (long) query.getSingleResult();
+	}
+	
 }
