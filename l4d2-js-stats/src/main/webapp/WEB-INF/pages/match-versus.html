@@ -3,52 +3,98 @@
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<h1>Versus match statistics</h1>
+		<div class="page-header">
+			<h1>Versus match statistics</h1>
+		</div>
 		
-		<h2>General statistics</h2>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-lg-3">
+				<h2>Info</h2>
+				<ul class="list-group">
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.mapName}"></span>
+						Map
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></span>
+						Played at
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.winnerPoints}"></span>
+						Winner team points
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.loserPoints}"></span>
+						Loser team points
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.playerCount}"></span>
+						Number of players
+					</li>
+				</ul>
+				
+				<div class="panel panel-default" th:if="${match.image != null}">
+					<div class="panel-heading">Screenshot</div>
+					<div class="panel-body">
+						<a th:href="${'/match-image/' + match.id}">
+							<img class="img-responsive" th:src="${'/match-image/' + match.id}" alt="Responsive image" ></img>
+						</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xs-12 col-sm-6 col-lg-3">
+				<h2>Players</h2>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Team</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:class="${player.winner ? 'success' : 'danger'}" th:each="player : ${players}">
+							<td>
+								<a th:href="${'/user/' + player.userId}" th:text="${player.name}"></a>
+							</td>
+							<td th:text="${player.winner ? 'Winner' : 'Loser'}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="col-xs-12 col-sm-6">
+				<h2>Charts</h2>
+				
+				<div class="panel panel-default">
+					<div class="panel-heading">Points</div>
+					<div class="panel-body">
+						<div id="points-chart" style="height: 100px;" class="google-chart"></div>
+					</div>
+					<script th:inline="javascript">
+						google.load("visualization", "1", {packages:["corechart"]});
+						google.setOnLoadCallback(drawChart);
+						function drawChart() {
+							var data = google.visualization.arrayToDataTable([
+								['Team', 'Points', { role: 'style' }],
+								['Winner', [[${match.winnerPoints}]], 'green'],
+								['Loser', [[${match.loserPoints}]], 'red']
+							]);
+
+							var options = {
+								legend: 'none',
+								hAxis: {minValue: 0}
+							};
+
+							var chart = new google.visualization.BarChart(document.getElementById('points-chart'));
+							chart.draw(data, options);
+						}
+					</script>
+				</div>
+			</div>
+			
+		</div>
 		
-		<table>
-			<thead>
-				<tr>
-					<th>Map name</th>
-					<th>Played at</th>
-					<th>Winner team points</th>
-					<th>Loser team points</th>
-					<th>Total player count</th>
-					<th th:if="${match.image != null}">Image</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td th:text="${match.mapName}"></td>
-					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
-					<td th:text="${match.winnerPoints}"></td>
-					<td th:text="${match.loserPoints}"></td>
-					<td th:text="${match.playerCount}"></td>
-					<td th:if="${match.image != null}">
-						<a th:href="${'/match-image/' + match.id}">screenshot</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		
-		<h2>Players</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Team</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="player : ${players}">
-					<td>
-						<a th:href="${'/user/' + player.userId}" th:text="${player.name}"></a>
-					</td>
-					<td th:text="${player.winner ? 'Winner' : 'Loser'}"></td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>
