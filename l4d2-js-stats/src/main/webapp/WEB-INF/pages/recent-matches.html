@@ -3,31 +3,39 @@
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<h1>Recent matches</h1>
+		<div class="page-header">
+			<h1>Recent matches</h1>
+		</div>
 		
-		<table>
-			<thead>
-				<tr>
-					<th></th>
-					<th>Played at</th>
-					<th>Match type</th>
-					<th>Map</th>
-					<th>Links</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="match : ${recentMatches}">
-					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
-					<td th:text="${match.type}"></td>
-					<td>
-						<a th:href="${'/map/' + match.mapId}" th:text="${match.mapName}"></a>
-					</td>
-					<td>
-						<a th:href="${'/match/' + match.id + '/' + match.typeIdentifier}">Details</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="row">
+			<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Played at</th>
+							<th>Match type</th>
+							<th>Map</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="match : ${recentMatches}">
+							<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
+							<td th:text="${match.type}"></td>
+							<td>
+								<a th:href="${'/map/' + match.mapId}" th:text="${match.mapName}"></a>
+							</td>
+							<td>
+								<a class="btn btn-sm btn-info" th:href="${'/match/' + match.id + '/' + match.typeIdentifier}">
+									<span class="glyphicon glyphicon-search"></span> Details
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>
