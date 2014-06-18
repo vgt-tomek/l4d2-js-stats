@@ -10,6 +10,10 @@ public class CampaignMatchDto extends MatchBaseDto {
 	
 	private int restarts;
 	
+	private long playerCount;
+	
+	private long survivedPlayerCount;
+	
 	public int getTotalTime() {
 		return totalTime;
 	}
@@ -36,6 +40,22 @@ public class CampaignMatchDto extends MatchBaseDto {
 	
 	public void setRestarts(int restarts) {
 		this.restarts = restarts;
+	}
+
+	public long getPlayerCount() {
+		return playerCount;
+	}
+
+	public void setPlayerCount(long playerCount) {
+		this.playerCount = playerCount;
+	}
+
+	public long getSurvivedPlayerCount() {
+		return survivedPlayerCount;
+	}
+
+	public void setSurvivedPlayerCount(long survivedPlayerCount) {
+		this.survivedPlayerCount = survivedPlayerCount;
 	}
 	
 }
