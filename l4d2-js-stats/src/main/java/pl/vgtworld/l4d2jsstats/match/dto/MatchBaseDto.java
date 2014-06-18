@@ -16,6 +16,8 @@ public abstract class MatchBaseDto {
 	
 	private String image;
 	
+	private long playerCount;
+	
 	public int getId() {
 		return id;
 	}
@@ -62,6 +64,14 @@ public abstract class MatchBaseDto {
 	
 	public void setImage(String image) {
 		this.image = image;
+	}
+	
+	public long getPlayerCount() {
+		return playerCount;
+	}
+	
+	public void setPlayerCount(long playerCount) {
+		this.playerCount = playerCount;
 	}
 	
 }
