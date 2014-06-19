@@ -55,8 +55,8 @@ public class GameMapService {
 		dto.setTotalCampaignPlayerCount(totalPlayerCount);
 		long survivedPlayerCount = playerCampaignDao.getSurvivedPlayersCountOnCampaignMap(mapId);
 		dto.setSurvivedCampaignPlayerCount(survivedPlayerCount);
-		float averageDeathPerMatch = calculateAverageDeathCount(mapId, totalMatchesPlayed);
-		dto.setAverageCampaignDeathCount(averageDeathPerMatch);
+		long totalDeaths = playerCampaignDao.getTotalDeathCountOnCampaignMap(mapId);
+		dto.setTotalCampaignDeathCount(totalDeaths);
 		return dto;
 	}
 	
@@ -70,12 +70,6 @@ public class GameMapService {
 		dto.setName(map.getName());
 		dto.setImage(map.getImage());
 		return dto;
-	}
-	
-	private float calculateAverageDeathCount(int mapId, long totalMatchesPlayed) {
-		long totalDeaths = playerCampaignDao.getTotalDeathCountOnCampaignMap(mapId);
-		float averageDeathPerMatch = totalDeaths / (float) totalMatchesPlayed;
-		return averageDeathPerMatch;
 	}
 	
 }

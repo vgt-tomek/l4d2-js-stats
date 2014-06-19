@@ -8,7 +8,7 @@ public class GameMapGeneralStatisticsDto {
 	
 	private long survivedCampaignPlayerCount;
 	
-	private float averageCampaignDeathCount;
+	private long totalCampaignDeathCount;
 	
 	private float averageVersusPoints;
 	
@@ -38,12 +38,12 @@ public class GameMapGeneralStatisticsDto {
 		this.survivedCampaignPlayerCount = survivedCampaignPlayerCount;
 	}
 	
-	public float getAverageCampaignDeathCount() {
-		return averageCampaignDeathCount;
+	public long getTotalCampaignDeathCount() {
+		return totalCampaignDeathCount;
 	}
 	
-	public void setAverageCampaignDeathCount(float averageCampaignDeathCount) {
-		this.averageCampaignDeathCount = averageCampaignDeathCount;
+	public void setTotalCampaignDeathCount(long totalCampaignDeathCount) {
+		this.totalCampaignDeathCount = totalCampaignDeathCount;
 	}
 	
 	public float getAverageVersusPoints() {
