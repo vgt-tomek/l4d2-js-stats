@@ -4,7 +4,9 @@ public class GameMapGeneralStatisticsDto {
 	
 	private long totalMatchesPlayed;
 	
-	private float campaignSurvivalPercentage;
+	private long totalCampaignPlayerCount;
+	
+	private long survivedCampaignPlayerCount;
 	
 	private float averageCampaignDeathCount;
 	
@@ -20,12 +22,20 @@ public class GameMapGeneralStatisticsDto {
 		this.totalMatchesPlayed = totalMatchesPlayed;
 	}
 	
-	public float getCampaignSurvivalPercentage() {
-		return campaignSurvivalPercentage;
+	public long getTotalCampaignPlayerCount() {
+		return totalCampaignPlayerCount;
 	}
 	
-	public void setCampaignSurvivalPercentage(float campaignSurvivalPercentage) {
-		this.campaignSurvivalPercentage = campaignSurvivalPercentage;
+	public void setTotalCampaignPlayerCount(long totalCampaignPlayerCount) {
+		this.totalCampaignPlayerCount = totalCampaignPlayerCount;
+	}
+	
+	public long getSurvivedCampaignPlayerCount() {
+		return survivedCampaignPlayerCount;
+	}
+	
+	public void setSurvivedCampaignPlayerCount(long survivedCampaignPlayerCount) {
+		this.survivedCampaignPlayerCount = survivedCampaignPlayerCount;
 	}
 	
 	public float getAverageCampaignDeathCount() {

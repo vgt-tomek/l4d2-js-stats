@@ -16,7 +16,8 @@
 				<tr>
 					<th>Total matches played</th>
 					<th>Most versus mode winner team points</th>
-					<th>Campaign mode survival percentage</th>
+					<th>Campaign total player count</th>
+					<th>Campaign survived player count</th>
 					<th>Average death count</th>
 				</tr>
 			</thead>
@@ -24,7 +25,8 @@
 				<tr>
 					<td th:text="${mapStatistics.totalMatchesPlayed}"></td>
 					<td th:text="${mapStatistics.topVersusPoints}"></td>
-					<td th:text="${mapStatistics.campaignSurvivalPercentage}"></td>
+					<td th:text="${mapStatistics.totalCampaignPlayerCount}"></td>
+					<td th:text="${mapStatistics.survivedCampaignPlayerCount}"></td>
 					<td th:text="${mapStatistics.averageCampaignDeathCount}"></td>
 				</tr>
 			</tbody>
