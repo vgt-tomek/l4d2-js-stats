@@ -41,6 +41,13 @@ public class StaticDataController {
 		return getResource(filename, "fonts");		
 	}
 	
+	@GET
+	@Path("/images/{filename}")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response getImageFile(@PathParam("filename") String filename) {
+		return getResource(filename, "images");
+	}
+	
 	private Response getResource(String filename, String folder) {
 		if (validateFilename(filename)) {
 			String resourcePath = String.format("/%s/%s", folder, filename);
