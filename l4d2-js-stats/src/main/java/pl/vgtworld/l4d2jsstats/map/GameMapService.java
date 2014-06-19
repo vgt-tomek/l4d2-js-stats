@@ -7,6 +7,7 @@ import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapGeneralStatisticsDto;
 import pl.vgtworld.l4d2jsstats.map.dto.MostPlayedMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchDao;
+import pl.vgtworld.l4d2jsstats.match.MatchTypeDao;
 import pl.vgtworld.l4d2jsstats.match.MatchVersusDao;
 import pl.vgtworld.l4d2jsstats.player.PlayerCampaignDao;
 
@@ -47,14 +48,18 @@ public class GameMapService {
 		if (dao.findById(mapId) == null) {
 			return dto;
 		}
-		long totalMatchesPlayed = matchDao.getTotalMatchesPlayedOnMap(mapId);
-		dto.setTotalMatchesPlayed(totalMatchesPlayed);
+		long totalCampaignMatches = matchDao.getTotalMatchesPlayedOnMap(mapId, MatchTypeDao.CAMPAIGN_MATCH_TYPE_ID);
+		dto.setTotalCampaignMatchesPlayed(totalCampaignMatches);
+		long totalVersusMatches = matchDao.getTotalMatchesPlayedOnMap(mapId, MatchTypeDao.VERSUS_MATCH_TYPE_ID);
+		dto.setTotalVersusMatchesPlayed(totalVersusMatches);
 		int topWinnerPoints = versusDao.getTopWinnerPointsOnMap(mapId);
 		dto.setTopVersusPoints(topWinnerPoints);
-		float survivalPercentage = calculateSurvivalPercentageForMap(mapId);
-		dto.setCampaignSurvivalPercentage(survivalPercentage);
-		float averageDeathPerMatch = calculateAverageDeathCount(mapId, totalMatchesPlayed);
-		dto.setAverageCampaignDeathCount(averageDeathPerMatch);
+		long totalPlayerCount = playerCampaignDao.getTotalPlayersCountOnCampaignMap(mapId);
+		dto.setTotalCampaignPlayerCount(totalPlayerCount);
+		long survivedPlayerCount = playerCampaignDao.getSurvivedPlayersCountOnCampaignMap(mapId);
+		dto.setSurvivedCampaignPlayerCount(survivedPlayerCount);
+		long totalDeaths = playerCampaignDao.getTotalDeathCountOnCampaignMap(mapId);
+		dto.setTotalCampaignDeathCount(totalDeaths);
 		return dto;
 	}
 	
@@ -68,19 +73,6 @@ public class GameMapService {
 		dto.setName(map.getName());
 		dto.setImage(map.getImage());
 		return dto;
-	}
-	
-	private float calculateSurvivalPercentageForMap(int mapId) {
-		long survivedCount = playerCampaignDao.getSurvivedPlayersCountOnCampaignMap(mapId);
-		long totalCount = playerCampaignDao.getTotalPlayersCountOnCampaignMap(mapId);
-		float survivalPercentage = (survivedCount * 100) / (float) totalCount;
-		return survivalPercentage;
-	}
-	
-	private float calculateAverageDeathCount(int mapId, long totalMatchesPlayed) {
-		long totalDeaths = playerCampaignDao.getTotalDeathCountOnCampaignMap(mapId);
-		float averageDeathPerMatch = totalDeaths / (float) totalMatchesPlayed;
-		return averageDeathPerMatch;
 	}
 	
 }
