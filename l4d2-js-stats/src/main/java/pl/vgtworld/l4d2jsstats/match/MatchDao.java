@@ -47,9 +47,11 @@ public class MatchDao {
 		return result.toArray(new Match[result.size()]);
 	}
 	
-	public long getTotalMatchesPlayedOnMap(int mapId) {
+	public long getTotalMatchesPlayedOnMap(int mapId, int matchTypeId) {
 		Query query = em.createNamedQuery(Match.QUERY_TOTAL_MATCHES_PLAYED_ON_MAP);
 		query.setParameter("mapId", mapId);
-		return (long)(query.getSingleResult());
+		query.setParameter("matchTypeId", matchTypeId);
+		return (long) (query.getSingleResult());
 	}
+	
 }

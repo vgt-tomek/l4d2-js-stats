@@ -7,6 +7,7 @@ import pl.vgtworld.l4d2jsstats.map.dto.GameMapDto;
 import pl.vgtworld.l4d2jsstats.map.dto.GameMapGeneralStatisticsDto;
 import pl.vgtworld.l4d2jsstats.map.dto.MostPlayedMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchDao;
+import pl.vgtworld.l4d2jsstats.match.MatchTypeDao;
 import pl.vgtworld.l4d2jsstats.match.MatchVersusDao;
 import pl.vgtworld.l4d2jsstats.player.PlayerCampaignDao;
 
@@ -47,8 +48,10 @@ public class GameMapService {
 		if (dao.findById(mapId) == null) {
 			return dto;
 		}
-		long totalMatchesPlayed = matchDao.getTotalMatchesPlayedOnMap(mapId);
-		dto.setTotalMatchesPlayed(totalMatchesPlayed);
+		long totalCampaignMatches = matchDao.getTotalMatchesPlayedOnMap(mapId, MatchTypeDao.CAMPAIGN_MATCH_TYPE_ID);
+		dto.setTotalCampaignMatchesPlayed(totalCampaignMatches);
+		long totalVersusMatches = matchDao.getTotalMatchesPlayedOnMap(mapId, MatchTypeDao.VERSUS_MATCH_TYPE_ID);
+		dto.setTotalVersusMatchesPlayed(totalVersusMatches);
 		int topWinnerPoints = versusDao.getTopWinnerPointsOnMap(mapId);
 		dto.setTopVersusPoints(topWinnerPoints);
 		long totalPlayerCount = playerCampaignDao.getTotalPlayersCountOnCampaignMap(mapId);

@@ -27,7 +27,8 @@ import pl.vgtworld.l4d2jsstats.user.User;
 			query = "SELECT p.match FROM Player p JOIN p.match m "
 				+ "WHERE m.active = TRUE and p.user.id = :userId ORDER by p.id DESC"),
 		@NamedQuery(name = Match.QUERY_TOTAL_MATCHES_PLAYED_ON_MAP,
-			query = "SELECT COUNT(m) FROM Match m WHERE m.map.id = :mapId AND m.active = TRUE")
+			query = "SELECT COUNT(m) FROM Match m WHERE "
+				+ "m.map.id = :mapId AND m.matchType.id = :matchTypeId AND m.active = TRUE")
 })
 public class Match {
 	

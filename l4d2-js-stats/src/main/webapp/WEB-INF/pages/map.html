@@ -14,7 +14,8 @@
 		<table th:if="${mapStatistics.totalMatchesPlayed > 0}">
 			<thead>
 				<tr>
-					<th>Total matches played</th>
+					<th>Total campaign matches played</th>
+					<th>Total versus matches played</th>
 					<th>Most versus mode winner team points</th>
 					<th>Campaign total player count</th>
 					<th>Campaign survived player count</th>
@@ -23,7 +24,8 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td th:text="${mapStatistics.totalMatchesPlayed}"></td>
+					<td th:text="${mapStatistics.totalCampaignMatchesPlayed}"></td>
+					<td th:text="${mapStatistics.totalVersusMatchesPlayed}"></td>
 					<td th:text="${mapStatistics.topVersusPoints}"></td>
 					<td th:text="${mapStatistics.totalCampaignPlayerCount}"></td>
 					<td th:text="${mapStatistics.survivedCampaignPlayerCount}"></td>

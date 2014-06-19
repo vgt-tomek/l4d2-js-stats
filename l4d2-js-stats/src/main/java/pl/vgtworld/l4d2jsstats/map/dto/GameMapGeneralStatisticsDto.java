@@ -2,7 +2,9 @@ package pl.vgtworld.l4d2jsstats.map.dto;
 
 public class GameMapGeneralStatisticsDto {
 	
-	private long totalMatchesPlayed;
+	private long totalCampaignMatchesPlayed;
+	
+	private long totalVersusMatchesPlayed;
 	
 	private long totalCampaignPlayerCount;
 	
@@ -15,11 +17,23 @@ public class GameMapGeneralStatisticsDto {
 	private int topVersusPoints;
 	
 	public long getTotalMatchesPlayed() {
-		return totalMatchesPlayed;
+		return totalCampaignMatchesPlayed + totalVersusMatchesPlayed;
 	}
 	
-	public void setTotalMatchesPlayed(long totalMatchesPlayed) {
-		this.totalMatchesPlayed = totalMatchesPlayed;
+	public long getTotalCampaignMatchesPlayed() {
+		return totalCampaignMatchesPlayed;
+	}
+	
+	public void setTotalCampaignMatchesPlayed(long totalCampaignMatchesPlayed) {
+		this.totalCampaignMatchesPlayed = totalCampaignMatchesPlayed;
+	}
+	
+	public long getTotalVersusMatchesPlayed() {
+		return totalVersusMatchesPlayed;
+	}
+	
+	public void setTotalVersusMatchesPlayed(long totalVersusMatchesPlayed) {
+		this.totalVersusMatchesPlayed = totalVersusMatchesPlayed;
 	}
 	
 	public long getTotalCampaignPlayerCount() {

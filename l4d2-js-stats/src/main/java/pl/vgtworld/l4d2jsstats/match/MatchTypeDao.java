@@ -10,9 +10,9 @@ import javax.persistence.Query;
 @Stateless
 public class MatchTypeDao {
 	
-	private static final int CAMPAIGN_MATCH_TYPE_ID = 1;
+	public static final int CAMPAIGN_MATCH_TYPE_ID = 1;
 	
-	private static final int VERSUS_MATCH_TYPE_ID = 2;
+	public static final int VERSUS_MATCH_TYPE_ID = 2;
 	
 	@PersistenceContext
 	private EntityManager em;
