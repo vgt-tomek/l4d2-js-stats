@@ -3,77 +3,98 @@
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<h2>Match summary</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>Map</th>
-					<th>Played at</th>
-					<th>Winner team points</th>
-					<th>Loser team points</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td th:text="${match.mapName}"></td>
-					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
-					<td th:text="${match.winnerPoints}"></td>
-					<td th:text="${match.loserPoints}"></td>
-				</tr>
-			</tbody>
-		</table>
 		
-		<h2>Match participants</h2>
-		<table th:if="${addedPlayers.length > 0}">
-			<thead>
-				<tr>
-					<th>Player</th>
-					<th>Team</th>
-					<th>Options</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="player : ${addedPlayers}">
-					<td th:text="${player.name}"></td>
-					<td th:text="${player.winner ? 'Winner' : 'Loser'}"></td>
-					<td>
-						<form method="POST" th:action="${'/new-match/versus/' + match.id + '/player/delete'}">
-							<input type="hidden" name="user" th:value="${player.userId}" />
-							<input type="submit" name="player-delete" value="Delete" />
-						</form>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<p th:if="${addedPlayers.length == 0}">
-			No participants added yet.
-		</p>
+		<div class="page-header">
+			<h1>Add versus match</h1>
+		</div>
 		
-		<h2>Add player</h2>
-		<form method="POST" action="">
-			<div class="errors" th:if="${errors != null}">
-				<p class="error" th:each="error : ${errors}" th:text="${error}"></p>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-3">
+				<h2>Add player</h2>
+				<form method="POST" action="">
+					<div class="alert alert-danger" th:each="error : ${errors}" th:text="${error}"></div>
+					<div class="form-group">
+						<label for="add-player-user">User:</label>
+						<select id="add-player-user" class="form-control" name="user" th:include="templates/form :: player-picker (players=${activePlayers}, value=${form.user})"></select>
+					</div>
+					<div class="form-group">
+						<input id="add-player-team-winner" type="radio" name="win" value="true" th:checked="${form.winner == true}" />
+						<label for="add-player-team-winner">winner team</label>
+						<input id="add-player-team-loser" type="radio" name="win" value="false" th:checked="${form.winner == false}" />
+						<label for="add-player-team-loser">loser team</label>
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary" name="add-player-submit" value="Add player" />
+					</div>
+				</form>
+				
+				<form method="POST" th:action="${'/new-match/' + match.id + '/activate'}">
+					<div>
+						<input type="submit" class="btn btn-primary" name="match-activate" value="Publish match" />
+					</div>
+				</form>
 			</div>
-			<div>
-				<label for="add-player-user">User:</label>
-				<select id="add-player-user" name="user" th:include="templates/form :: player-picker (players=${activePlayers}, value=${form.user})"></select>
+			
+			<div class="col-xs-12 col-sm-6 col-md-6">
+				<h2>Match participants</h2>
+				<table class="table" th:if="${addedPlayers.length > 0}">
+					<thead>
+						<tr>
+							<th>Player</th>
+							<th>Team</th>
+							<th>Options</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:class="${player.winner ? 'success' : 'danger'}" th:each="player : ${addedPlayers}">
+							<td th:text="${player.name}"></td>
+							<td th:text="${player.winner ? 'Winner' : 'Loser'}"></td>
+							<td>
+								<form method="POST" th:action="${'/new-match/versus/' + match.id + '/player/delete'}">
+									<input type="hidden" name="user" th:value="${player.userId}" />
+									<input type="submit" class="btn btn-danger" name="player-delete" value="Delete" />
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="alert alert-info" th:if="${addedPlayers.length == 0}">No participants added yet.</div>
 			</div>
-			<div>
-				<input id="add-player-team-winner" type="radio" name="win" value="true" th:checked="${form.winner == true}" />
-				<label for="add-player-team-winner">winner team</label>
-				<input id="add-player-team-loser" type="radio" name="win" value="false" th:checked="${form.winner == false}" />
-				<label for="add-player-team-loser">loser team</label>
+			
+			<div class="col-xs-12 col-sm-12 col-md-3">
+				<h2>Match summary</h2>
+				
+				<ul class="list-group">
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.mapName}"></span>
+						Map
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></span>
+						Played at
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.winnerPoints}"></span>
+						Winner team points
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.loserPoints}"></span>
+						Loser team points
+					</li>
+				</ul>
+				
+				<div class="panel panel-default" th:if="${match.image != null}">
+					<div class="panel-heading">Screenshot</div>
+					<div class="panel-body">
+						<a th:href="${'/match-image/' + match.id}">
+							<img class="img-responsive" th:src="${'/match-image/' + match.id}" alt="Responsive image" ></img>
+						</a>
+					</div>
+				</div>
 			</div>
-			<div>
-				<input type="submit" name="add-player-submit" value="Add player" />
-			</div>
-		</form>
+			
+		</div>
 		
-		<form method="POST" th:action="${'/new-match/' + match.id + '/activate'}">
-			<div>
-				<input type="submit" name="match-activate" value="Publish match" />
-			</div>
-		</form>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>

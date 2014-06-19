@@ -3,36 +3,40 @@
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<h1>Add versus match</h1>
+		<div class="page-header">
+			<h1>Add versus match</h1>
+		</div>
 		
-		<form method="POST" action="/new-match/add/versus" enctype="multipart/form-data">
-			<div class="errors" th:if="${errors != null}">
-				<p class="error" th:each="error : ${errors}" th:text="${error}"></p>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+				<form method="POST" action="/new-match/add/versus" enctype="multipart/form-data">
+					<div class="alert alert-danger" th:each="error : ${errors}" th:text="${error}"></div>
+					<div class="form-group">
+						<label for="add-match-map">Map:</label>
+						<select id="add-match-map" class="form-control" name="map" th:include="templates/form :: map-picker (maps=${maps}, value=${form.mapId})"></select>
+					</div>
+					<div class="form-group">
+						<Label for="add-match-date">Date (YYYY-MM-DD):</Label>
+						<input id="add-match-date" class="form-control" type="text" name="date" th:value="${form.date}" />
+					</div>
+					<div class="form-group">
+						<label for="add-match-winner-points">Winner team points:</label>
+						<input id="add-match-winner-points" class="form-control" name="winner-points" th:value="${form.winnerPoints}" /> 
+					</div>
+					<div class="form-group">
+						<label for="add-match-loser-points">Loser team points:</label>
+						<input id="add-match-loser-points" class="form-control" name="loser-points" th:value="${form.loserPoints}" /> 
+					</div>
+					<div class="form-group">
+						<label for="add-match-image">Final screenshot:</label>
+						<input id="add-match-image" class="form-control" name="image" type="file" />
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary" name="add-match-submit" value="Add match" />
+					</div>
+				</form>
 			</div>
-			<div>
-				<label for="add-match-map">Map:</label>
-				<select id="add-match-map" name="map" th:include="templates/form :: map-picker (maps=${maps}, value=${form.mapId})"></select>
-			</div>
-			<div>
-				<Label for="add-match-date">Date (YYYY-MM-DD):</Label>
-				<input id="add-match-date" type="text" name="date" th:value="${form.date}" />
-			</div>
-			<div>
-				<label for="add-match-winner-points">Winner team points:</label>
-				<input id="add-match-winner-points" name="winner-points" th:value="${form.winnerPoints}" /> 
-			</div>
-			<div>
-				<label for="add-match-loser-points">Loser team points:</label>
-				<input id="add-match-loser-points" name="loser-points" th:value="${form.loserPoints}" /> 
-			</div>
-			<div>
-				<label for="add-match-image">Final screenshot:</label>
-				<input id="add-match-image" name="image" type="file" />
-			</div>
-			<div>
-				<input type="submit" name="add-match-submit" value="Add match" />
-			</div>
-		</form>
+		</div>
 		
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
