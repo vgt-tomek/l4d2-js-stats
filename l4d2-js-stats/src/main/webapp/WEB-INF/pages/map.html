@@ -16,11 +16,11 @@
 						<span class="badge" th:text="${mapStatistics.totalCampaignMatchesPlayed}"></span>
 						Total matches played
 					</li>
-					<li class="list-group-item">
+					<li class="list-group-item" th:if="${mapStatistics.totalCampaignMatchesPlayed > 0}">
 						<span class="badge" th:text="${(mapStatistics.survivedCampaignPlayerCount * 100 / mapStatistics.totalCampaignPlayerCount) + ' %'}"></span>
 						Average survival rate
 					</li>
-					<li class="list-group-item">
+					<li class="list-group-item" th:if="${mapStatistics.totalCampaignMatchesPlayed > 0}">
 						<span class="badge" th:text="${#numbers.formatDecimal(1.0 * mapStatistics.totalCampaignDeathCount / mapStatistics.totalCampaignMatchesPlayed, 1, 2, 'POINT')}"></span>
 						Average death count
 					</li>
