@@ -38,7 +38,7 @@ public class UserStats extends BaseController {
 		if (user == null) {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
-		request.setAttribute("user", user);
+		request.setAttribute("userProfile", user);
 		setPageTitle(user.getLogin() + " profile");
 		
 		UserGeneralStatisticsDto playerStatistics = playerService.getPlayerStatistics(userId);
