@@ -3,51 +3,108 @@
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<h1>Campaign match statistics</h1>
+		<div class="page-header">
+			<h1>Campaign match statistics</h1>
+		</div>
 		
-		<h2>General statistics</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>Map name</th>
-					<th>Played at</th>
-					<th>Difficulty</th>
-					<th>Restarts</th>
-					<th th:if="${match.image != null}">Image</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td th:text="${match.mapName}"></td>
-					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
-					<td th:text="${match.difficultyName}"></td>
-					<td th:text="${match.restarts}"></td>
-					<td th:if="${match.image != null}">
-						<a th:href="${'/match-image/' + match.id}">screenshot</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-lg-3">
+				<h2>Info</h2>
+				<ul class="list-group">
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.mapName}"></span>
+						Map
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></span>
+						Played at
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.totalTimeHumanReadable}"></span>
+						Total time
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.difficultyName}"></span>
+						Difficulty
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.restarts}"></span>
+						Restarts
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${match.playerCount}"></span>
+						Number of players
+					</li>
+				</ul>
+				
+				<div class="panel panel-default" th:if="${match.image != null}">
+					<div class="panel-heading">Screenshot</div>
+					<div class="panel-body">
+						<a th:href="${'/match-image/' + match.id}">
+							<img class="img-responsive" th:src="${'/match-image/' + match.id}" alt="Responsive image" ></img>
+						</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xs-12 col-sm-6 col-lg-3">
+				<h2>Players</h2>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Survived</th>
+							<th>Deaths</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:class="${player.survived ? 'success' : 'danger'}" th:each="player : ${players}">
+							<td>
+								<a th:href="${'/user/' + player.userId}" th:text="${player.name}"></a>
+							</td>
+							<td th:text="${player.survived ? 'yes' : 'no'}"></td>
+							<td th:text="${player.deaths}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="col-xs-12 col-sm-6">
+				<h2>Charts</h2>
+				
+				<div class="panel panel-default">
+					<div class="panel-heading">Team survival rate</div>
+					<div class="panel-body">
+						<div id="team-survival-chart" style="height: 400px;" class="google-chart"></div>
+					</div>
+				</div>
+				<script th:inline="javascript">
+					google.load("visualization", "1", {packages:["corechart"]});
+					google.setOnLoadCallback(drawChart);
+					function drawChart() {
+						var data = google.visualization.arrayToDataTable([
+							['Status', 'Number of players'],
+							['Survived', [[${match.survivedPlayerCount}]] ],
+							['Not survived', [[${match.playerCount - match.survivedPlayerCount}]] ]
+						]);
 		
-		<h2>Players</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Survived</th>
-					<th>Deaths</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="player : ${players}">
-					<td>
-						<a th:href="${'/user/' + player.userId}" th:text="${player.name}"></a>
-					</td>
-					<td th:text="${player.survived ? 'yes' : 'no'}"></td>
-					<td th:text="${player.deaths}"></td>
-				</tr>
-			</tbody>
-		</table>
+						var options = {
+							legend: 'none',
+							'chartArea': {'width': '100%', 'height': '100%'},
+							slices: {
+								0: { color: 'green' },
+								1: { color: 'red' }
+							}
+						};
+		
+						var chart = new google.visualization.PieChart(document.getElementById('team-survival-chart'));
+						chart.draw(data, options);
+					}
+				</script>
+			</div>
+			
+		</div>
+		
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>

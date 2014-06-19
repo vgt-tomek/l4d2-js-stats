@@ -1,4 +1,12 @@
+body{
+	margin: 10px;
+}
+
 #footer p.copyright{
 	font-size:10px;
 	text-align:center;
+}
+
+nav a.user{
+	font-weight:bold;
 }

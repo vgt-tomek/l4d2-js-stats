@@ -1,13 +1,12 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="templates/head :: default"></head>
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<div class="page-header">
-			<h1>Register</h1>
-		</div>
+		<h1 th:text="${map.name + ' statistics'}"></h1>
 		
-		<div class="alert alert-success">Account created successfully.</div>
+		<div class="alert alert-info">No matches played on this map.</div>
+		
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>

@@ -37,6 +37,18 @@ public class PlayerCampaignDao {
 		return (long) (query.getSingleResult());
 	}
 	
+	public long getTotalPlayersCountForCampaignMatch(int matchId) {
+		Query query = em.createNamedQuery(PlayerCampaign.QUERY_COUNT_TOTAL_PLAYERS_FOR_MATCH);
+		query.setParameter("matchId", matchId);
+		return (long) (query.getSingleResult());
+	}
+	
+	public long getSurvivedPlayersCountForCampaignMatch(int matchId) {
+		Query query = em.createNamedQuery(PlayerCampaign.QUERY_COUNT_SURVIVED_PLAYERS_FOR_MATCH);
+		query.setParameter("matchId", matchId);
+		return (long) (query.getSingleResult());
+	}
+	
 	public long getTotalDeathCountOnCampaignMap(int mapId) {
 		Query query = em.createNamedQuery(PlayerCampaign.QUERY_COUNT_PLAYER_DEATHS_FOR_MAP);
 		query.setParameter("mapId", mapId);
@@ -44,7 +56,7 @@ public class PlayerCampaignDao {
 		if (result == null) {
 			return 0;
 		}
-		return (long)result;
+		return (long) result;
 	}
 	
 }

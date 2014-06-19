@@ -41,6 +41,10 @@ public class MapStats extends BaseController {
 		GameMapGeneralStatisticsDto mapStatistics = mapService.getMapStatistics(mapId);
 		request.setAttribute("mapStatistics", mapStatistics);
 		
+		if (mapStatistics.getTotalMatchesPlayed() == 0) {
+			return Response.ok(render("map-no-stats")).build();
+		}
+		
 		RecentMatchDto[] recentMatches = matchService.findRecentMatchesFromMap(map.getId(), RECENT_MATCHES_COUNT);
 		request.setAttribute("recentMatches", recentMatches);
 		

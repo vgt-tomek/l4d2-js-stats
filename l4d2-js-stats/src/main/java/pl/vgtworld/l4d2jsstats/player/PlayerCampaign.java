@@ -22,7 +22,13 @@ import javax.persistence.Table;
 				+ "WHERE m.active = TRUE AND m.matchType.id = 1 AND m.map.id = :mapId AND c.survived = TRUE"),
 		@NamedQuery(name = PlayerCampaign.QUERY_COUNT_PLAYER_DEATHS_FOR_MAP,
 			query = "SELECT SUM(c.deaths) FROM PlayerCampaign c JOIN c.player p JOIN p.match m "
-				+ "WHERE m.active = TRUE AND m.matchType.id = 1 AND m.map.id = :mapId")
+				+ "WHERE m.active = TRUE AND m.matchType.id = 1 AND m.map.id = :mapId"),
+		@NamedQuery(name = PlayerCampaign.QUERY_COUNT_TOTAL_PLAYERS_FOR_MATCH,
+			query = "SELECT COUNT(c) FROM PlayerCampaign c JOIN c.player p JOIN p.match m "
+				+ "WHERE m.active = TRUE AND m.matchType.id = 1 AND m.id = :matchId"),
+		@NamedQuery(name = PlayerCampaign.QUERY_COUNT_SURVIVED_PLAYERS_FOR_MATCH,
+			query = "SELECT COUNT(c) FROM PlayerCampaign c JOIN c.player p JOIN p.match m "
+				+ "WHERE m.active = TRUE AND m.matchType.id = 1 AND m.id = :matchId AND c.survived = TRUE"),
 })
 public class PlayerCampaign implements Serializable {
 	
@@ -33,6 +39,10 @@ public class PlayerCampaign implements Serializable {
 	public static final String QUERY_COUNT_SURVIVED_PLAYERS_FOR_MAP = "PlayerCampaign.countSurvivedPlayersForMap";
 	
 	public static final String QUERY_COUNT_PLAYER_DEATHS_FOR_MAP = "PlayerCampaign.countPlayerDeathsForMap";
+	
+	public static final String QUERY_COUNT_TOTAL_PLAYERS_FOR_MATCH = "PlayerCampaign.countTotalPlayersForMatch";
+	
+	public static final String QUERY_COUNT_SURVIVED_PLAYERS_FOR_MATCH = "PlayerCampaign.countSurvivedPlayersForMatch";
 	
 	private static final long serialVersionUID = 1L;
 	

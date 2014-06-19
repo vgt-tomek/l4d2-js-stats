@@ -24,6 +24,8 @@ import pl.vgtworld.l4d2jsstats.match.dto.MatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.UserActivityDto;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
+import pl.vgtworld.l4d2jsstats.player.PlayerCampaignDao;
+import pl.vgtworld.l4d2jsstats.player.PlayerVersusDao;
 import pl.vgtworld.l4d2jsstats.storage.Storage;
 import pl.vgtworld.l4d2jsstats.user.User;
 import pl.vgtworld.l4d2jsstats.user.UserDao;
@@ -50,6 +52,12 @@ public class MatchService {
 	
 	@Inject
 	private MatchTypeDao matchTypeDao;
+	
+	@Inject
+	private PlayerCampaignDao playerCampaignDao;
+	
+	@Inject
+	private PlayerVersusDao playerVersusDao;
 	
 	@Inject
 	private Storage storage;
@@ -231,8 +239,10 @@ public class MatchService {
 	}
 	
 	private CampaignMatchDto mapFrom(MatchCampaign match) {
+		int matchId = match.getMatch().getId();
+		
 		CampaignMatchDto dto = new CampaignMatchDto();
-		dto.setId(match.getMatch().getId());
+		dto.setId(matchId);
 		dto.setOwnerId(match.getMatch().getOwner().getId());
 		dto.setMapId(match.getMatch().getMap().getId());
 		dto.setMapName(match.getMatch().getMap().getName());
@@ -241,12 +251,19 @@ public class MatchService {
 		dto.setTotalTime(match.getTime());
 		dto.setDifficultyName(match.getDifficulty().getName());
 		dto.setRestarts(match.getRestarts());
+		
+		long survivedPlayerCount = playerCampaignDao.getSurvivedPlayersCountForCampaignMatch(matchId);
+		long totalPlayerCount = playerCampaignDao.getTotalPlayersCountForCampaignMatch(matchId);
+		dto.setPlayerCount(totalPlayerCount);
+		dto.setSurvivedPlayerCount(survivedPlayerCount);
 		return dto;
 	}
 	
 	private VersusMatchDto mapFrom(MatchVersus match) {
+		int matchId = match.getMatch().getId();
+		
 		VersusMatchDto dto = new VersusMatchDto();
-		dto.setId(match.getMatch().getId());
+		dto.setId(matchId);
 		dto.setOwnerId(match.getMatch().getOwner().getId());
 		dto.setMapId(match.getMatch().getMap().getId());
 		dto.setMapName(match.getMatch().getMap().getName());
@@ -254,6 +271,9 @@ public class MatchService {
 		dto.setImage(match.getMatch().getImageName());
 		dto.setWinnerPoints(match.getWinnerPoints());
 		dto.setLoserPoints(match.getLoserPoints());
+		
+		long totalPlayerCount = playerVersusDao.getTotalPlayersCountForMatch(matchId);
+		dto.setPlayerCount(totalPlayerCount);
 		return dto;
 	}
 	

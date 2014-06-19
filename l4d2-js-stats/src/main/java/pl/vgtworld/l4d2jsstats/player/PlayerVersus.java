@@ -13,11 +13,16 @@ import javax.persistence.Table;
 @Table(name = "players_versus")
 @NamedQueries({
 		@NamedQuery(name = PlayerVersus.QUERY_FIND_FROM_MATCH,
-			query = "SELECT v FROM PlayerVersus v JOIN v.player p WHERE p.match.id = :matchId")
+			query = "SELECT v FROM PlayerVersus v JOIN v.player p WHERE p.match.id = :matchId"),
+		@NamedQuery(name = PlayerVersus.QUERY_COUNT_TOTAL_PLAYERS_FOR_MATCH,
+			query = "SELECT COUNT(v) FROM PlayerVersus v JOIN v.player p JOIN p.match m "
+				+ "WHERE m.active = TRUE AND m.matchType.id = 2 AND m.id = :matchId")
 })
 public class PlayerVersus implements Serializable {
 	
 	public static final String QUERY_FIND_FROM_MATCH = "PlayerVersus.findFromMatch";
+	
+	public static final String QUERY_COUNT_TOTAL_PLAYERS_FOR_MATCH = "PlayerVersus.countTotalPlayersForMatch";
 	
 	private static final long serialVersionUID = 1L;
 	

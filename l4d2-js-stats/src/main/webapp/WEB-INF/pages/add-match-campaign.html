@@ -3,40 +3,44 @@
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<h1>Add campaign match</h1>
+		<div class="page-header">
+			<h1>Add campaign match</h1>
+		</div>
 		
-		<form method="POST" action="/new-match/add/campaign" enctype="multipart/form-data">
-			<div class="errors" th:if="${errors != null}">
-				<p class="error" th:each="error : ${errors}" th:text="${error}"></p>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+				<form method="POST" action="/new-match/add/campaign" enctype="multipart/form-data">
+					<div class="alert alert-danger" th:each="error : ${errors}" th:text="${error}"></div>
+					<div class="form-group">
+						<label for="add-match-map">Map:</label>
+						<select id="add-match-map" class="form-control" name="map" th:include="templates/form :: map-picker (maps=${maps}, value=${form.mapId})"></select>
+					</div>
+					<div class="form-group">
+						<Label for="add-match-date">Date (YYYY-MM-DD):</Label>
+						<input id="add-match-date" class="form-control" type="text" name="date" th:value="${form.date}" />
+					</div>
+					<div class="form-group">
+						<label for="add-match-difficulty">Difficulty level:</label>
+						<select id="add-match-difficulty" class="form-control" name="difficulty" th:include="templates/form :: difficulty-picker (levels=${difficultyLevels}, value=${form.difficultyId})"></select>
+					</div>
+					<div class="form-group">
+						<label for="add-match-total-time">Total campaign time (H:MM):</label>
+						<input id="add-match-total-time" class="form-control" name="total-time" th:value="${form.totalTime}" />
+					</div>
+					<div class="form-group">
+						<label for="add-match-restarts">Numbers of time restarted:</label>
+						<input id="add-match-restarts" class="form-control" name="restarts" th:value="${form.restarts}" /> 
+					</div>
+					<div class="form-group">
+						<label for="add-match-image">Final screenshot:</label>
+						<input id="add-match-image" class="form-control" name="image" type="file" />
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary" name="add-match-submit" value="Add match" />
+					</div>
+				</form>
 			</div>
-			<div>
-				<label for="add-match-map">Map:</label>
-				<select id="add-match-map" name="map" th:include="templates/form :: map-picker (maps=${maps}, value=${form.mapId})"></select>
-			</div>
-			<div>
-				<Label for="add-match-date">Date (YYYY-MM-DD):</Label>
-				<input id="add-match-date" type="text" name="date" th:value="${form.date}" />
-			</div>
-			<div>
-				<label for="add-match-difficulty">Difficulty level:</label>
-				<select id="add-match-difficulty" name="difficulty" th:include="templates/form :: difficulty-picker (levels=${difficultyLevels}, value=${form.difficultyId})"></select>
-			</div>
-			<div>
-				<label for="add-match-total-time">Total campaign time (H:MM):</label>
-				<input id="add-match-total-time" name="total-time" th:value="${form.totalTime}" />
-			</div>
-			<div>
-				<label for="add-match-restarts">Numbers of time restarted:</label>
-				<input id="add-match-restarts" name="restarts" th:value="${form.restarts}" /> 
-			</div>
-			<div>
-				<label for="add-match-image">Final screenshot:</label>
-				<input id="add-match-image" name="image" type="file" />
-			</div>
-			<div>
-				<input type="submit" name="add-match-submit" value="Add match" />
-			</div>
-		</form>
+		</div>
 		
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>

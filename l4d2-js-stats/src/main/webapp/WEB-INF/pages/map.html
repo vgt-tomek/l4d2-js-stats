@@ -3,56 +3,69 @@
 <body>
 	<div th:replace="templates/header :: default"></div>
 	<div id="content">
-		<h1 th:text="${map.name + ' statistics'}"></h1>
 		
-		<h2>General statistics</h2>
+		<div class="page-header">
+			<h1 th:text="${map.name + ' statistics'}"></h1>
+		</div>
 		
-		<p th:if="${mapStatistics.totalMatchesPlayed == 0}">
-			No matches played on this map.
-		</p>
+		<div class="row">
+			<div class="col-xs-12 col-sm-4">
+				<h2>Campaign mode info</h2>
+				<ul class="list-group">
+					<li class="list-group-item">
+						<span class="badge" th:text="${mapStatistics.totalCampaignMatchesPlayed}"></span>
+						Total matches played
+					</li>
+					<li class="list-group-item" th:if="${mapStatistics.totalCampaignMatchesPlayed > 0}">
+						<span class="badge" th:text="${(mapStatistics.survivedCampaignPlayerCount * 100 / mapStatistics.totalCampaignPlayerCount) + ' %'}"></span>
+						Average survival rate
+					</li>
+					<li class="list-group-item" th:if="${mapStatistics.totalCampaignMatchesPlayed > 0}">
+						<span class="badge" th:text="${#numbers.formatDecimal(1.0 * mapStatistics.totalCampaignDeathCount / mapStatistics.totalCampaignMatchesPlayed, 1, 2, 'POINT')}"></span>
+						Average death count
+					</li>
+				</ul>
+			</div>
+			
+			<div class="col-xs-12 col-sm-4">
+				<h2>Versus mode info</h2>
+				<ul class="list-group">
+					<li class="list-group-item">
+						<span class="badge" th:text="${mapStatistics.totalVersusMatchesPlayed}"></span>
+						Total matches played
+					</li>
+					<li class="list-group-item">
+						<span class="badge" th:text="${mapStatistics.topVersusPoints}"></span>
+						Most points
+					</li>
+				</ul>
+			</div>
+			
+			<div class="col-xs-12 col-sm-4">
+				<h2>Recent matches</h2>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Played at</th>
+							<th>Match type</th>
+							<th>Links</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="match : ${recentMatches}">
+							<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
+							<td th:text="${match.type}"></td>
+							<td>
+								<a class="btn btn-sm btn-info" th:href="${'/match/' + match.id + '/' + match.typeIdentifier}">
+									<span class="glyphicon glyphicon-search"></span> Details
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div> 
+		</div>
 		
-		<table th:if="${mapStatistics.totalMatchesPlayed > 0}">
-			<thead>
-				<tr>
-					<th>Total campaign matches played</th>
-					<th>Total versus matches played</th>
-					<th>Most versus mode winner team points</th>
-					<th>Campaign total player count</th>
-					<th>Campaign survived player count</th>
-					<th>Campaign total death count</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td th:text="${mapStatistics.totalCampaignMatchesPlayed}"></td>
-					<td th:text="${mapStatistics.totalVersusMatchesPlayed}"></td>
-					<td th:text="${mapStatistics.topVersusPoints}"></td>
-					<td th:text="${mapStatistics.totalCampaignPlayerCount}"></td>
-					<td th:text="${mapStatistics.survivedCampaignPlayerCount}"></td>
-					<td th:text="${mapStatistics.totalCampaignDeathCount}"></td>
-				</tr>
-			</tbody>
-		</table>
-		
-		<h2 th:if="${mapStatistics.totalMatchesPlayed > 0}">Recent matches</h2>
-		<table th:if="${mapStatistics.totalMatchesPlayed > 0}">
-			<thead>
-				<tr>
-					<th>Played at</th>
-					<th>Match type</th>
-					<th>Links</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="match : ${recentMatches}">
-					<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
-					<td th:text="${match.type}"></td>
-					<td>
-						<a th:href="${'/match/' + match.id + '/' + match.typeIdentifier}">Details</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>
