@@ -2,38 +2,62 @@ package pl.vgtworld.l4d2jsstats.map.dto;
 
 public class GameMapGeneralStatisticsDto {
 	
-	private long totalMatchesPlayed;
+	private long totalCampaignMatchesPlayed;
 	
-	private float campaignSurvivalPercentage;
+	private long totalVersusMatchesPlayed;
 	
-	private float averageCampaignDeathCount;
+	private long totalCampaignPlayerCount;
+	
+	private long survivedCampaignPlayerCount;
+	
+	private long totalCampaignDeathCount;
 	
 	private float averageVersusPoints;
 	
 	private int topVersusPoints;
 	
 	public long getTotalMatchesPlayed() {
-		return totalMatchesPlayed;
+		return totalCampaignMatchesPlayed + totalVersusMatchesPlayed;
 	}
 	
-	public void setTotalMatchesPlayed(long totalMatchesPlayed) {
-		this.totalMatchesPlayed = totalMatchesPlayed;
+	public long getTotalCampaignMatchesPlayed() {
+		return totalCampaignMatchesPlayed;
 	}
 	
-	public float getCampaignSurvivalPercentage() {
-		return campaignSurvivalPercentage;
+	public void setTotalCampaignMatchesPlayed(long totalCampaignMatchesPlayed) {
+		this.totalCampaignMatchesPlayed = totalCampaignMatchesPlayed;
 	}
 	
-	public void setCampaignSurvivalPercentage(float campaignSurvivalPercentage) {
-		this.campaignSurvivalPercentage = campaignSurvivalPercentage;
+	public long getTotalVersusMatchesPlayed() {
+		return totalVersusMatchesPlayed;
 	}
 	
-	public float getAverageCampaignDeathCount() {
-		return averageCampaignDeathCount;
+	public void setTotalVersusMatchesPlayed(long totalVersusMatchesPlayed) {
+		this.totalVersusMatchesPlayed = totalVersusMatchesPlayed;
 	}
 	
-	public void setAverageCampaignDeathCount(float averageCampaignDeathCount) {
-		this.averageCampaignDeathCount = averageCampaignDeathCount;
+	public long getTotalCampaignPlayerCount() {
+		return totalCampaignPlayerCount;
+	}
+	
+	public void setTotalCampaignPlayerCount(long totalCampaignPlayerCount) {
+		this.totalCampaignPlayerCount = totalCampaignPlayerCount;
+	}
+	
+	public long getSurvivedCampaignPlayerCount() {
+		return survivedCampaignPlayerCount;
+	}
+	
+	public void setSurvivedCampaignPlayerCount(long survivedCampaignPlayerCount) {
+		this.survivedCampaignPlayerCount = survivedCampaignPlayerCount;
+	}
+	
+	public long getTotalCampaignDeathCount() {
+		return totalCampaignDeathCount;
+	}
+	
+	public void setTotalCampaignDeathCount(long totalCampaignDeathCount) {
+		this.totalCampaignDeathCount = totalCampaignDeathCount;
 	}
 	
 	public float getAverageVersusPoints() {
