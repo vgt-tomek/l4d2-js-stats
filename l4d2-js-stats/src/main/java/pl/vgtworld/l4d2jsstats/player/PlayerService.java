@@ -10,6 +10,7 @@ import pl.vgtworld.l4d2jsstats.match.MatchTypeDao;
 import pl.vgtworld.l4d2jsstats.player.dto.MostActivePlayerDto;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerCampaignDto;
 import pl.vgtworld.l4d2jsstats.player.dto.PlayerVersusDto;
+import pl.vgtworld.l4d2jsstats.player.dto.TeammateDto;
 import pl.vgtworld.l4d2jsstats.user.User;
 import pl.vgtworld.l4d2jsstats.user.UserDao;
 import pl.vgtworld.l4d2jsstats.userstats.dto.UserGeneralStatisticsDto;
@@ -123,6 +124,18 @@ public class PlayerService {
 		dto.setVersusWinCount(wonVersusCount);
 		
 		return dto;
+	}
+	
+	public TeammateDto[] getMostPopularVersusModeTeammates(int userId) {
+		return playerVersusDao.getMostPopularTeammates(userId);
+	}
+	
+	public TeammateDto[] getMostPopularVersusModeWinningTeammates(int userId) {
+		return playerVersusDao.getMostPopularWinningTeammates(userId);
+	}
+	
+	public TeammateDto[] getMostPopularVersusModeLosingTeammates(int userId) {
+		return playerVersusDao.getMostPopularLosingTeammates(userId);
 	}
 	
 	private PlayerCampaignDto mapFrom(PlayerCampaign player) {
