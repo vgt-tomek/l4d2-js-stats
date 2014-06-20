@@ -1,5 +1,7 @@
 package pl.vgtworld.l4d2jsstats.player;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -35,9 +37,16 @@ public class PlayerVersusDao {
 	
 	@SuppressWarnings("unchecked")
 	public TeammateDto[] getMostPopularTeammates(int userId) {
-		Query query = em.createNamedQuery(PlayerVersus.QUERY_MOST_POPULAR_TEAMMATES);
+		Query query = em.createNativeQuery(PlayerVersus.QUERY_NATIVE_MOST_POPULAR_TEAMMATES);
 		query.setParameter("userId", userId);
-		List<TeammateDto> result = query.getResultList();
-		return result.toArray(new TeammateDto[result.size()]);
+		List<Object[]> result = query.getResultList();
+		List<TeammateDto> convertedResult = new ArrayList<TeammateDto>();
+		for (Object[] row : result) {
+			String userName = (String)row[0];
+			BigInteger gamesPlayed = (BigInteger)row[1];
+			TeammateDto dto = new TeammateDto(userName, gamesPlayed.longValue());
+			convertedResult.add(dto);
+		}
+		return convertedResult.toArray(new TeammateDto[result.size()]);
 	}
 }

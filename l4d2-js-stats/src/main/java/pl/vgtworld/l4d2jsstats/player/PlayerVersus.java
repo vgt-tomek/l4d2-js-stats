@@ -16,12 +16,7 @@ import javax.persistence.Table;
 			query = "SELECT v FROM PlayerVersus v JOIN v.player p WHERE p.match.id = :matchId"),
 		@NamedQuery(name = PlayerVersus.QUERY_COUNT_TOTAL_PLAYERS_FOR_MATCH,
 			query = "SELECT COUNT(v) FROM PlayerVersus v JOIN v.player p JOIN p.match m "
-				+ "WHERE m.active = TRUE AND m.matchType.id = 2 AND m.id = :matchId"),
-		@NamedQuery(name = PlayerVersus.QUERY_MOST_POPULAR_TEAMMATES,
-			query = "SELECT new pl.vgtworld.l4d2jsstats.player.dto.TeammateDto(p.user.login, COUNT(p)) "
-				+ "FROM Player p JOIN p.match m "
-				+ "WHERE m.id IN (SELECT m.id FROM Player p JOIN p.match m WHERE p.user.id = :userId AND m.matchType.id = 2) "
-				+ "AND m.active = TRUE AND p.user.id <> :userId GROUP BY p.user.id ORDER BY COUNT(p) DESC")
+				+ "WHERE m.active = TRUE AND m.matchType.id = 2 AND m.id = :matchId")
 })
 public class PlayerVersus implements Serializable {
 	
@@ -29,7 +24,18 @@ public class PlayerVersus implements Serializable {
 	
 	public static final String QUERY_COUNT_TOTAL_PLAYERS_FOR_MATCH = "PlayerVersus.countTotalPlayersForMatch";
 	
-	public static final String QUERY_MOST_POPULAR_TEAMMATES = "PlayerVersus.mostPopularTeammates";
+	public static final String QUERY_NATIVE_MOST_POPULAR_TEAMMATES = "SELECT "
+		+ "tmu.login, COUNT(*) as games_played "
+		+ "FROM players_versus pv "
+		+ "INNER JOIN players p ON pv.player_id = p.id "
+		+ "INNER JOIN matches m ON p.match_id = m.id "
+		+ "INNER JOIN players tm ON m.id = tm.match_id "
+		+ "INNER JOIN players_versus tmv ON tm.id = tmv.player_id "
+		+ "INNER JOIN users tmu ON tm.user_id = tmu.id "
+		+ "WHERE p.user_id = :userId AND m.match_type_id = 2 AND m.active = TRUE AND tm.user_id <> :userId "
+		+ "AND pv.winner = tmv.winner "
+		+ "GROUP BY tm.user_id "
+		+ "ORDER BY games_played DESC";
 	
 	private static final long serialVersionUID = 1L;
 	
