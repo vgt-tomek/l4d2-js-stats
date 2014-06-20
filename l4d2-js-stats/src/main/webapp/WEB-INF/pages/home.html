@@ -12,7 +12,8 @@
 				<div class="row">
 					<div class="col-xs-12 col-lg-6">
 						<h2>Most played maps</h2>
-						<table class="table">
+						<div class="alert alert-info" th:if="${mostPlayedMaps.length == 0}">No data was collected</div>
+						<table class="table" th:if="${mostPlayedMaps.length > 0}">
 							<thead>
 								<tr>
 									<th>Map</th>
@@ -54,7 +55,8 @@
 				<div class="row">
 					<div class="col-xs-12 col-lg-6">
 						<h2>Most active players</h2>
-						<table class="table">
+						<div class="alert alert-info" th:if="${mostActivePlayers.length == 0}">No data was collected</div>
+						<table class="table" th:if="${mostActivePlayers.length > 0}">
 							<thead>
 								<tr>
 									<th>Player</th>
@@ -73,7 +75,8 @@
 					</div>
 					<div class="col-xs-12 col-lg-6">
 						<h2>Players by longest break</h2>
-						<table class="table">
+						<div class="alert alert-info" th:if="${usersActivity.length == 0}">No data was collected</div>
+						<table class="table" th:if="${usersActivity.length > 0}">
 							<thead>
 								<tr>
 									<th>Player</th>
