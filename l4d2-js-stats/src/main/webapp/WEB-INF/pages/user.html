@@ -37,7 +37,8 @@
 			
 			<div class="col-xs-12 col-sm-6 col-lg-3">
 				<h2>Recent matches</h2>
-				<table class="table">
+				<div class="alert alert-info" th:if="${recentMatches.length == 0}">No matches played</div>
+				<table class="table" th:if="${recentMatches.length > 0}">
 					<thead>
 						<tr>
 							<th>Played at</th>
@@ -62,7 +63,7 @@
 				
 				<div class="panel panel-default">
 					<div class="panel-heading">Campaign mode survival rate</div>
-					<div class="panel-body">
+					<div class="panel-body" th:if="${playerStatistics.totalCampaignMatchesPlayed > 0}">
 						<div id="campaign-survival-chart" style="height: 400px;" class="google-chart"></div>
 						<script th:inline="javascript">
 							google.load("visualization", "1", {packages:["corechart"]});
@@ -88,11 +89,14 @@
 							}
 						</script>
 					</div>
+					<div class="panel-body" th:if="${playerStatistics.totalCampaignMatchesPlayed == 0}">
+						<div class="alert alert-info">No data collected</div>
+					</div>
 				</div>
 				
 				<div class="panel panel-default">
 					<div class="panel-heading">Versus mode winning rate</div>
-					<div class="panel-body">
+					<div class="panel-body" th:if="${playerStatistics.totalVersusMatchesPlayed > 0}">
 						<div id="versus-win-chart" style="height: 400px;" class="google-chart"></div>
 						<script th:inline="javascript">
 							google.load("visualization", "1", {packages:["corechart"]});
@@ -118,93 +122,105 @@
 							}
 						</script>
 					</div>
+					<div class="panel-body" th:if="${playerStatistics.totalVersusMatchesPlayed == 0}">
+						<div class="alert alert-info">No data collected</div>
+					</div>
 				</div>
 				
 				<div class="panel panel-default">
 					<div class="panel-heading">Versus mode most popular teammates</div>
-					<div class="panel-body">
+					<div class="panel-body" th:if="${playerStatistics.totalVersusMatchesPlayed > 0}">
 						<div id="versus-teammate-chart" style="height: 400px;" class="google-chart"></div>
-					</div>
-					<script th:inline="javascript">
-						//<![CDATA[
-						var versusTeammateData = [[${versusTeammates}]]
-						google.load("visualization", "1", {packages:["corechart"]});
-						google.setOnLoadCallback(drawChartVersusTeammate);
-						function drawChartVersusTeammate() {
-							var data = new google.visualization.DataTable();
-							data.addColumn('string', 'User');
-							data.addColumn('number', 'Games played');
-							for (i = 0; i < versusTeammateData.length; i++) {
-								data.addRow([versusTeammateData[i].userName, versusTeammateData[i].gamesCount]);
+						<script th:inline="javascript">
+							//<![CDATA[
+							var versusTeammateData = [[${versusTeammates}]]
+							google.load("visualization", "1", {packages:["corechart"]});
+							google.setOnLoadCallback(drawChartVersusTeammate);
+							function drawChartVersusTeammate() {
+								var data = new google.visualization.DataTable();
+								data.addColumn('string', 'User');
+								data.addColumn('number', 'Games played');
+								for (i = 0; i < versusTeammateData.length; i++) {
+									data.addRow([versusTeammateData[i].userName, versusTeammateData[i].gamesCount]);
+								}
+				
+								var options = {
+									'chartArea': {'width': '100%', 'height': '100%'},
+								};
+				
+								var chart = new google.visualization.PieChart(document.getElementById('versus-teammate-chart'));
+								chart.draw(data, options);
 							}
-			
-							var options = {
-								'chartArea': {'width': '100%', 'height': '100%'},
-							};
-			
-							var chart = new google.visualization.PieChart(document.getElementById('versus-teammate-chart'));
-							chart.draw(data, options);
-						}
-						//]]>
-					</script>
+							//]]>
+						</script>
+					</div>
+					<div class="panel-body" th:if="${playerStatistics.totalVersusMatchesPlayed == 0}">
+						<div class="alert alert-info">No data collected</div>
+					</div>
 				</div>
 				
 				<div class="panel panel-default">
 					<div class="panel-heading">Versus mode most popular winning teammates</div>
-					<div class="panel-body">
+					<div class="panel-body" th:if="${playerStatistics.totalVersusMatchesPlayed > 0}">
 						<div id="versus-winning-teammate-chart" style="height: 400px;" class="google-chart"></div>
-					</div>
-					<script th:inline="javascript">
-						//<![CDATA[
-						var versusWinningTeammateData = [[${versusWinningTeammates}]]
-						google.load("visualization", "1", {packages:["corechart"]});
-						google.setOnLoadCallback(drawChartVersusWinningTeammate);
-						function drawChartVersusWinningTeammate() {
-							var data = new google.visualization.DataTable();
-							data.addColumn('string', 'User');
-							data.addColumn('number', 'Games played');
-							for (i = 0; i < versusWinningTeammateData.length; i++) {
-								data.addRow([versusWinningTeammateData[i].userName, versusWinningTeammateData[i].gamesCount]);
+						<script th:inline="javascript">
+							//<![CDATA[
+							var versusWinningTeammateData = [[${versusWinningTeammates}]]
+							google.load("visualization", "1", {packages:["corechart"]});
+							google.setOnLoadCallback(drawChartVersusWinningTeammate);
+							function drawChartVersusWinningTeammate() {
+								var data = new google.visualization.DataTable();
+								data.addColumn('string', 'User');
+								data.addColumn('number', 'Games played');
+								for (i = 0; i < versusWinningTeammateData.length; i++) {
+									data.addRow([versusWinningTeammateData[i].userName, versusWinningTeammateData[i].gamesCount]);
+								}
+				
+								var options = {
+									'chartArea': {'width': '100%', 'height': '100%'},
+								};
+				
+								var chart = new google.visualization.PieChart(document.getElementById('versus-winning-teammate-chart'));
+								chart.draw(data, options);
 							}
-			
-							var options = {
-								'chartArea': {'width': '100%', 'height': '100%'},
-							};
-			
-							var chart = new google.visualization.PieChart(document.getElementById('versus-winning-teammate-chart'));
-							chart.draw(data, options);
-						}
-						//]]>
-					</script>
+							//]]>
+						</script>
+					</div>
+					<div class="panel-body" th:if="${playerStatistics.totalVersusMatchesPlayed == 0}">
+						<div class="alert alert-info">No data collected</div>
+					</div>
 				</div>
 				
 				<div class="panel panel-default">
 					<div class="panel-heading">Versus mode most popular losing teammates</div>
-					<div class="panel-body">
+					<div class="panel-body" th:if="${playerStatistics.totalVersusMatchesPlayed > 0}">
 						<div id="versus-losing-teammate-chart" style="height: 400px;" class="google-chart"></div>
-					</div>
-					<script th:inline="javascript">
-						//<![CDATA[
-						var versusLosingTeammateData = [[${versusLosingTeammates}]]
-						google.load("visualization", "1", {packages:["corechart"]});
-						google.setOnLoadCallback(drawChartVersusLosingTeammate);
-						function drawChartVersusLosingTeammate() {
-							var data = new google.visualization.DataTable();
-							data.addColumn('string', 'User');
-							data.addColumn('number', 'Games played');
-							for (i = 0; i < versusLosingTeammateData.length; i++) {
-								data.addRow([versusLosingTeammateData[i].userName, versusLosingTeammateData[i].gamesCount]);
+						<script th:inline="javascript">
+							//<![CDATA[
+							var versusLosingTeammateData = [[${versusLosingTeammates}]]
+							google.load("visualization", "1", {packages:["corechart"]});
+							google.setOnLoadCallback(drawChartVersusLosingTeammate);
+							function drawChartVersusLosingTeammate() {
+								var data = new google.visualization.DataTable();
+								data.addColumn('string', 'User');
+								data.addColumn('number', 'Games played');
+								for (i = 0; i < versusLosingTeammateData.length; i++) {
+									data.addRow([versusLosingTeammateData[i].userName, versusLosingTeammateData[i].gamesCount]);
+								}
+				
+								var options = {
+									'chartArea': {'width': '100%', 'height': '100%'},
+								};
+				
+								var chart = new google.visualization.PieChart(document.getElementById('versus-losing-teammate-chart'));
+								chart.draw(data, options);
 							}
-			
-							var options = {
-								'chartArea': {'width': '100%', 'height': '100%'},
-							};
-			
-							var chart = new google.visualization.PieChart(document.getElementById('versus-losing-teammate-chart'));
-							chart.draw(data, options);
-						}
-						//]]>
-					</script>
+							//]]>
+						</script>
+					</div>
+					<div class="panel-body" th:if="${playerStatistics.totalVersusMatchesPlayed == 0}">
+						<div class="alert alert-info">No data collected</div>
+					</div>
 				</div>
 				
 			</div>
