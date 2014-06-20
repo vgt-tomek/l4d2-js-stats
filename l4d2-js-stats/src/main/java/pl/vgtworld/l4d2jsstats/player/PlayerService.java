@@ -130,6 +130,10 @@ public class PlayerService {
 		return playerVersusDao.getMostPopularTeammates(userId);
 	}
 	
+	public TeammateDto[] getMostPopularVersusModeWinningTeammates(int userId) {
+		return playerVersusDao.getMostPopularWinningTeammates(userId);
+	}
+	
 	private PlayerCampaignDto mapFrom(PlayerCampaign player) {
 		PlayerCampaignDto dto = new PlayerCampaignDto();
 		dto.setUserId(player.getPlayer().getUser().getId());

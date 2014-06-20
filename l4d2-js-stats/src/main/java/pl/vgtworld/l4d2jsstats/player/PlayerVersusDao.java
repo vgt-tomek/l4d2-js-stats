@@ -35,9 +35,17 @@ public class PlayerVersusDao {
 		return (long) query.getSingleResult();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public TeammateDto[] getMostPopularTeammates(int userId) {
-		Query query = em.createNativeQuery(PlayerVersus.QUERY_NATIVE_MOST_POPULAR_TEAMMATES);
+		return getUserTeammates(userId, PlayerVersus.QUERY_NATIVE_MOST_POPULAR_TEAMMATES);
+	}
+	
+	public TeammateDto[] getMostPopularWinningTeammates(int userId) {
+		return getUserTeammates(userId, PlayerVersus.QUERY_NATIVE_MOST_POPULAR_WINNING_TEAMMATES);
+	}
+
+	@SuppressWarnings("unchecked")
+	private TeammateDto[] getUserTeammates(int userId, String queryyyy) {
+		Query query = em.createNativeQuery(queryyyy);
 		query.setParameter("userId", userId);
 		List<Object[]> result = query.getResultList();
 		List<TeammateDto> convertedResult = new ArrayList<TeammateDto>();
@@ -49,4 +57,5 @@ public class PlayerVersusDao {
 		}
 		return convertedResult.toArray(new TeammateDto[result.size()]);
 	}
+	
 }
