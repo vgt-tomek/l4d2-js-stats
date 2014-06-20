@@ -51,6 +51,20 @@ public class PlayerVersus implements Serializable {
 		+ "GROUP BY tm.user_id "
 		+ "ORDER BY games_played DESC";
 	
+	public static final String QUERY_NATIVE_MOST_POPULAR_LOSING_TEAMMATES = "SELECT "
+		+ "tmu.login, COUNT(*) as games_played "
+		+ "FROM players_versus pv "
+		+ "INNER JOIN players p ON pv.player_id = p.id "
+		+ "INNER JOIN matches m ON p.match_id = m.id "
+		+ "INNER JOIN players tm ON m.id = tm.match_id "
+		+ "INNER JOIN players_versus tmv ON tm.id = tmv.player_id "
+		+ "INNER JOIN users tmu ON tm.user_id = tmu.id "
+		+ "WHERE p.user_id = :userId AND m.match_type_id = 2 AND m.active = TRUE AND tm.user_id <> :userId "
+		+ "AND pv.winner = tmv.winner "
+		+ "AND pv.winner = FALSE "
+		+ "GROUP BY tm.user_id "
+		+ "ORDER BY games_played DESC";
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id

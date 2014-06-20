@@ -43,6 +43,10 @@ public class PlayerVersusDao {
 		return getUserTeammates(userId, PlayerVersus.QUERY_NATIVE_MOST_POPULAR_WINNING_TEAMMATES);
 	}
 
+	public TeammateDto[] getMostPopularLosingTeammates(int userId) {
+		return getUserTeammates(userId, PlayerVersus.QUERY_NATIVE_MOST_POPULAR_LOSING_TEAMMATES);
+	}
+
 	@SuppressWarnings("unchecked")
 	private TeammateDto[] getUserTeammates(int userId, String queryyyy) {
 		Query query = em.createNativeQuery(queryyyy);

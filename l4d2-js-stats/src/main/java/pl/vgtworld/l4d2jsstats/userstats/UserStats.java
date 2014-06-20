@@ -54,6 +54,9 @@ public class UserStats extends BaseController {
 		TeammateDto[] mostPopularVersusWinningTeammates = playerService.getMostPopularVersusModeWinningTeammates(userId);
 		request.setAttribute("versusWinningTeammates", mostPopularVersusWinningTeammates);
 		
+		TeammateDto[] mostPopularVersusLosingTeammates = playerService.getMostPopularVersusModeLosingTeammates(userId);
+		request.setAttribute("versusLosingTeammates", mostPopularVersusLosingTeammates);
+		
 		return Response.ok(render("user")).build();
 	}
 }
