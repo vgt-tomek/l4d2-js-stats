@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import pl.vgtworld.l4d2jsstats.player.dto.TeammateDto;
+
 @Stateless
 public class PlayerVersusDao {
 	
@@ -31,4 +33,11 @@ public class PlayerVersusDao {
 		return (long) query.getSingleResult();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public TeammateDto[] getMostPopularTeammates(int userId) {
+		Query query = em.createNamedQuery(PlayerVersus.QUERY_MOST_POPULAR_TEAMMATES);
+		query.setParameter("userId", userId);
+		List<TeammateDto> result = query.getResultList();
+		return result.toArray(new TeammateDto[result.size()]);
+	}
 }

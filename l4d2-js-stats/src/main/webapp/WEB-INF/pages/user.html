@@ -120,6 +120,35 @@
 					</div>
 				</div>
 				
+				<div class="panel panel-default">
+					<div class="panel-heading">Versus mode most popular teammates</div>
+					<div class="panel-body">
+						<div id="versus-teammate-chart" style="height: 400px;" class="google-chart"></div>
+					</div>
+					<script th:inline="javascript">
+						//<![CDATA[
+						var versusTeammateData = [[${versusTeammates}]]
+						google.load("visualization", "1", {packages:["corechart"]});
+						google.setOnLoadCallback(drawChartVersusTeammate);
+						function drawChartVersusTeammate() {
+							var data = new google.visualization.DataTable();
+							data.addColumn('string', 'User');
+							data.addColumn('number', 'Games played');
+							for (i = 0; i < versusTeammateData.length; i++) {
+								data.addRow([versusTeammateData[i].userName, versusTeammateData[i].gamesCount]);
+							}
+			
+							var options = {
+								'chartArea': {'width': '100%', 'height': '100%'},
+							};
+			
+							var chart = new google.visualization.PieChart(document.getElementById('versus-teammate-chart'));
+							chart.draw(data, options);
+						}
+						//]]>
+					</script>
+				</div>
+				
 			</div>
 			
 		</div>
