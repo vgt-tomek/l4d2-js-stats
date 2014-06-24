@@ -16,7 +16,7 @@ import pl.vgtworld.l4d2jsstats.user.dto.UserDto;
 public class UserService {
 	
 	private static final String LOGGED_USER_REQUEST_ATTRIBUTE_NAME = "user";
-
+	
 	private static final String USER_COOKIE_NAME = "user";
 	
 	private static final String TOKEN_COOKIE_NAME = "token";
@@ -124,6 +124,16 @@ public class UserService {
 		return dtoList;
 	}
 	
+	public void changeUserPassword(int userId, String newPassword) throws UserServiceException {
+		try {
+			String salt = UserUtils.generateSalt();
+			String passwordHash = UserUtils.generatePasswordHash(newPassword, salt);
+			dao.changeUserPassword(userId, salt, passwordHash);
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			throw new UserServiceException("Error while trying to change user password.", e);
+		}
+	}
+	
 	private UserDto mapToUserLoginDto(User user) {
 		UserDto dto = new UserDto();
 		dto.setId(user.getId());
@@ -132,5 +142,5 @@ public class UserService {
 		dto.setCreatedAt(user.getCreatedAt());
 		return dto;
 	}
-
+	
 }

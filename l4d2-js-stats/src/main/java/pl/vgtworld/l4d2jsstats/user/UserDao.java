@@ -7,8 +7,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Stateless
 public class UserDao {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -37,6 +42,17 @@ public class UserDao {
 		Query query = em.createNamedQuery(User.QUERY_FIND_ACTIVE);
 		List<User> results = query.getResultList();
 		return results.toArray(new User[results.size()]);
+	}
+	
+	public boolean changeUserPassword(int userId, String salt, String passwordHash) {
+		User user = findById(userId);
+		if (user == null) {
+			LOGGER.warn("No user found. Unable to change password. userId:{}", userId);
+			return false;
+		}
+		user.setSalt(salt);
+		user.setPassword(passwordHash);
+		return true;
 	}
 	
 }
