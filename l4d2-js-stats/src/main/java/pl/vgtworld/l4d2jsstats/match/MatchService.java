@@ -181,8 +181,8 @@ public class MatchService {
 		return match.getId();
 	}
 	
-	public RecentMatchDto[] findRecentMatches(int count) {
-		Match[] recentMatches = matchDao.findRecentMatches(count);
+	public RecentMatchDto[] findRecentMatches(int count, int offset) {
+		Match[] recentMatches = matchDao.findRecentMatches(count, offset);
 		return mapFrom(recentMatches);
 	}
 	

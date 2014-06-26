@@ -22,9 +22,10 @@ public class MatchDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Match[] findRecentMatches(int count) {
+	public Match[] findRecentMatches(int count, int offset) {
 		Query query = em.createNamedQuery(Match.QUERY_FIND_RECENT);
 		query.setMaxResults(count);
+		query.setFirstResult(offset);
 		List<Match> result = query.getResultList();
 		return result.toArray(new Match[result.size()]);
 	}
