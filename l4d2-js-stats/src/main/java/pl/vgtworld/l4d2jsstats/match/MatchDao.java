@@ -55,4 +55,12 @@ public class MatchDao {
 		return (long) (query.getSingleResult());
 	}
 	
+	public long getTotalMatchesPlayed() {
+		Query query = em.createNamedQuery(Match.QUERY_TOTAL_MATCHES_PLAYED);
+		Object result = query.getSingleResult();
+		if (result == null) {
+			return 0;
+		}
+		return (long) result;
+	}
 }

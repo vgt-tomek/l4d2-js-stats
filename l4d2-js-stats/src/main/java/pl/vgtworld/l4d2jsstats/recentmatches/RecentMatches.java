@@ -31,6 +31,11 @@ public class RecentMatches extends BaseController {
 			return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
 		}
 		setPageTitle("Recent matches");
+		
+		long pageCount = (long) Math.ceil(matchService.getTotalMatchesPlayed() / (double) RESULTS_PER_PAGE);
+		request.setAttribute("page", page);
+		request.setAttribute("pageCount", pageCount);
+		
 		int offset = (page - 1) * RESULTS_PER_PAGE;
 		RecentMatchDto[] recentMatches = matchService.findRecentMatches(RESULTS_PER_PAGE, offset);
 		request.setAttribute("recentMatches", recentMatches);

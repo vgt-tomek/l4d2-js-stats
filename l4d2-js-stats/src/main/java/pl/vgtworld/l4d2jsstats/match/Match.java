@@ -28,7 +28,9 @@ import pl.vgtworld.l4d2jsstats.user.User;
 				+ "WHERE m.active = TRUE and p.user.id = :userId ORDER by p.id DESC"),
 		@NamedQuery(name = Match.QUERY_TOTAL_MATCHES_PLAYED_ON_MAP,
 			query = "SELECT COUNT(m) FROM Match m WHERE "
-				+ "m.map.id = :mapId AND m.matchType.id = :matchTypeId AND m.active = TRUE")
+				+ "m.map.id = :mapId AND m.matchType.id = :matchTypeId AND m.active = TRUE"),
+		@NamedQuery(name = Match.QUERY_TOTAL_MATCHES_PLAYED,
+			query = "SELECT COUNT(m) FROM Match m WHERE m.active = TRUE")
 })
 public class Match {
 	
@@ -39,6 +41,8 @@ public class Match {
 	public static final String QUERY_TOTAL_MATCHES_PLAYED_ON_MAP = "Match.totalMatchesPlayedOnMap";
 	
 	public static final String QUERY_FIND_RECENT_FOR_USER = "Match.findRecentForUser";
+	
+	public static final String QUERY_TOTAL_MATCHES_PLAYED = "Match.totalMatchesPlayed";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -238,6 +238,10 @@ public class MatchService {
 		return dtoList.toArray(new UserActivityDto[dtoList.size()]);
 	}
 	
+	public long getTotalMatchesPlayed() {
+		return matchDao.getTotalMatchesPlayed();
+	}
+	
 	private CampaignMatchDto mapFrom(MatchCampaign match) {
 		int matchId = match.getMatch().getId();
 		

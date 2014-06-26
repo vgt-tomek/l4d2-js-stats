@@ -7,6 +7,14 @@
 			<h1>Recent matches</h1>
 		</div>
 		
+		<div class="row text-center">
+			<ul class="pagination">
+				<li th:class="${page == i ? 'active' : ''}" th:each="i : ${#numbers.sequence(1, pageCount)}">
+					<a th:href="${'/recent-matches/' + i}" th:text="${i}"></a>
+				</li>
+			</ul>
+		</div>
+		
 		<div class="row">
 			<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3">
 				<div class="alert alert-info" th:if="${recentMatches.length == 0}">No matches played</div>
