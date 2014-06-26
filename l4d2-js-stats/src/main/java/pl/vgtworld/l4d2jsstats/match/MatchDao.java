@@ -22,9 +22,10 @@ public class MatchDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Match[] findRecentMatches(int count) {
+	public Match[] findRecentMatches(int count, int offset) {
 		Query query = em.createNamedQuery(Match.QUERY_FIND_RECENT);
 		query.setMaxResults(count);
+		query.setFirstResult(offset);
 		List<Match> result = query.getResultList();
 		return result.toArray(new Match[result.size()]);
 	}
@@ -54,4 +55,12 @@ public class MatchDao {
 		return (long) (query.getSingleResult());
 	}
 	
+	public long getTotalMatchesPlayed() {
+		Query query = em.createNamedQuery(Match.QUERY_TOTAL_MATCHES_PLAYED);
+		Object result = query.getSingleResult();
+		if (result == null) {
+			return 0;
+		}
+		return (long) result;
+	}
 }
