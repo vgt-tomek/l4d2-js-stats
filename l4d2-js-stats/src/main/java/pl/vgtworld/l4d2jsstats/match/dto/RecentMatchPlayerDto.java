@@ -34,6 +34,13 @@ public class RecentMatchPlayerDto implements Comparable<RecentMatchPlayerDto> {
 	
 	@Override
 	public int compareTo(RecentMatchPlayerDto o) {
+		if (winner != o.winner) {
+			if (winner == true) {
+				return -1;
+			} else {
+				return 1;
+			}
+		}
 		if (name == null) {
 			return -1;
 		}
