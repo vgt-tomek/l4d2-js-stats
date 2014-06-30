@@ -2,6 +2,7 @@ package pl.vgtworld.l4d2jsstats.match;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -189,6 +190,7 @@ public class MatchService {
 		RecentMatchDto[] dtoList = mapFrom(recentMatches);
 		for (RecentMatchDto dto : dtoList) {
 			RecentMatchPlayerDto[] players = loadPlayers(dto.getId());
+			Arrays.sort(players);
 			dto.setPlayers(players);
 		}
 		return dtoList;
