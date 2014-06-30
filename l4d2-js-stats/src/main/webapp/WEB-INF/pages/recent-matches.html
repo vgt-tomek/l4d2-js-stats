@@ -24,6 +24,7 @@
 							<th>Played at</th>
 							<th>Match type</th>
 							<th>Map</th>
+							<th>Players</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -33,6 +34,9 @@
 							<td th:text="${match.type}"></td>
 							<td>
 								<a th:href="${'/map/' + match.mapId}" th:text="${match.mapName}"></a>
+							</td>
+							<td>
+								<a th:each="player : ${match.players}" th:class="${'btn btn-sm ' + (player.winner ? 'btn-success' : 'btn-danger')}" th:href="${'/user/' + player.id}" th:text="${player.name}"></a>
 							</td>
 							<td>
 								<a class="btn btn-sm btn-info" th:href="${'/match/' + match.id + '/' + match.typeIdentifier}">
