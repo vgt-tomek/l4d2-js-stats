@@ -16,6 +16,8 @@ public class RecentMatchDto {
 	
 	private Date playedAt;
 	
+	private RecentMatchPlayerDto[] players;
+	
 	public int getId() {
 		return id;
 	}
@@ -35,11 +37,11 @@ public class RecentMatchDto {
 	public String getTypeIdentifier() {
 		return typeIdentifier;
 	}
-
+	
 	public void setTypeIdentifier(String typeIdentifier) {
 		this.typeIdentifier = typeIdentifier;
 	}
-
+	
 	public int getMapId() {
 		return mapId;
 	}
@@ -62,6 +64,14 @@ public class RecentMatchDto {
 	
 	public void setPlayedAt(Date playedAt) {
 		this.playedAt = playedAt;
+	}
+	
+	public RecentMatchPlayerDto[] getPlayers() {
+		return players;
+	}
+	
+	public void setPlayers(RecentMatchPlayerDto[] players) {
+		this.players = players;
 	}
 	
 }
