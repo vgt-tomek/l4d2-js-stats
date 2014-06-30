@@ -322,7 +322,7 @@ public class MatchService {
 	
 	private RecentMatchPlayerDto mapFrom(PlayerCampaign player) {
 		RecentMatchPlayerDto dto = new RecentMatchPlayerDto();
-		dto.setId(player.getPlayer().getId());
+		dto.setId(player.getPlayer().getUser().getId());
 		dto.setName(player.getPlayer().getUser().getLogin());
 		dto.setWinner(player.isSurvived());
 		return dto;
@@ -338,7 +338,7 @@ public class MatchService {
 	
 	private RecentMatchPlayerDto mapFrom(PlayerVersus player) {
 		RecentMatchPlayerDto dto = new RecentMatchPlayerDto();
-		dto.setId(player.getPlayer().getId());
+		dto.setId(player.getPlayer().getUser().getId());
 		dto.setName(player.getPlayer().getUser().getLogin());
 		dto.setWinner(player.isWinner());
 		return dto;
