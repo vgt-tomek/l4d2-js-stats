@@ -22,9 +22,12 @@ import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MapBreakDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
+import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchPlayerDto;
 import pl.vgtworld.l4d2jsstats.match.dto.UserActivityDto;
 import pl.vgtworld.l4d2jsstats.match.dto.VersusMatchDto;
+import pl.vgtworld.l4d2jsstats.player.PlayerCampaign;
 import pl.vgtworld.l4d2jsstats.player.PlayerCampaignDao;
+import pl.vgtworld.l4d2jsstats.player.PlayerVersus;
 import pl.vgtworld.l4d2jsstats.player.PlayerVersusDao;
 import pl.vgtworld.l4d2jsstats.storage.Storage;
 import pl.vgtworld.l4d2jsstats.user.User;
@@ -183,7 +186,12 @@ public class MatchService {
 	
 	public RecentMatchDto[] findRecentMatches(int count, int offset) {
 		Match[] recentMatches = matchDao.findRecentMatches(count, offset);
-		return mapFrom(recentMatches);
+		RecentMatchDto[] dtoList = mapFrom(recentMatches);
+		for (RecentMatchDto dto : dtoList) {
+			RecentMatchPlayerDto[] players = loadPlayers(dto.getId());
+			dto.setPlayers(players);
+		}
+		return dtoList;
 	}
 	
 	public RecentMatchDto[] findRecentMatchesFromMap(int mapId, int count) {
@@ -312,12 +320,58 @@ public class MatchService {
 		return dtoList;
 	}
 	
+	private RecentMatchPlayerDto mapFrom(PlayerCampaign player) {
+		RecentMatchPlayerDto dto = new RecentMatchPlayerDto();
+		dto.setId(player.getPlayer().getId());
+		dto.setName(player.getPlayer().getUser().getLogin());
+		dto.setWinner(player.isSurvived());
+		return dto;
+	}
+	
+	private RecentMatchPlayerDto[] mapFrom(PlayerCampaign[] players) {
+		RecentMatchPlayerDto[] dtoList = new RecentMatchPlayerDto[players.length];
+		for (int i = 0; i < players.length; ++i) {
+			dtoList[i] = mapFrom(players[i]);
+		}
+		return dtoList;
+	}
+	
+	private RecentMatchPlayerDto mapFrom(PlayerVersus player) {
+		RecentMatchPlayerDto dto = new RecentMatchPlayerDto();
+		dto.setId(player.getPlayer().getId());
+		dto.setName(player.getPlayer().getUser().getLogin());
+		dto.setWinner(player.isWinner());
+		return dto;
+	}
+	
+	private RecentMatchPlayerDto[] mapFrom(PlayerVersus[] players) {
+		RecentMatchPlayerDto[] dtoList = new RecentMatchPlayerDto[players.length];
+		for (int i = 0; i < players.length; ++i) {
+			dtoList[i] = mapFrom(players[i]);
+		}
+		return dtoList;
+	}
+	
 	private void saveImageAttachment(byte[] bytes, String imageAttachmentFilename) throws MatchServiceException {
 		try {
 			storage.saveMatchScreenshot(bytes, imageAttachmentFilename);
 		} catch (IOException e) {
 			throw new MatchServiceException("Unexpected error while trying to save image attachment.", e);
 		}
+	}
+	
+	private RecentMatchPlayerDto[] loadPlayers(int matchId) {
+		Match match = matchDao.findById(matchId);
+		int matchTypeId = match.getMatchType().getId();
+		switch (matchTypeId) {
+		case MatchTypeDao.CAMPAIGN_MATCH_TYPE_ID:
+			PlayerCampaign[] campaignPlayers = playerCampaignDao.findByMatch(matchId);
+			return mapFrom(campaignPlayers);
+		case MatchTypeDao.VERSUS_MATCH_TYPE_ID:
+			PlayerVersus[] versusPlayers = playerVersusDao.findByMatch(matchId);
+			return mapFrom(versusPlayers);
+		}
+		throw new IllegalStateException("Not supported match type. id:" + matchTypeId);
 	}
 	
 }
