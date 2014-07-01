@@ -74,4 +74,16 @@ public class RecentMatchDto {
 		this.players = players;
 	}
 	
+	public boolean isSuccessfulForUser(int userId) {
+		if (players == null) {
+			return false;
+		}
+		for (RecentMatchPlayerDto player : players) {
+			if (player.isWinner() && player.getId() == userId) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

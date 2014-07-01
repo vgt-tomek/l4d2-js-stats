@@ -47,7 +47,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="match : ${recentMatches}">
+						<tr th:each="match : ${recentMatches}" th:class="${match.isSuccessfulForUser(userProfile.id) ? 'success' : 'danger'}">
 							<td th:text="${#dates.format(match.playedAt, 'yyyy-MM-dd')}"></td>
 							<td th:text="${match.type}"></td>
 							<td>
