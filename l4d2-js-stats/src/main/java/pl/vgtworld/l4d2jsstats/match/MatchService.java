@@ -203,7 +203,12 @@ public class MatchService {
 	
 	public RecentMatchDto[] findRecentMatchesForUser(int userId, int count) {
 		Match[] recentMatches = matchDao.findRecentMatchesForUser(userId, count);
-		return mapFrom(recentMatches);
+		RecentMatchDto[] dtoList = mapFrom(recentMatches);
+		for (RecentMatchDto dto : dtoList) {
+			RecentMatchPlayerDto[] players = loadPlayers(dto.getId());
+			dto.setPlayers(players);
+		}
+		return dtoList;
 	}
 	
 	public MapBreakDto[] getMapsByLongestBreak() {
