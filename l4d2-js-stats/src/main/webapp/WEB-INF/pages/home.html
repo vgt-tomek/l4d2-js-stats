@@ -97,6 +97,37 @@
 			</div>
 		</div>
 		
+		<div class="panel panel-default">
+			<div class="panel-heading">Match count monthly</div>
+			<div class="panel-body">
+				<div id="match-count-chart" style="height: 400px;" class="google-chart"></div>
+				<script th:inline="javascript">
+					//<![CDATA[
+					var matchCountData = [[${matchCountMonthly}]]
+					google.load("visualization", "1", {packages:["corechart"]});
+					google.setOnLoadCallback(drawChartMatchCountMonthly);
+					function drawChartMatchCountMonthly() {
+						var data = new google.visualization.DataTable();
+						data.addColumn('string', 'Month');
+						data.addColumn('number', 'Games played');
+						for (i = 0; i < matchCountData.length; i++) {
+							var rowKey = '' + matchCountData[i].year + '-' + matchCountData[i].month;
+							data.addRow([rowKey, matchCountData[i].matchCount]);
+						}
+		
+						var options = {
+							'legend': { 'position': 'none' },
+							'chartArea': {'width': '90%', 'height': '80%'},
+						};
+		
+						var chart = new google.visualization.AreaChart(document.getElementById('match-count-chart'));
+						chart.draw(data, options);
+					}
+					//]]>
+				</script>
+			</div>
+		</div>
+		
 	</div>
 	<div th:replace="templates/footer :: copyright" ></div>
 </body>
