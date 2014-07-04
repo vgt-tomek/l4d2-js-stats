@@ -11,6 +11,7 @@ import pl.vgtworld.l4d2jsstats.map.GameMapService;
 import pl.vgtworld.l4d2jsstats.map.dto.MostPlayedMapDto;
 import pl.vgtworld.l4d2jsstats.match.MatchService;
 import pl.vgtworld.l4d2jsstats.match.dto.MapBreakDto;
+import pl.vgtworld.l4d2jsstats.match.dto.MatchCountMonthlyDto;
 import pl.vgtworld.l4d2jsstats.match.dto.UserActivityDto;
 import pl.vgtworld.l4d2jsstats.player.PlayerService;
 import pl.vgtworld.l4d2jsstats.player.dto.MostActivePlayerDto;
@@ -43,6 +44,9 @@ public class HomeController extends BaseController {
 		
 		UserActivityDto[] usersActivity = matchService.getUsersActivity();
 		request.setAttribute("usersActivity", usersActivity);
+		
+		MatchCountMonthlyDto[] matchCountMonthly = matchService.getMatchCountMonthly();
+		request.setAttribute("matchCountMonthly", matchCountMonthly);
 		
 		return render("home");
 	}

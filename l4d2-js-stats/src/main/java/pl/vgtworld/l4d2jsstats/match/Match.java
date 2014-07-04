@@ -44,6 +44,13 @@ public class Match {
 	
 	public static final String QUERY_TOTAL_MATCHES_PLAYED = "Match.totalMatchesPlayed";
 	
+	public static final String QUERY_NATIVE_MATCH_COUNT_MONTHLY =
+		"SELECT COUNT(*) AS match_count, YEAR(played_at) AS year, MONTH(played_at) AS MONTH "
+			+ "FROM matches m "
+			+ "WHERE m.active = TRUE "
+			+ "GROUP BY YEAR(played_at), MONTH(played_at) "
+			+ "ORDER BY year, month";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

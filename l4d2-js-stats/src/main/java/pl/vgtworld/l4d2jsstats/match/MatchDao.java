@@ -1,11 +1,15 @@
 package pl.vgtworld.l4d2jsstats.match;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import pl.vgtworld.l4d2jsstats.match.dto.MatchCountMonthlyDto;
 
 @Stateless
 public class MatchDao {
@@ -63,4 +67,23 @@ public class MatchDao {
 		}
 		return (long) result;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public MatchCountMonthlyDto[] getMatchCountMonthly() {
+		Query query = em.createNativeQuery(Match.QUERY_NATIVE_MATCH_COUNT_MONTHLY);
+		List<Object[]> result = query.getResultList();
+		List<MatchCountMonthlyDto> convertedResult = new ArrayList<>();
+		for (Object[] row : result) {
+			BigInteger matches = (BigInteger) row[0];
+			int year = (int) row[1];
+			int month = (int) row[2];
+			MatchCountMonthlyDto dto = new MatchCountMonthlyDto();
+			dto.setMatchCount(matches.longValue());
+			dto.setYear(year);
+			dto.setMonth(month);
+			convertedResult.add(dto);
+		}
+		return convertedResult.toArray(new MatchCountMonthlyDto[convertedResult.size()]);
+	}
+	
 }

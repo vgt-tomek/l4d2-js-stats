@@ -21,6 +21,7 @@ import pl.vgtworld.l4d2jsstats.map.GameMap;
 import pl.vgtworld.l4d2jsstats.map.GameMapDao;
 import pl.vgtworld.l4d2jsstats.match.dto.CampaignMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MapBreakDto;
+import pl.vgtworld.l4d2jsstats.match.dto.MatchCountMonthlyDto;
 import pl.vgtworld.l4d2jsstats.match.dto.MatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchDto;
 import pl.vgtworld.l4d2jsstats.match.dto.RecentMatchPlayerDto;
@@ -255,6 +256,10 @@ public class MatchService {
 	
 	public long getTotalMatchesPlayed() {
 		return matchDao.getTotalMatchesPlayed();
+	}
+	
+	public MatchCountMonthlyDto[] getMatchCountMonthly() {
+		return matchDao.getMatchCountMonthly();
 	}
 	
 	private CampaignMatchDto mapFrom(MatchCampaign match) {
